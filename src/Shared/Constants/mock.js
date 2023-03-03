@@ -1,0 +1,1 @@
+export const AVATAR_IMG_URL= "https://st3.depositphotos.com/1037987/15097/i/450/depositphotos_150975580-stock-photo-portrait-of-businesswoman-in-office.jpg"
