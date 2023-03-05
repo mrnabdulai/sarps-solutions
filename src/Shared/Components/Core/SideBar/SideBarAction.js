@@ -15,6 +15,9 @@ function SideBarAction({ to, Icon, text, notificationsCount, isAlert, children }
       navigate(to)
     }
   }
+  const handleChildClick =(to)=>{
+    navigate(to)
+  }
   return (
 
     <div className='w-full relative'>
@@ -34,7 +37,7 @@ function SideBarAction({ to, Icon, text, notificationsCount, isAlert, children }
       {/* TODO: Slide in children */}
       
       {childrenIsOpen && children.map((child, index) => 
-      <p className='text-[#8a9aab] py-2 px-2 pl-8 mx-2 text-sm hover:bg-[#FBFBFB] cursor-pointer' key={index}>{child.title}</p>
+      <p onClick={()=>{handleChildClick(child.to)}} className='text-[#8a9aab] py-2 px-2 pl-8 mx-2 text-sm hover:bg-[#FBFBFB] cursor-pointer' key={index}>{child.title}</p>
       )}
     </div>
   )
