@@ -30,6 +30,15 @@ export const genericRequired = (value) => {
     return error;
 }
 
+export const genericMetricValidator = (value) => {
+    let error;
+    let valueAsInt = +value
+    if(value<=0){
+        error = "value must be > 1"
+    }
+    return error;
+}
+
 export const phoneValidator = (value) => {
     var regExp = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/;
   var phone = value.match(regExp);
