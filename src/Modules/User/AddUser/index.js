@@ -137,7 +137,6 @@ export default function AddUser() {
             return
         }
         const data = {
-            id: 1,
             surname,
             otherNames,
             dob,
@@ -171,8 +170,7 @@ export default function AddUser() {
             workExperience: workExperience,
             marritalStatus: maritalStatus,
             spouse: nameOfSpouse,
-            // children: namesOfChildren,
-            children: "none",
+            children: namesOfChildren,
             fSurname: fatherSurname,
             fOtherName: fatherOtherNames,
             fNationality: nationalities[fatherNationality],
@@ -206,9 +204,9 @@ export default function AddUser() {
             current_job: currentJob,
             skills: skills,
             job_type: jobType,
-            reg_status: "pending",
-            payment_status: "not_paid",
-            payment_method: "null",
+            // reg_status: "pending",
+            // payment_status: "not_paid",
+            // payment_method: "null",
         }
         try {
             setSubmitError("")
