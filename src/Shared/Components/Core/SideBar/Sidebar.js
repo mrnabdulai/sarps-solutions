@@ -26,13 +26,13 @@ function Sidebar() {
   <hr className='mb-5'/> */}
   <div className="flex flex-col w-full items-center mb-4">
       <SideBarAction Icon={HomeIcon} isAlert={false} to="/app/dashboard" text="Dashboard" />
-      <SideBarAction Icon={UserIcon} isAlert={false} to="/app/screen" text="Clients" 
+      <SideBarAction Icon={UserIcon} isAlert={false} to="/app/screen" text="Applications" 
         children={[
-          {title: 'Add Client', to: '/user/add'},
-          {title: 'List Client', to: '/app/clients/list'},
-          {title: 'Companies', to: '/app/screen'},
-          {title: 'Groups', to: '/app/screen'},
-          {title: 'Files', to: '/app/screen'},
+          {title: 'New application', to: '/user/add'},
+          {title: 'List applications', to: '/app/applications/list'},
+          // {title: 'Companies', to: '/app/screen'},
+          // {title: 'Groups', to: '/app/screen'},
+          // {title: 'Files', to: '/app/screen'},
 
         ]}
       />

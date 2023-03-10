@@ -8,6 +8,8 @@ import Dashboard from './Modules/Dashboard';
 import AddUser from './Modules/User/AddUser';
 import AddUserSucess from './Modules/User/AddUser/AddUserSucess';
 import ClientList from './Modules/Clients/List';
+import ApplicationList from './Modules/Applications';
+import ApplicationDetails from './Modules/Applications/ApplicationDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -24,6 +26,9 @@ function App() {
             </Route>
             <Route path='/app' element={<AppLayouts />}>
             <Route path='dashboard' element={<Dashboard  />} />
+            {/* Application routes */}
+            <Route path='applications/list' element={<ApplicationList />} />
+            <Route path='applications/:id' element={<ApplicationDetails />} />
             <Route path="clients/list" element={<ClientList />} />
             </Route>
         </Routes>
