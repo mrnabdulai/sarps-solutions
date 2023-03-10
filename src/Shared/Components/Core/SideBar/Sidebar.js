@@ -28,8 +28,8 @@ function Sidebar() {
       <SideBarAction Icon={HomeIcon} isAlert={false} to="/app/dashboard" text="Dashboard" />
       <SideBarAction Icon={UserIcon} isAlert={false} to="/app/screen" text="Clients" 
         children={[
-          {title: 'Add Client', to: '/app/screen'},
-          {title: 'List Client', to: '/app/screen'},
+          {title: 'Add Client', to: '/user/add'},
+          {title: 'List Client', to: '/app/clients/list'},
           {title: 'Companies', to: '/app/screen'},
           {title: 'Groups', to: '/app/screen'},
           {title: 'Files', to: '/app/screen'},

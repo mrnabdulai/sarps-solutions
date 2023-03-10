@@ -40,11 +40,31 @@ export const genericMetricValidator = (value) => {
 }
 
 export const phoneValidator = (value) => {
-    var regExp = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/;
-  var phone = value.match(regExp);
+    var regex = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm;
+  var phone = value.match(regex);
   let error;
   if (!phone) {
-    error = "Phone number must be in the format (xxx) xxx-xxxx";
+    error = "Phone number must be in the format  +xxx xxx-xxxx";
   }
   return error;
+}
+export const emailValidator = (value) => {
+  var email = String(value)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+    let error;
+    if(!email){
+        error = "Email is invalid"
+    }
+    return error
+};
+
+export const passwordValidator = (value) => {
+    let error;
+    if(value.length < 6){
+        error = "Password must be at least 6 characters long";
+    }
+    return error;
 }

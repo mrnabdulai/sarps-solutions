@@ -7,15 +7,16 @@ import AppLayouts from './Shared/Layouts/AppLayouts';
 import Dashboard from './Modules/Dashboard';
 import AddUser from './Modules/User/AddUser';
 import AddUserSucess from './Modules/User/AddUser/AddUserSucess';
+import ClientList from './Modules/Clients/List';
 
 function App() {
-  // const isAuth = !!useSelector(state => state.login.token)
-  const isAuth = true;
+  const isAuth = !!useSelector(state => state.login.token)
+  console.log(isAuth)
   return (
       <Router>
         <Routes>
-        {/* <Route path="/" element={isAuth ? <Navigate to='/app' /> : <Welcome/>}/> */}
-        <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Welcome/>}/>
+        <Route path="/" element={isAuth ? <Navigate to='/app' /> : <Login/>}/>
+        <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login/>}/>
             <Route path="/login" element={isAuth ? <Navigate to='/app' /> :<Login/>}/>
             <Route path="/user">
               <Route path="add" element={<AddUser />} />
@@ -23,6 +24,7 @@ function App() {
             </Route>
             <Route path='/app' element={<AppLayouts />}>
             <Route path='dashboard' element={<Dashboard  />} />
+            <Route path="clients/list" element={<ClientList />} />
             </Route>
         </Routes>
       </Router>

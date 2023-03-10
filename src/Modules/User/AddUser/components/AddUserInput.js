@@ -4,7 +4,6 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
 
 function AddUserInput({label,onChange, value, type, name, placeholder, error, required, disabled, className, hasAutoComplete, colsSpanDef,endAdorment,...props }) {
     const labelId = useId()
-    console.log(required)
     
     return (
         <div className={colsSpanDef}>
@@ -36,7 +35,7 @@ function AddUserInput({label,onChange, value, type, name, placeholder, error, re
 AddUserInput.defaultProps = {
     type: "text",
     // TODO: make required true
-    required: false,
+    required: true,
     disabled: false,
     hasAutoComplete: false,
     colsSpanDef: "col-span-6 sm:col-span-3"
