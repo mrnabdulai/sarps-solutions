@@ -18,8 +18,8 @@ function App() {
       <Router>
         <Routes>
         <Route path="/" element={isAuth ? <Navigate to='/app' /> : <Login/>}/>
-        <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login/>}/>
-            <Route path="/login" element={isAuth ? <Navigate to='/app' /> :<Login/>}/>
+        <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login/>}/>
+            <Route path="/login" element={isAuth ? <Navigate to='/app/applications/list' /> :<Login/>}/>
             <Route path="/user">
               <Route path="add" element={<AddUser />} />
               <Route path="add-success" element={<AddUserSucess />} />
