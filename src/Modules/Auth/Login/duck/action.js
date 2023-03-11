@@ -10,3 +10,11 @@ export const doLogin = ({username,password}) => {
         dispatch({type: ActionTypes.LOGGED_IN});
     }
 }
+
+
+export const setToken = (token) => {
+    return {
+        type: ActionTypes.LOGGED_IN,
+        payload: token
+    }
+}

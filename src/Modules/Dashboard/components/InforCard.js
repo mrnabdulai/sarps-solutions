@@ -4,7 +4,9 @@ import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-function InforCard({title, value, Icon, color, changeType, change}) {
+function InforCard({title, value, Icon, 
+  // color, changeType, change
+}) {
   return (
     <div
           
@@ -18,7 +20,7 @@ function InforCard({title, value, Icon, color, changeType, change}) {
             </dt>
             <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
               <p className="text-2xl font-semibold text-gray-900">{value}</p>
-              <p
+              {/* <p
                 className={classNames(
                changeType === 'increase' ? 'text-green-600' : 'text-red-600',
                   'ml-2 flex items-baseline text-sm font-semibold'
@@ -32,7 +34,7 @@ function InforCard({title, value, Icon, color, changeType, change}) {
 
                 <span className="sr-only"> {changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
                 {change}
-              </p>
+              </p> */}
               <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
                 <div className="text-sm">
                   <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">

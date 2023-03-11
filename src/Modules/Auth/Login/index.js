@@ -45,7 +45,7 @@ export default function Login() {
       });
       localStorage.setItem("token", response.data.token)
       dispatch({ type: ActionTypes.LOGGED_IN, payload: response.data.token })
-      navigate("/app/dashboard")
+      window.location.replace("/app/applications/list")
     }
     catch (err) {
      

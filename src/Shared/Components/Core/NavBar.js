@@ -15,7 +15,7 @@ export default function NavBar() {
     }, []);
     return (
 
-        <nav className='  sticky top-0 bg-white rounded-lg mr-[32px] my-[16px]' style={{ zIndex: 999 }}>
+        <nav className='  sticky top-0 bg-white rounded-lg mr-[32px] my-[16px]' style={{ }}>
             <div className="container px-4 py-4 flex justify-between" >
                 {/* Right side */}
                 <div className='flex items-center '>
