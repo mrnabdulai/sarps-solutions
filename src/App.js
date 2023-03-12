@@ -20,6 +20,7 @@ import UserApplicationsList from './Modules/User/UserApplicationsList';
 import UserAuth from './Modules/User/Auth/UserAuth';
 import UserComplaints from './Modules/User/UserComplaints';
 import { doLogout } from './Modules/Auth/Login/duck/action';
+import UserApplicationDetails from './Modules/User/UserApplicationDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -54,6 +55,7 @@ function App() {
           <Route path="profile" element={<UserProfile  />} />
           <Route path="dashboard" element={<UserApplicationsList  />} />
           <Route path="complaints" element={<UserComplaints  />} />
+          <Route path="applications/:id" element={<UserApplicationDetails  />} />
         
         </Route>
           <Route path="/user/add" element={<AddUser />} />

@@ -13,6 +13,7 @@ import Axios from '../../Shared/utils/axios_instance'
 import { useDispatch } from 'react-redux'
 // import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
+import { doSetApplications } from '../Applications/duck/action'
 
 function UserApplicationsList() {
     const navigate = useNavigate()
@@ -34,7 +35,7 @@ function UserApplicationsList() {
                 }
             })
             setData(response.data)
-            // dispatch(doSetApplications(response.data))
+            dispatch(doSetApplications(response.data))
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -166,7 +167,7 @@ function UserApplicationsList() {
                                                 <td className="py-4 text-right text-sm font-medium ">
                                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >
                                                         <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
-                                                            navigate("/app/applications/" + application.id)
+                                                            navigate("/user/applications/" + application.id)
                                                         }} />
                                                         <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" />
                                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
