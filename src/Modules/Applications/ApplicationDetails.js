@@ -148,7 +148,7 @@ export default function Example() {
                                     </p>
                                     <div className="mt-2">
                                         <span className="inline-block mr-3 text-sm font-medium">Payment Status:</span>
-                                        <AlBadge status={mapPaymentStatusToStatus(data.payment_status)} statusText={sentenceCase(data.payment_status)} />
+                                        <AlBadge status={"rejected"} statusText={"Not paid"} />
 
                                     </div>
                                   {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">

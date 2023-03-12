@@ -161,7 +161,7 @@ function ApplicationList() {
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
 
-                                    {/* <AlBadge status={mapPaymentStatusToStatus(application.payment_status)} statusText={sentenceCase(application.payment_status)} /> */}
+                                    <AlBadge status={"rejected"} statusText={"Not paid"} />
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(application.createdAt), 'MM/dd/yyyy')}</td>
