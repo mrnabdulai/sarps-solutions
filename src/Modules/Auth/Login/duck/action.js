@@ -1,5 +1,5 @@
 import {ActionTypes} from "./type";
-import {API_BASE_URL} from "../../../Shared/Constants";
+// import {API_BASE_URL} from "../../../Shared/Constants";
 import axios from "axios";
 
 
@@ -16,5 +16,11 @@ export const setToken = (token) => {
     return {
         type: ActionTypes.LOGGED_IN,
         payload: token
+    }
+}
+
+export const doLogout = () => {
+    return {
+        type: ActionTypes.LOGOUT
     }
 }

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import AlButton from '../../Shared/Components/AlButton'
-import { EyeIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { EyeIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import {sentenceCase} from "change-case";
+import { sentenceCase } from "change-case";
 import AlIconButton from '../../Shared/Components/AlIconButton'
 import AlSearchInput from '../../Shared/Components/AlSearchInput'
 import AlSectionHeader from '../../Shared/Components/AlSectionHeader'
@@ -11,13 +11,14 @@ import TablePagination from '../../Shared/Components/TablePagination'
 import ExportBtn from '../../Shared/Components/ExportBtn'
 import Axios from '../../Shared/utils/axios_instance'
 import { useDispatch } from 'react-redux'
-import { doSetApplications } from './duck/action'
+// import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
+import { doSetComplaints } from './duck/action'
 
-function ApplicationList() {
+function Complaints() {
     const navigate = useNavigate()
     const [data, setData] = useState([])
-    const [fetching, setFetching] = useState([])
+    const [fetching, setFetching] = useState(false)
     const [fetchError, setFetchError] = useState("")
     const dispatch = useDispatch()
     const fetchData = async () => {
@@ -25,9 +26,9 @@ function ApplicationList() {
         try {
             setFetching(true)
             setFetchError("")
-            const response = await Axios.get("/api/application/getApplications")
+            const response = await Axios.get("/api/complaint/getComplaints")
             setData(response.data)
-            dispatch(doSetApplications(response.data))
+            dispatch(doSetComplaints(response.data))
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -42,13 +43,16 @@ function ApplicationList() {
     useEffect(() => {
         fetchData()
     }, [])
+    const doneFetchingAndHasData = () => {
+        return !fetching && data.length > 0
+    }
     return (
         <section className='pr-5'>
             <div className="items-center flex justify-between mb-5">
-                <AlSectionHeader>Applications</AlSectionHeader>
-                <AlButton text="Add New Application" onClick={() => {
+                <AlSectionHeader>Complaints</AlSectionHeader>
+                {/* <AlButton text="Add New Application" onClick={() => {
                     navigate('/user/add')
-                }} />
+                }} /> */}
 
             </div>
             {/* Table section */}
@@ -71,7 +75,7 @@ function ApplicationList() {
                                 scope="col"
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                             >
-                                Name
+                                User
                             </th>
                             <th
                                 scope="col"
@@ -79,7 +83,7 @@ function ApplicationList() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Phone
+                                Title
                             </th>
                             <th
                                 scope="col"
@@ -87,16 +91,9 @@ function ApplicationList() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Location
+                                Complain
                             </th>
-                            <th
-                                scope="col"
-                                align='center'
 
-                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                            >
-                                Email
-                            </th>
                             <th
                                 scope="col"
                                 align='center'
@@ -105,14 +102,7 @@ function ApplicationList() {
                             >
                                 Status
                             </th>
-                            <th
-                                scope="col"
-                                align='center'
 
-                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                            >
-                                Payment Status
-                            </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Created At
                             </th>
@@ -125,52 +115,41 @@ function ApplicationList() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        {data.length > 0 && data.map((application, index) => {
-                            const mapPaymentStatusToStatus = () => {
-                                if (application.payment_status === "not_paid") return "rejected"
-                                if (application.payment_status === "part_payment") return "pending"
-                                if (application.payment_status === "paid") return "success"
-                            }
-                            return (<tr key={application.id}>
+                        {doneFetchingAndHasData() ? (data.map((complaint, index) => {
+
+                            return (<tr key={complaint.id}>
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-                                    {application.id}
+                                    {complaint.id}
                                     <dl className="font-normal lg:hidden">
-                                        <dt className="sr-only">name</dt>
-                                        <dd className="mt-1 truncate text-gray-700">{application.surname} {application.otherNames}</dd>
-                                        <dt className="sr-only sm:hidden">email</dt>
-                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{application.phone}</dd>
+                                        <dt className="sr-only">user</dt>
+                                        <dd className="mt-1 truncate text-gray-700">{complaint.user}</dd>
+                                        <dt className="sr-only sm:hidden">title</dt>
+                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{complaint.title}</dd>
                                     </dl>
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{application.surname} {application.otherNames}</td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{complaint.user}</td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {application.phone}
+                                    {complaint.title}
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {application.residence}
+                                    {complaint.complaint}
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {application.email}
 
-                                </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    <AlBadge status={application.reg_status} statusText={application.reg_status} />
+                                <td className="hidden px-3 ppy-4 text-sm text-gray-500 sm:table-cell">
+                                    <AlBadge status={complaint.status} statusText={complaint.status} />
 
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
 
-                                    {/* <AlBadge status={mapPaymentStatusToStatus(application.payment_status)} statusText={sentenceCase(application.payment_status)} /> */}
-
-                                </td>
-                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(application.createdAt), 'MM/dd/yyyy')}</td>
+                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(complaint.createdAt), 'MM/dd/yyyy')}</td>
                                 <td className="py-4 text-right text-sm font-medium ">
                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >
                                         <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
-                                            navigate("/app/applications/" + application.id)
+                                            navigate("/app/complaints/" + complaint.id)
                                         }} />
-                                        <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" />
+                                        {/* <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" /> */}
                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
                                     </div>
 
@@ -178,7 +157,22 @@ function ApplicationList() {
                             </tr>
                             )
                         }
-                        )}
+                        )) : !fetching ? (<tr>
+                            <td colspan={7} className="text-center py-4">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto h-12 w-12 text-gray-400">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                </svg>
+
+
+                                <h3 className="mt-2 text-sm font-medium text-gray-900">No Complaints filed yet</h3>
+                                <p className="mt-1 text-sm text-gray-500">Get started by filling a complaint.</p>
+                                <div className="mt-6">
+
+                                </div>
+
+                            </td>
+                        </tr>) : (<div></div>)}
                         {fetching && [0, 0, 0, 0].map((shimmer, index) => (
                             <tr key={index} className="animate-pulse">
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium h-2 bg-slate-700 rounded sm:w-auto sm:max-w-none sm:pl-6">
@@ -204,14 +198,7 @@ function ApplicationList() {
                                     <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
-                                    <div className='h-2 bg-gray-300 rounded'></div>
 
-                                </td>
-                                <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
-                                    <div className='h-2 bg-gray-300 rounded'></div>
-
-                                </td>
                                 <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
                                     <div className='h-2 bg-gray-300 rounded'></div>
 
@@ -242,4 +229,4 @@ function ApplicationList() {
     )
 }
 
-export default ApplicationList
+export default Complaints

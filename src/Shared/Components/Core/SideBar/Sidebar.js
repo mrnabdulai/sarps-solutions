@@ -36,6 +36,8 @@ function Sidebar() {
 
         ]}
       />
+            <SideBarAction Icon={ListBulletIcon} isAlert={false} to="/app/complaints" text="Complaints" />
+
       <SideBarAction Icon={CalculatorIcon} isAlert={false} to="/app/screen" text="Accounting"
        children={[
           {title: 'New Deposit', to: '/app/screen'},

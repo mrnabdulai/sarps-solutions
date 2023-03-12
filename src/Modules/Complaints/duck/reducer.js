@@ -1,28 +1,27 @@
 import { ActionTypes } from "./type";
 
-export const LoginReducer = (state = {
-    // errorMessage: "",
-    // isLoading: false,
-    token: localStorage.getItem('token'),
+export const ComplaintsReducer = (state = {
+    errorMessage: "",
+    isLoading: false,
+    complaints: [],
 }, action) => {
     switch (action.type) {
+        case ActionTypes.SET_COMPLAINTS_LIST:
+            return {
+                ...state,
+                complaints: action.payload
+            }
         // case ActionTypes.LOGGING_IN:
         //     return {
         //         ...state,
         //         isLoading: true
         //     }
-        case ActionTypes.LOGGED_IN:
-            return {
-                ...state,
-                isLoading: false,
-                token: action.payload
-            }
-        case ActionTypes.LOGOUT:
-            return {
-                ...state,
-                isLoading: false,
-                token: null
-            }
+        // case ActionTypes.LOGGED_IN:
+        //     return {
+        //         ...state,
+        //         isLoading: false,
+        //         token: action.payload
+        //     }
         // case ActionTypes.ERROR_LOGGING_IN:
         //     return {
         //         ...state,
