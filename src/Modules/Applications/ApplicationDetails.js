@@ -30,11 +30,12 @@ import AlBadge from '../../Shared/Components/AlBadge'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Axios from '../../Shared/utils/axios_instance'
-import AcceptApplicationPopup from './AcceptApplicationPopup'
+import UpdateApplicationPopup from './UpdateApplicationPopup'
 import AlLoadingOverlay from '../../Shared/Components/AlLoadingOverlay'
 import ErrorNotification from '../../Shared/Components/ErrorNotification'
 import SuccessNotification from '../../Shared/Components/SuccessNotification'
 import DeclineApplicationPopup from './DeclineApplicationPopup'
+import { sentenceCase } from 'change-case'
 const timelineEventTypes = {
     applied: { icon: UserIcon, bgColorClass: 'bg-gray-400' },
     approved: { icon: HandThumbUpIcon, bgColorClass: 'bg-blue-500' },
@@ -51,11 +52,13 @@ function classNames(...classes) {
 export default function Example() {
     const [data, setData] = useState({})
     const [timeline, setTimeline] = useState([])
-    const [approveOpen, setApproveOpen] = useState(false)
-    const [declineOpen, setDeclineOpen] = useState(false)
+    const [updateOpen, setUpdateOpen] = useState(false)
+    // const [declineOpen, setDeclineOpen] = useState(false)
     const [isUpdating, setIsUpdating] = useState(false)
     const [updateError, setUpdateError] = useState("")
     const [updateSuccess, setUpdateSuccess] = useState("")
+    const [selectedStatus, setSelectedStatus] = useState("accepted")
+
     const { id } = useParams()
     const navigate = useNavigate()
     const paramsList = useSelector(state => state.applicationsReducer.applications)
@@ -67,48 +70,22 @@ export default function Example() {
     //     }
     //     //TODO: handle for rest
     // }
-    const handleApprove = () => {
-        setApproveOpen(true)
+    const handleUpdate = () => {
+        setUpdateOpen(true)
     }
-    const onApproveConfirm = async () => {
+    const onUpdateConfirm = async () => {
+        console.log("selected status is", selectedStatus)
         try {
             setUpdateError("")
             setIsUpdating(true)
             const response = await Axios.put(`/api/application/updateApplication/${id}`, {
-                reg_status: "started"
+                reg_status: selectedStatus
             })
             console.log("this is the response data")
             console.log(response)
-           navigate("/app/applications/list")
-            setIsUpdating(false)
-            setApproveOpen(false)
-            setUpdateSuccess("Application Updated")
-
-        }
-        catch (err) {
-            console.log(err)
-            if (err.response) setUpdateError(err.response.data.message)
-            else setUpdateError("An error occured while updating application")
-            setIsUpdating(false)
-            setApproveOpen(false)
-
-        }
-    }
-    const handleDecline = () => {
-        setDeclineOpen(true)
-    }
-    const onDeclineConfirm = async () => {
-        try {
-            setUpdateError("")
-            setIsUpdating(true)
-            const response = await Axios.put(`/api/application/updateApplication/${id}`, {
-                reg_status: "rejected"
-            })
-            console.log(response.data)
             navigate("/app/applications/list")
-
             setIsUpdating(false)
-            setDeclineOpen(false)
+            setUpdateOpen(false)
             setUpdateSuccess("Application Updated")
 
         }
@@ -117,10 +94,11 @@ export default function Example() {
             if (err.response) setUpdateError(err.response.data.message)
             else setUpdateError("An error occured while updating application")
             setIsUpdating(false)
-            setApproveOpen(false)
+            setUpdateOpen(false)
 
         }
     }
+
     useEffect(() => {
         const indexOfThisApplication = paramsList.findIndex((application) => {
             return application.id == id
@@ -138,7 +116,18 @@ export default function Example() {
         setTimeline(tempTimelines)
         setData(paramsList[indexOfThisApplication])
     }, [])
+    const mapPaymentStatusToStatus = () => {
+        if (data.payment_status === "not_paid") return "rejected"
+        if (data.payment_status === "part_payment") return "pending"
+        if (data.payment_status === "paid") return "success"
+    }
+    const getPaymentMethodIcon = () =>{
+        if (data.payment_method === "cash") return "cash.png" 
+        if (data.payment_method === "bank") return "icons8-bank-building-50.png" 
+        if (data.payment_method === "mobile_money") return "momoghana.jpg" 
+    }
     return (
+
         <>
             <AlLoadingOverlay text="Updating application" show={isUpdating} >
                 <div className="min-h-full">
@@ -157,25 +146,32 @@ export default function Example() {
                                     <p className="text-sm font-medium text-gray-500">
                                         Applied   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
                                     </p>
+                                    <div className="mt-2">
+                                        <span className="inline-block mr-3 text-sm font-medium">Payment Status:</span>
+                                        <AlBadge status={mapPaymentStatusToStatus(data.payment_status)} statusText={sentenceCase(data.payment_status)} />
+
+                                    </div>
+                                  {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
+                                        <span className="inline-block  text-sm font-medium">Payment Method:</span>
+                                        <span className="inline-block  text-sm  text-gray-700">{sentenceCase(data.payment_method)}</span>
+                                        <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
+                                    </div>  }
                                 </div>
                             </div>
                             <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
+
                                 <button
                                     type="button"
-                                    className="inline-flex items-center justify-center rounded-md border border-error bg-white px-4 py-2 text-sm font-medium text-error shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-                                    onClick={handleDecline}
+                                    onClick={handleUpdate}
+                                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3  font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                                 >
-                                    Decline
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleApprove}
-                                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-                                >
-                                    Approve
+                                    Update
                                 </button>
                             </div>
+
                         </div>
+
+
 
                         <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                             <div className="space-y-6 lg:col-span-2 lg:col-start-1">
@@ -675,11 +671,10 @@ export default function Example() {
                             </section>
                         </div>
                     </main>}
-                    <AcceptApplicationPopup setOpen={setApproveOpen} open={approveOpen} onApproveConfirm={onApproveConfirm} />
-                    <DeclineApplicationPopup setOpen={setDeclineOpen} open={declineOpen} onDeclineConfirm={onDeclineConfirm} />
+                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
-                {updateSuccess && <SuccessNotification message={updateSuccess}/>}
+                {updateSuccess && <SuccessNotification message={updateSuccess} />}
             </AlLoadingOverlay>
         </>
     )

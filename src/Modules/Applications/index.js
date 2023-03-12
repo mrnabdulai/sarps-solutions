@@ -3,7 +3,7 @@ import AlButton from '../../Shared/Components/AlButton'
 import { EyeIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-
+import {sentenceCase} from "change-case";
 import AlIconButton from '../../Shared/Components/AlIconButton'
 import AlSearchInput from '../../Shared/Components/AlSearchInput'
 import AlSectionHeader from '../../Shared/Components/AlSectionHeader'
@@ -12,6 +12,7 @@ import ExportBtn from '../../Shared/Components/ExportBtn'
 import Axios from '../../Shared/utils/axios_instance'
 import { useDispatch } from 'react-redux'
 import { doSetApplications } from './duck/action'
+import AlBadge from '../../Shared/Components/AlBadge'
 
 function ApplicationList() {
     const navigate = useNavigate()
@@ -20,6 +21,7 @@ function ApplicationList() {
     const [fetchError, setFetchError] = useState("")
     const dispatch = useDispatch()
     const fetchData = async () => {
+        setData([])
         try {
             setFetching(true)
             setFetchError("")
@@ -95,6 +97,22 @@ function ApplicationList() {
                             >
                                 Email
                             </th>
+                            <th
+                                scope="col"
+                                align='center'
+
+                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                            >
+                                Status
+                            </th>
+                            <th
+                                scope="col"
+                                align='center'
+
+                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                            >
+                                Payment Status
+                            </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Created At
                             </th>
@@ -107,8 +125,13 @@ function ApplicationList() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        {data.length > 0 && data.map((application, index) => (
-                            <tr key={application.id}>
+                        {data.length > 0 && data.map((application, index) => {
+                            const mapPaymentStatusToStatus = () => {
+                                if (application.payment_status === "not_paid") return "rejected"
+                                if (application.payment_status === "part_payment") return "pending"
+                                if (application.payment_status === "paid") return "success"
+                            }
+                            return (<tr key={application.id}>
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                                     {application.id}
                                     <dl className="font-normal lg:hidden">
@@ -131,23 +154,35 @@ function ApplicationList() {
                                     {application.email}
 
                                 </td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                                    <AlBadge status={application.reg_status} statusText={application.reg_status} />
+
+
+                                </td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+
+                                    <AlBadge status={mapPaymentStatusToStatus(application.payment_status)} statusText={sentenceCase(application.payment_status)} />
+
+                                </td>
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(application.createdAt), 'MM/dd/yyyy')}</td>
                                 <td className="py-4 text-right text-sm font-medium ">
                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >
-                                        <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={()=>{
-                                            navigate("/app/applications/"+application.id)
-                                        }}/>
+                                        <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
+                                            navigate("/app/applications/" + application.id)
+                                        }} />
                                         <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" />
                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
                                     </div>
 
                                 </td>
                             </tr>
-                        ))}
-                        {fetching  && [0, 0, 0, 0].map((shimmer, index) => (
+                            )
+                        }
+                        )}
+                        {fetching && [0, 0, 0, 0].map((shimmer, index) => (
                             <tr key={index} className="animate-pulse">
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium h-2 bg-slate-700 rounded sm:w-auto sm:max-w-none sm:pl-6">
-                                <div className='h-5 w-5  bg-gray-300 rounded'></div>
+                                    <div className='h-5 w-5  bg-gray-300 rounded'></div>
 
 
                                 </td>
@@ -161,25 +196,33 @@ function ApplicationList() {
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm h-2 bg-slate-700 rounded sm:table-cell">
 
-                                <div className='h-2 bg-gray-300 rounded'></div>
+                                    <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm h-2 bg-slate-700 rounded sm:table-cell">
 
-                                <div className='h-2 bg-gray-300 rounded'></div>
+                                    <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
-                                <div className='h-2 bg-gray-300 rounded'></div>
+                                    <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
-                                <div className="flex items-center justify-center  gap-x-2">
-                                <div className='h-5 w-5  bg-gray-300 rounded'></div>
-                                <div className='h-5 w-5  bg-gray-300 rounded'></div>
-                                <div className='h-5 w-5  bg-gray-300 rounded'></div>
+                                    <div className='h-2 bg-gray-300 rounded'></div>
 
-                                </div>
+                                </td>
+                                <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
+                                    <div className='h-2 bg-gray-300 rounded'></div>
+
+                                </td>
+                                <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
+                                    <div className="flex items-center justify-center  gap-x-2">
+                                        <div className='h-5 w-5  bg-gray-300 rounded'></div>
+                                        <div className='h-5 w-5  bg-gray-300 rounded'></div>
+                                        <div className='h-5 w-5  bg-gray-300 rounded'></div>
+
+                                    </div>
 
                                 </td>
 
@@ -188,12 +231,12 @@ function ApplicationList() {
                     </tbody>
 
                 </table>
-               {data.length > 0 && <TablePagination total={data.length} onPageChange={(currentPage) => {
+                {data.length > 0 && <TablePagination total={data.length} onPageChange={(currentPage) => {
                     console.log(currentPage)
                 }} onRowsPerPageChange={(rowsPerPage) => {
                     console.log(rowsPerPage)
                 }} />
-               }
+                }
             </div>
         </section>
     )

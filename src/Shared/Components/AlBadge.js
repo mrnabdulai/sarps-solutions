@@ -4,7 +4,7 @@ function AlBadge({status, statusText}) {
     /**
      * Pass in status as either failure,pending, success
      */
-    if(status == "failure"){
+    if(status == "rejected"){
   return (
     <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-0.5 text-sm font-medium text-red-800 capitalize">
   {statusText}
