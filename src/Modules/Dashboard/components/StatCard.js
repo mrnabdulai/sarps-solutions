@@ -18,7 +18,7 @@ function StatCard({title, value, Icon, color}) {
                 <a href="/sdf" className="font-medium text-gray-500 hover:text-gray-600">
                   {title}
                 </a>
-                <p className="text-grey-900 text-lg">    $ {value}</p>
+                <p className="text-grey-900 text-lg">   {value}</p>
               </div>
               
             </div>

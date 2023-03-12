@@ -1,13 +1,11 @@
-import { ArrowRightIcon, BuildingOffice2Icon, UsersIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, BuildingOffice2Icon, CheckCircleIcon, ExclamationCircleIcon, UsersIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowTrendingDownIcon, ChartBarIcon, CreditCardIcon } from "@heroicons/react/24/solid";
 
 export const summarystats = [
-      {title: 'Total Income', value: '2500', icon:ChartBarIcon, color: 'bg-green-500'}, 
-      {title: 'Total Expense', value: '1300', icon:ArrowTrendingDownIcon, color: 'bg-red-500'}, 
-      {title: 'Income Today', value: '1100', icon:CreditCardIcon, color: 'bg-indigo-500'}, 
-      {title: 'Expense Today', value: '1500', icon:ArrowLeftIcon, color: 'bg-orange-500'}, 
-      {title: 'Income This Month', value: '1200', icon:ArrowLeftIcon, color: 'bg-teal-500'}, 
-      {title: 'Expense This Month', value: '1800', icon:ArrowRightIcon, color: 'bg-purple-500'}, 
+    {title: 'Total Completed Applications', value: '1100', icon:CheckCircleIcon, color: 'bg-green-500'}, 
+      {title: 'Total Pending Applications', value: '1300', icon:ExclamationCircleIcon, color: 'bg-yellow-400'}, 
+      {title: 'Total Rejected Applications', value: '1500', icon:XCircleIcon, color: 'bg-red-500'}, 
+
 
 ]
 
