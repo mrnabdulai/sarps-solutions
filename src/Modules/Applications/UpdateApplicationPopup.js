@@ -69,7 +69,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-export default function UpdateApplicationPopup({ onUpdateConfirm, open, setOpen , selectedStatus, setSelectedStatus}) {
+export default function UpdateApplicationPopup({ onUpdateConfirm, open, setOpen , selectedStatus, setSelectedStatus, selectedPaymentStatus, setSelectedPaymentStatus}) {
   // const [selected, setSelected] = useState(people[3])
 
 
@@ -111,76 +111,11 @@ export default function UpdateApplicationPopup({ onUpdateConfirm, open, setOpen 
         <div className="mt-2 max-w-xl text-sm text-gray-500">
           <p>Select new status for this application</p>
         </div>
-        <div className="mt-5 sm:flex sm:items-center">
-          <div className="w-full sm:max-w-xs">
-            <label htmlFor="status" className="sr-only">
-              Status
-            </label>
-            {/* <Listbox value={selected} onChange={setSelected}>
-      {({ open }) => (
-        <>
-          <Listbox.Label className="block text-sm font-medium text-gray-700">Assigned to</Listbox.Label>
-          <div className="relative mt-1">
-            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-              <span className="flex items-center">
-                <img src={selected.avatar} alt="" className="h-6 w-6 flex-shrink-0 rounded-full" />
-                <span className="ml-3 block truncate">{selected.name}</span>
-              </span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-              </span>
-            </Listbox.Button>
+        <div className="mt-5 ">
+          <div className="w-full sm:max-w-xs mt-2.5">
+          <label for="status" class="block text-sm font-medium text-gray-700">Application status</label>
 
-            <Transition
-              show={open}
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {people.map((person) => (
-                  <Listbox.Option
-                    key={person.id}
-                    className={({ active }) =>
-                      classNames(
-                        active ? 'text-white bg-indigo-600' : 'text-gray-900',
-                        'relative cursor-default select-none py-2 pl-3 pr-9'
-                      )
-                    }
-                    value={person}
-                  >
-                    {({ selected, active }) => (
-                      <>
-                        <div className="flex items-center">
-                          <img src={person.avatar} alt="" className="h-6 w-6 flex-shrink-0 rounded-full" />
-                          <span
-                            className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
-                          >
-                            {person.name}
-                          </span>
-                        </div>
-
-                        {selected ? (
-                          <span
-                            className={classNames(
-                              active ? 'text-white' : 'text-indigo-600',
-                              'absolute inset-y-0 right-0 flex items-center pr-4'
-                            )}
-                          >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </div>
-        </>
-      )}
-    </Listbox> */}
+        
        <select id="status" onChange={(e) => {
         setSelectedStatus(e.target.value)
        }} name="status" value={selectedStatus} class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
@@ -191,13 +126,28 @@ export default function UpdateApplicationPopup({ onUpdateConfirm, open, setOpen 
       <option value="completed">Completed</option>
     </select>
           </div>
-          <button
-            // type="submit"
-            onClick={onUpdateConfirm}
-            className="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-          >
-            Save
-          </button>
+          <div className="w-full sm:max-w-xs mt-3 mb-4 ">
+          <label for="status" class="block text-sm font-medium text-gray-700">Payment Status</label>
+
+        
+       <select id="status" value={selectedPaymentStatus} onChange={(e)=>{
+        setSelectedPaymentStatus(e.target.value)
+       }}  name="payment_status" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+      <option value="paid">Paid</option>
+      <option value="not_paid">Not Paid</option>
+      <option value="part_payment">Part Payment</option>
+
+    </select>
+          </div>
+                 <div className="w-full sm:max-w-xs flex justify-end " >
+            <button
+              // type="submit"
+              onClick={onUpdateConfirm}
+              className="mt-3 inline-flex  w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </Dialog.Panel>

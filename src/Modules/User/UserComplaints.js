@@ -94,7 +94,7 @@ function UserComplaints() {
 
                                             className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                                         >
-                                            Title
+                                            Topic
                                         </th>
                                         <th
                                             scope="col"
@@ -102,7 +102,7 @@ function UserComplaints() {
 
                                             className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                                         >
-                                            Complain
+                                            Complaint
                                         </th>
 
                                         <th
@@ -133,14 +133,14 @@ function UserComplaints() {
                                                 {complaint.id}
                                                 <dl className="font-normal lg:hidden">
                                                     <dt className="sr-only">user</dt>
-                                                    <dd className="mt-1 truncate text-gray-700">{complaint.user}</dd>
-                                                    <dt className="sr-only sm:hidden">title</dt>
-                                                    <dd className="mt-1 truncate text-gray-500 sm:hidden">{complaint.title}</dd>
+                                                    <dd className="mt-1 truncate text-gray-700">{complaint.createdBy}</dd>
+                                                    <dt className="sr-only sm:hidden">Topic</dt>
+                                                    <dd className="mt-1 truncate text-gray-500 sm:hidden">{complaint.topic}</dd>
                                                 </dl>
                                             </td>
-                                            <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{complaint.user}</td>
+                                            <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{complaint.createdBy}</td>
                                             <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                                {complaint.title}
+                                                {complaint.topic}
 
                                             </td>
                                             <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">

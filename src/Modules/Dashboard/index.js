@@ -1,7 +1,10 @@
 import { BuildingOffice2Icon, UsersIcon, CheckCircleIcon, ExclamationCircleIcon,  XCircleIcon } from '@heroicons/react/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Axios from '../../Shared/utils/axios_instance'
+import { doLogout } from '../Auth/Login/duck/action'
 import InforCard from './components/InforCard'
 import { OverViewChart } from './components/OverviewChart'
 import StatCard from './components/StatCard'
@@ -12,13 +15,20 @@ function Dashboard() {
   const [isFetchingDashboardStats, setIsFetchingDashboardStats] = useState(true) 
   const [isDashboardStatsError, setDashboardStatsError] = useState("") 
   const [dashboardData, setDashboardData] = useState({})
-  
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const fetchDashboardStats = async() => {
     let  tempDashboardStats ={}
     setDashboardStatsError(""	)
     try{
       setIsFetchingDashboardStats(true)
       const totalApplicationsResponse = await Axios.get("/api/stats/getTotalApplications")
+      if(totalApplicationsResponse.status == 403 || totalApplicationsResponse.data.message == "Invalid Token"){
+        localStorage.clear()
+        dispatch(doLogout())
+        navigate('/login')
+        return
+    }
       const totalVisaProcessesResponse = await Axios.get("api/stats/getTotalApplicationsByStatus/VisaProcess")
       const totalCompletedApplicationsResponse = await Axios.get("api/stats/getTotalApplicationsByStatus/Completed")
       const totalPendingApplicationsResponse = await Axios.get("api/stats/getTotalApplicationsByStatus/Pending")

@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 // import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doSetComplaints } from './duck/action'
+import { doLogout } from '../Auth/Login/duck/action'
 
 function Complaints() {
     const navigate = useNavigate()
@@ -27,6 +28,12 @@ function Complaints() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/complaint/getComplaints")
+            if(response.status == 403){
+                localStorage.clear()
+                dispatch(doLogout())
+                navigate('/login')
+                return
+            }
             setData(response.data)
             dispatch(doSetComplaints(response.data))
             console.log(response.data)
@@ -83,7 +90,7 @@ function Complaints() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Title
+                                Topic 
                             </th>
                             <th
                                 scope="col"
@@ -91,7 +98,7 @@ function Complaints() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Complain
+                                Complaint
                             </th>
 
                             <th
@@ -122,12 +129,12 @@ function Complaints() {
                                     {complaint.id}
                                     <dl className="font-normal lg:hidden">
                                         <dt className="sr-only">user</dt>
-                                        <dd className="mt-1 truncate text-gray-700">{complaint.user}</dd>
+                                        <dd className="mt-1 truncate text-gray-700">{complaint.createdBy}</dd>
                                         <dt className="sr-only sm:hidden">title</dt>
-                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{complaint.title}</dd>
+                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{complaint.topic}</dd>
                                     </dl>
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{complaint.user}</td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{complaint.createdBy}</td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {complaint.title}
 
@@ -166,7 +173,7 @@ function Complaints() {
 
 
                                 <h3 className="mt-2 text-sm font-medium text-gray-900">No Complaints filed yet</h3>
-                                <p className="mt-1 text-sm text-gray-500">Get started by filling a complaint.</p>
+                                {/* <p className="mt-1 text-sm text-gray-500">Get started by filling a complaint.</p> */}
                                 <div className="mt-6">
 
                                 </div>

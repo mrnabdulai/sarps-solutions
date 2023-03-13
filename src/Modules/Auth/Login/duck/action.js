@@ -20,6 +20,7 @@ export const setToken = (token) => {
 }
 
 export const doLogout = () => {
+    
     return {
         type: ActionTypes.LOGOUT
     }

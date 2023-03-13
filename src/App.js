@@ -24,6 +24,7 @@ import UserApplicationDetails from './Modules/User/UserApplicationDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
+  const userAuth = sessionStorage.getItem("user")
   const dispatch = useDispatch()
   const verifyToken = async () => {
     try {
@@ -48,10 +49,10 @@ function App() {
       <Routes>
         <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
 
-        <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} />
-        <Route path="/login" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} />
+        {/* <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} /> */}
+        <Route path="/login" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
         {/* user routes  */}
-        <Route path="/user/*" element={<UserRoot />}>
+        <Route path="/user/*" element={userAuth ?  <UserRoot /> : <Navigate to="/user/login" replace/>} >
           <Route path="profile" element={<UserProfile  />} />
           <Route path="dashboard" element={<UserApplicationsList  />} />
           <Route path="complaints" element={<UserComplaints  />} />
@@ -59,8 +60,8 @@ function App() {
         
         </Route>
           <Route path="/user/add" element={<AddUser />} />
-          <Route path="/user/login" element={<UserAuth />} />
-          <Route path="/user/add-success" element={<AddUserSucess />} />
+          <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" /> : <UserAuth /> } />
+          <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth}/>} />
         <Route path='/app/*' element={isAuth ? <AppLayouts /> : <Navigate to="/login" replace />}>
           <Route path='dashboard' element={<Dashboard />} />
           {/* Application routes */}

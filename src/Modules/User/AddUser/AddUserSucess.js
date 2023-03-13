@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function AddUserSucess() {
+function AddUserSucess({isAdmin}) {
     const navigate = useNavigate();
 
   return (
@@ -24,7 +24,14 @@ function AddUserSucess() {
       <p> Have a great day!</p>
       <div className="py-10 text-center">
         <button onClick={()=>{
-            navigate('/dashboard')
+          if(isAdmin){
+            navigate('/app/dashboard')
+            
+
+          }
+          else {
+            navigate('user/dashboard')
+          }
         }} className="px-12 rounded-md bg-primary hover:bg-primary text-white font-semibold py-3">
           Go to dashboard
         </button>

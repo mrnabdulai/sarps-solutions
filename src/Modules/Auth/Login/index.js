@@ -44,6 +44,7 @@ export default function Login() {
         password
       });
       localStorage.setItem("token", response.data.token)
+      localStorage.setItem("admin", JSON.stringify( response.data.admin))
       dispatch({ type: ActionTypes.LOGGED_IN, payload: response.data.token })
       window.location.replace("/app/applications/list")
     }
@@ -58,6 +59,7 @@ export default function Login() {
 
     }
   }
+  
   return (
     <>
 <LoadingOverlay

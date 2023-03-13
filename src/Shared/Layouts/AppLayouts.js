@@ -12,7 +12,7 @@ export default function AppLayouts () {
           <NavBar />
     
           {/* Body */}
-          <div className="flex-auto overflow-scroll">
+          <div className="flex-auto ">
         
         <Outlet />
 

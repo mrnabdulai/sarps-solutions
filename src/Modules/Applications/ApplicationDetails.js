@@ -58,6 +58,7 @@ export default function Example() {
     const [updateError, setUpdateError] = useState("")
     const [updateSuccess, setUpdateSuccess] = useState("")
     const [selectedStatus, setSelectedStatus] = useState("accepted")
+    const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("not_paid")
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -79,7 +80,8 @@ export default function Example() {
             setUpdateError("")
             setIsUpdating(true)
             const response = await Axios.put(`/api/application/updateApplication/${id}`, {
-                reg_status: selectedStatus
+                reg_status: selectedStatus,
+                payment_status: selectedPaymentStatus
             })
             console.log("this is the response data")
             console.log(response)
@@ -100,6 +102,7 @@ export default function Example() {
     }
 
     useEffect(() => {
+        
         const indexOfThisApplication = paramsList.findIndex((application) => {
             return application.id == id
         })
@@ -115,6 +118,7 @@ export default function Example() {
         )
         setTimeline(tempTimelines)
         setData(paramsList[indexOfThisApplication])
+        setSelectedStatus(paramsList[indexOfThisApplication].reg_status)
     }, [])
     const mapPaymentStatusToStatus = () => {
         if (data.payment_status === "not_paid") return "rejected"
@@ -125,6 +129,7 @@ export default function Example() {
         if (data.payment_method === "cash") return "cash.png" 
         if (data.payment_method === "bank") return "icons8-bank-building-50.png" 
         if (data.payment_method === "mobile_money") return "momoghana.jpg" 
+        return "momoghana.jpg"
     }
     return (
 
@@ -151,9 +156,14 @@ export default function Example() {
                                         <AlBadge status={"rejected"} statusText={"Not paid"} />
 
                                     </div>
-                                  {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
+                                  {/* {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
                                         <span className="inline-block  text-sm font-medium">Payment Method:</span>
                                         <span className="inline-block  text-sm  text-gray-700">{sentenceCase(data.payment_method)}</span>
+                                        <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
+                                    </div>  } */}
+                                  {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
+                                        <span className="inline-block  text-sm font-medium">Payment Method:</span>
+                                        <span className="inline-block  text-sm  text-gray-700">{"Mobile Money"}</span>
                                         <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
                                     </div>  }
                                 </div>
@@ -671,7 +681,7 @@ export default function Example() {
                             </section>
                         </div>
                     </main>}
-                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
+                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus}/>
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
                 {updateSuccess && <SuccessNotification message={updateSuccess} />}

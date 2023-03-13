@@ -9,17 +9,19 @@ export default function FileComplaintPopup({ open, setOpen }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const title = e.target.title.value
+        const topic = e.target.topic.value
         const complaint = e.target.complaint.value
-        console.log(title, complaint)
+        console.log(topic, complaint)
         setSubmitting(true)
         setSubmitError("")
         try {
 
-
+            const userDetails = JSON.parse(sessionStorage.getItem("user"))
             const response = await Axios.post("/api/complaint/addComplaint", {
-                title,
-                complaint
+                topic,
+                complaint,
+                createdBy: userDetails.id,
+                status: "pending"
             }, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -75,10 +77,10 @@ export default function FileComplaintPopup({ open, setOpen }) {
                                         </Dialog.Title>
 
                                         <div className='mt-4'>
-                                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                                            <label for="topic" class="block text-sm font-medium text-gray-700">Topic</label>
                                             <div class="mt-1">
                                                 <input disabled={submitting}
-                                                    type="text" name="title" id="title" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" />
+                                                    type="text" name="topic" id="topic" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" />
                                             </div>
                                         </div>
                                         <div className='mt-4'>

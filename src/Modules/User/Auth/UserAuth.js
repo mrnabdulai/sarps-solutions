@@ -43,6 +43,7 @@ export default function UserAuth() {
 
             }
         });
+        localStorage.clear()
         sessionStorage.setItem("token", response.data.token)
         sessionStorage.setItem("user", JSON.stringify(response.data.user))
         // dispatch({ type: ActionTypes.LOGGED_IN, payload: response.data.token })

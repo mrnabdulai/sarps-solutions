@@ -3,7 +3,7 @@ import AlButton from '../../Shared/Components/AlButton'
 import { EyeIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import {sentenceCase} from "change-case";
+import { sentenceCase } from "change-case";
 import AlIconButton from '../../Shared/Components/AlIconButton'
 import AlSearchInput from '../../Shared/Components/AlSearchInput'
 import AlSectionHeader from '../../Shared/Components/AlSectionHeader'
@@ -13,6 +13,7 @@ import Axios from '../../Shared/utils/axios_instance'
 import { useDispatch } from 'react-redux'
 import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
+import { doLogout } from '../Auth/Login/duck/action'
 
 function ApplicationList() {
     const navigate = useNavigate()
@@ -26,6 +27,13 @@ function ApplicationList() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/application/getApplications")
+            if(response.status == 403){
+                localStorage.clear()
+                dispatch(doLogout())
+                navigate('/login')
+                return
+            }
+            
             setData(response.data)
             dispatch(doSetApplications(response.data))
             console.log(response.data)
@@ -42,6 +50,9 @@ function ApplicationList() {
     useEffect(() => {
         fetchData()
     }, [])
+    const doneFetchingAndHasData = () => {
+        return !fetching && data.length > 0
+    }
     return (
         <section className='pr-5'>
             <div className="items-center flex justify-between mb-5">
@@ -125,7 +136,7 @@ function ApplicationList() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        {data.length > 0 && data.map((application, index) => {
+                        {doneFetchingAndHasData() ? (data.map((application, index) => {
                             const mapPaymentStatusToStatus = () => {
                                 if (application.payment_status === "not_paid") return "rejected"
                                 if (application.payment_status === "part_payment") return "pending"
@@ -178,7 +189,22 @@ function ApplicationList() {
                             </tr>
                             )
                         }
-                        )}
+                        )) : !fetching ? (<tr>
+                            <td colspan={9} className="text-center py-4">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto h-12 w-12 text-gray-400">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                </svg>
+
+
+                                <h3 className="mt-2 text-sm font-medium text-gray-900">No applications submitted yet</h3>
+                                {/* <p className="mt-1 text-sm text-gray-500">Get started by filling a complaint.</p> */}
+                                <div className="mt-6">
+
+                                </div>
+
+                            </td>
+                        </tr>) : (<div></div>)}
                         {fetching && [0, 0, 0, 0].map((shimmer, index) => (
                             <tr key={index} className="animate-pulse">
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium h-2 bg-slate-700 rounded sm:w-auto sm:max-w-none sm:pl-6">

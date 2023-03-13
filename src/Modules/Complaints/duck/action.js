@@ -7,7 +7,7 @@ import axios from "axios";
 
 export const doSetComplaints = (complaints) => {
     return {
-        type: ActionTypes.SET_APPLICATIONS_LIST,
+        type: ActionTypes.SET_COMPLAINTS_LIST,
         payload: complaints
     }
 }
