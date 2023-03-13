@@ -46,7 +46,7 @@ export default function Login() {
       localStorage.setItem("token", response.data.token)
       localStorage.setItem("admin", JSON.stringify( response.data.admin))
       dispatch({ type: ActionTypes.LOGGED_IN, payload: response.data.token })
-      window.location.replace("/app/applications/list")
+      window.location.replace("/app/dashboard")
     }
     catch (err) {
      
