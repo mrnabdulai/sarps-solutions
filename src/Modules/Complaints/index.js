@@ -31,7 +31,7 @@ function Complaints() {
             if(response.status == 403){
                 localStorage.clear()
                 dispatch(doLogout())
-                navigate('/login')
+                window.location.replace('/login')
                 return
             }
             setData(response.data)

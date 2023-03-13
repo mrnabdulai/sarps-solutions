@@ -26,7 +26,7 @@ function Dashboard() {
       if(totalApplicationsResponse.status == 403 || totalApplicationsResponse.data.message == "Invalid Token"){
         localStorage.clear()
         dispatch(doLogout())
-        navigate('/login')
+        window.location.replace('/login')
         return
     }
       const totalVisaProcessesResponse = await Axios.get("api/stats/getTotalApplicationsByStatus/VisaProcess")
