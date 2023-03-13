@@ -26,24 +26,24 @@ function App() {
   const isAuth = !!useSelector(state => state.login.token)
   const userAuth = sessionStorage.getItem("user")
   const dispatch = useDispatch()
-  const verifyToken = async () => {
-    try {
-      const testResponse = await Axios.get("/api/stats/getTotalApplications")
-      if(testResponse.data.message === "Invalid Token")
-      {
-        dispatch(doLogout())
-        localStorage.clear()
+  // const verifyToken = async () => {
+  //   try {
+  //     const testResponse = await Axios.get("/api/stats/getTotalApplications")
+  //     if(testResponse.data.message === "Invalid Token")
+  //     {
+  //       dispatch(doLogout())
+  //       localStorage.clear()
       
-      }
-    } catch (err) {
-        console.log(err)
-    }
+  //     }
+  //   } catch (err) {
+  //       console.log(err)
+  //   }
 
-  }
-  useEffect(() => {
-    verifyToken()
+  // }
+  // useEffect(() => {
+  //   verifyToken()
 
-  }, [false])
+  // }, [false])
   return (
     <Router>
       <Routes>

@@ -29,7 +29,7 @@ function UserComplaints() {
             setFetchError("")
             const { id } = JSON.parse(sessionStorage.getItem("user"))
             console.log("user id is ", id)
-            const response = await Axios.get(`/api/complaint/getComplaints/${id}`, {
+            const response = await Axios.get(`/api/complaint/getComplaintsByUser/${id}`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem("token")}`,
                     Accept: "application/json",
@@ -157,9 +157,9 @@ function UserComplaints() {
                                             <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(complaint.createdAt), 'MM/dd/yyyy')}</td>
                                             <td className="py-4 text-right text-sm font-medium ">
                                                 <div className='h-full w-full flex items-center justify-center gap-x-4' >
-                                                    <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
+                                                    {/* <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
                                                         navigate("/app/complaints/" + complaint.id)
-                                                    }} />
+                                                    }} /> */}
                                                     {/* <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" /> */}
                                                     <AlIconButton Icon={TrashIcon} colorClass="text-error" />
                                                 </div>
