@@ -44,7 +44,7 @@ const user = {
     imageUrl: ""
 }
 const navigation = [
-    { name: 'Dashboard', href: '/user/dashboard', current: window.location.pathname == "/user/dashboard"  },
+    { name: 'Dashboard', href: '/user/dashboard', current: window.location.pathname == "/user/dashboard" },
     { name: 'Complaints', href: '/user/complaints', current: window.location.pathname == "/user/complaints" },
 
 ]
@@ -53,8 +53,8 @@ const subNavigation = [
 
 ]
 let userNavigation = [
-    { name: 'Your Profile', onClick: () => {} },
-    { name: 'Sign out', onClick: () => {} },
+    { name: 'Your Profile', onClick: () => { } },
+    { name: 'Sign out', onClick: () => { } },
 ]
 
 function classNames(...classes) {
@@ -64,20 +64,23 @@ function classNames(...classes) {
 export default function Example() {
     const [userName, setUserName] = useState("")
     const navigate = useNavigate()
-     userNavigation = [
-        { name: 'Your Profile', onClick:() => {
-            navigate('/user/profile')
-        } },
-        { name: 'Sign out', onClick: () => {
-            sessionStorage.removeItem("token")
-            sessionStorage.removeItem("user")
-            navigate('/user/login')
-        } },
+    userNavigation = [
+        {
+            name: 'Your Profile', onClick: () => {
+                navigate('/user/profile')
+            }
+        },
+        {
+            name: 'Sign out', onClick: () => {
+                sessionStorage.clear()
+                window.location.replace('/user/login')
+            }
+        },
     ]
-    
+
     useEffect(() => {
         const user = JSON.parse(sessionStorage.getItem("user"))
-        if(user) setUserName(user.surname + user.otherNames)
+        if (user) setUserName(user.surname + user.otherNames)
     }, [])
     return (
         <div>
@@ -116,7 +119,7 @@ export default function Example() {
                                                 ))}
                                             </div>
                                         </div>
-                                       {userName && <div className='text-white text-md font-medium px-2  lg:ml-4 lg:px-0'>Welcome {userName}</div> }
+                                        {userName && <div className='text-white text-md font-medium px-2  lg:ml-4 lg:px-0'>Welcome {userName}</div>}
                                     </div>
                                     <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
                                         <div className="w-full max-w-lg lg:max-w-xs">
@@ -242,7 +245,7 @@ export default function Example() {
                                                 key={item.name}
                                                 as="a"
                                                 href={"#"}
-                                                
+
                                                 className="block rounded-md py-2 px-3 text-base font-medium text-sky-200 hover:bg-sky-800 hover:text-white"
                                             >
                                                 {item.name}
@@ -279,12 +282,12 @@ export default function Example() {
                             </div>
                         </div>
                         <header className="relative py-10">
-                           
+
                         </header>
                     </>
                 )}
             </Disclosure>
-<Outlet />
+            <Outlet />
         </div>
     )
 }
