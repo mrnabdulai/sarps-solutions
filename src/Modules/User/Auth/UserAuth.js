@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import AlLoadingOverlay from "../../../Shared/Components/AlLoadingOverlay"
+import ErrorNotification from "../../../Shared/Components/ErrorNotification"
 import Axios from "../../../Shared/utils/axios_instance"
 import { emailValidator, passwordValidator } from "../../../Shared/utils/validators"
 
@@ -193,6 +194,8 @@ export default function UserAuth() {
                 />
               </div>
             </div>
+            {submitError && <ErrorNotification errorMessage={submitError} />}
+
         </AlLoadingOverlay>
       </>
     )
