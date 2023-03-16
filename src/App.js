@@ -21,6 +21,12 @@ import UserAuth from './Modules/User/Auth/UserAuth';
 import UserComplaints from './Modules/User/UserComplaints';
 import { doLogout } from './Modules/Auth/Login/duck/action';
 import UserApplicationDetails from './Modules/User/UserApplicationDetails';
+import Payouts from './Modules/Payouts';
+import AddPayout from './Modules/Payouts/AddPayout';
+import PayoutDetails from './Modules/Payouts/PayoutDetails';
+import Agents from './Modules/Agents';
+import AddAgent from './Modules/Agents/AddAgent';
+import AgentDetails from './Modules/Agents/AgentDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -73,6 +79,18 @@ function App() {
           <Route path="complaints" element={<Complaints />} />
           <Route path="complaints/:id" element={<ComplaintDetails />} />
           <Route path="complaints/:id" element={<ComplaintDetails />} />
+
+
+          {/* Payouts routes */}
+         <Route path='payouts' element={<Payouts />} />
+         <Route path='payouts/add' element={<AddPayout />} />
+         <Route path='payouts/:id' element={<PayoutDetails />} />
+
+         {/* Agents */}
+         <Route path='agents' element={<Agents />} />
+         <Route path='agents/add' element={<AddAgent />} />
+         <Route path='agents/:id' element={<AgentDetails />} />
+
         </Route>
       </Routes>
     </Router>

@@ -34,7 +34,7 @@ import AlLoadingOverlay from '../../Shared/Components/AlLoadingOverlay'
 import ErrorNotification from '../../Shared/Components/ErrorNotification'
 import SuccessNotification from '../../Shared/Components/SuccessNotification'
 import { sentenceCase } from 'change-case'
-import UpdateComplaintPopup from './UpdateComplaintPopup'
+// import UpdateComplaintPopup from './UpdateComplaintPopup'
 const timelineEventTypes = {
     applied: { icon: UserIcon, bgColorClass: 'bg-gray-400' },
     approved: { icon: HandThumbUpIcon, bgColorClass: 'bg-blue-500' },
@@ -48,7 +48,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function ComplaintDetails() {
+export default function AgentDetails() {
     const [data, setData] = useState({})
     const [timeline, setTimeline] = useState([])
     const [updateOpen, setUpdateOpen] = useState(false)
@@ -60,7 +60,7 @@ export default function ComplaintDetails() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-    const paramsList = useSelector(state => state.complaintsReducer.complaints)
+    const paramsList = useSelector(state => state.agentsReducer.agents)
 
     console.log(paramsList)
     // const mapStatusToTimelineEvent = (status) =>{
@@ -69,38 +69,38 @@ export default function ComplaintDetails() {
     //     }
     //     //TODO: handle for rest
     // }
-    const handleUpdate = () => {
-        setUpdateOpen(true)
-    }
-    const onUpdateConfirm = async () => {
-        try {
-            setUpdateError("")
-            setIsUpdating(true)    
-            // const response = await Axios.put(`api/complaint/updateComplaints/${id}`, {
-            //     reg_status: selectedStatus
-            // })
-        
-            console.log("this is the response data")
-            // console.log(response)
-            navigate("/app/complaints")
-            setIsUpdating(false)
-            setUpdateOpen(false)
-            setUpdateSuccess("Complaint Updated")
+    // const handleUpdate = () => {
+    //     setUpdateOpen(true)
+    // }
+    // const onUpdateConfirm = async () => {
+    //     try {
+    //         setUpdateError("")
+    //         setIsUpdating(true)    
+    //         // const response = await Axios.put(`api/complaint/updateComplaints/${id}`, {
+    //         //     reg_status: selectedStatus
+    //         // })
 
-        }
-        catch (err) {
-            console.log(err)
-            if (err.response) setUpdateError(err.response.data.message)
-            else setUpdateError("An error occured while updating complaint")
-            setIsUpdating(false)
-            setUpdateOpen(false)
+    //         console.log("this is the response data")
+    //         // console.log(response)
+    //         navigate("/app/complaints")
+    //         setIsUpdating(false)
+    //         setUpdateOpen(false)
+    //         setUpdateSuccess("Complaint Updated")
 
-        }
-    }
+    //     }
+    //     catch (err) {
+    //         console.log(err)
+    //         if (err.response) setUpdateError(err.response.data.message)
+    //         else setUpdateError("An error occured while updating complaint")
+    //         setIsUpdating(false)
+    //         setUpdateOpen(false)
+
+    //     }
+    // }
 
     useEffect(() => {
-        const indexOfThisComplaint = paramsList.findIndex((complaint) => {
-            return complaint.id == id
+        const indexOfThisAgent = paramsList.findIndex((agent) => {
+            return agent.id == id
         })
         const tempTimelines = []
         //TODO: do timeline algorithms and stuff
@@ -113,9 +113,9 @@ export default function ComplaintDetails() {
         // },
         // )
         // setTimeline(tempTimelines)
-        setData(paramsList[indexOfThisComplaint])
+        setData(paramsList[indexOfThisAgent])
     }, [])
- 
+
     return (
 
         <>
@@ -130,24 +130,24 @@ export default function ComplaintDetails() {
 
                                 <div>
                                     <div className="flex gap-x-4 items-center">
-                                        <h1 className="text-2xl font-bold text-gray-900">{data.title}</h1>
-                                        <AlBadge status={data.status} statusText={data.status} />
+                                    <h1 className="text-2xl font-bold text-gray-900">{data.firstName} {data.lastName}</h1>
+                                        {/* <AlBadge status={data.status} statusText={data.status} /> */}
                                     </div>
                                     <p className="text-sm font-medium text-gray-500">
-                                        Complaint made on   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
+                                        Agent created  on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
                                     </p>
-                                   
+
                                 </div>
                             </div>
                             <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
-
+                                {/* 
                                 <button
                                     type="button"
                                     onClick={handleUpdate}
                                     className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3  font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                                 >
                                     Update
-                                </button>
+                                </button> */}
                             </div>
 
                         </div>
@@ -155,44 +155,56 @@ export default function ComplaintDetails() {
 
 
                         {/* <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3"> */}
-                            {/* <div className="space-y-6 lg:col-span-2 lg:col-start-1"> */}
-                                {/* Description list*/}
-                                <section aria-labelledby="applicant-information-title">
-                                <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-4">
-      <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Complaint Details</h3>
-        {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
-      </div>
-      <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
-        <dl className="sm:divide-y sm:divide-gray-200">
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">User</dt>
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{data.createdBy}</dd>
-          </div>
-        
-          
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">Topic</dt>
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-             {data.topic}
-            </dd>
-          </div>
-          <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">Complaint</dt>
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-             {data.complaint}
-            </dd>
-          </div>
-       
-        </dl>
-      </div>
-    </div>
-                                </section>
+                        {/* <div className="space-y-6 lg:col-span-2 lg:col-start-1"> */}
+                        {/* Description list*/}
+                        <section aria-labelledby="applicant-information-title">
+                            <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-4">
+                                <div className="px-4 py-5 sm:px-6">
+                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Agent Details</h3>
+                                    {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                </div>
+                                <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+                                    <dl className="sm:divide-y sm:divide-gray-200">
+                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Email Address</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{data.email}</dd>
+                                        </div>
 
-                                {/* Comments*/}
 
-                            {/* </div> */}
-{/* 
+                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                                {data.phone}
+                                            </dd>
+                                        </div>
+                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Role</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                                {data.role}
+                                            </dd>
+                                        </div>
+                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Sex</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                                {data.sex}
+                                            </dd>
+                                        </div>
+                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Reference Code</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                                {data.refCode}
+                                            </dd>
+                                        </div>
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Comments*/}
+
+                        {/* </div> */}
+                        {/* 
                             <section aria-labelledby="timeline-title" className="lg:col-span-1 lg:col-start-3">
                                 <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                                     <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
@@ -200,7 +212,7 @@ export default function ComplaintDetails() {
                                     </h2>
 
                                     {/* Activity Feed */}
-                                    {/* <div className="mt-6 flow-root">
+                        {/* <div className="mt-6 flow-root">
                                         <ul role="list" className="-mb-8">
                                             {timeline.map((item, itemIdx) => (
                                                 <li key={item.id}>
@@ -241,7 +253,7 @@ export default function ComplaintDetails() {
                                             ))}
                                         </ul>
                                     </div> */}
-                                    {/* <div className="justify-stretch mt-6 flex flex-col">
+                        {/* <div className="justify-stretch mt-6 flex flex-col">
                                     <button
                                         type="button"
                                         className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -249,14 +261,14 @@ export default function ComplaintDetails() {
                                         Advance to offer
                                     </button>
                                 </div> */}
-                                
-                                {/* </div> */}
-                            {/* </section> */} 
+
+                        {/* </div> */}
+                        {/* </section> */}
                         {/* </div> */}
 
-                     
+
                     </main>}
-                    <UpdateComplaintPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
+                    {/* <UpdateComplaintPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} /> */}
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
                 {updateSuccess && <SuccessNotification message={updateSuccess} />}

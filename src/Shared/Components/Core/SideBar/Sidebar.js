@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SideBarAction from './SideBarAction'
-import { BellIcon, PlusIcon, EllipsisHorizontalIcon, HomeIcon, ExclamationCircleIcon, TruckIcon, CubeIcon, FlagIcon, UserIcon, CalculatorIcon, WalletIcon, DocumentDuplicateIcon, ListBulletIcon, CalendarDaysIcon, ShoppingCartIcon, ChartBarSquareIcon, CogIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/outline'
+import { BellIcon, PlusIcon, EllipsisHorizontalIcon, HomeIcon, ExclamationCircleIcon, TruckIcon, CubeIcon, FlagIcon, UserIcon, CalculatorIcon, WalletIcon, DocumentDuplicateIcon, ListBulletIcon, CalendarDaysIcon, ShoppingCartIcon, ChartBarSquareIcon, CogIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, ChatBubbleLeftEllipsisIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 import SSIconButton from '../../AlIconButton'
 import { AVATAR_IMG_URL } from '../../../Constants/mock'
 import { useDispatch } from 'react-redux'
@@ -14,7 +14,7 @@ function Sidebar() {
     console.log(tempAdminDetails)
     setAdminDetails(tempAdminDetails)
   }, [])
-  const handleLogout  = () => {
+  const handleLogout = () => {
     localStorage.clear()
     window.location.href = '/login'
     dispatch(doLogout())
@@ -54,19 +54,11 @@ function Sidebar() {
         <SideBarAction Icon={ChatBubbleLeftEllipsisIcon} isAlert={false} to="/app/complaints" text="Complaints" />
 
 
-        <SideBarAction Icon={WalletIcon} isAlert={false} to="/app/screen" text="Transactions"
-          children={[
-            { title: 'Invoices', to: '/app/screen' },
-            { title: 'New Invoice', to: '/app/screen' },
-            { title: 'Recurring Invoices', to: '/app/screen' },
-            { title: 'New Recurring Invoice', to: '/app/screen' },
-            { title: 'Credit Notes', to: '/app/screen' },
-            { title: 'New Credit Note', to: '/app/screen' },
-            { title: 'Quotes', to: '/app/screen' },
-            { title: 'Create New Quote', to: '/app/screen' },
-            { title: 'Payment', to: '/app/screen' },
-          ]}
+        <SideBarAction Icon={WalletIcon} isAlert={false} to="/app/payouts" text="Payouts"
+
         />
+                <SideBarAction Icon={UserGroupIcon} isAlert={false} to="/app/agents" text="Agents" />
+
         <SideBarAction Icon={DocumentDuplicateIcon} isAlert={false} to="/app/screen" text="Documents" />
 
         <SideBarAction Icon={ChartBarSquareIcon} isAlert={false} to="/app/screen" text="Reports"
@@ -113,22 +105,22 @@ function Sidebar() {
       {/* Bottom section */}
       <div className='flex flex-col'>
 
-<hr className='mt-3' />
-<div className='px-2.5 py-3 flex    justify-between items-center'>
-  <div className='flex items-center gap-2 mr-3'>
-    <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-      <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    </span>      <div>
-      <h1 className='text font-medium text-black'>{adminDetails.firstName} {adminDetails.lastName}</h1>
-      <h3 className='text-sm text-[#75808c]'>{adminDetails.email}</h3>
-    </div>
-  </div>
-  <SSIconButton Icon={EllipsisHorizontalIcon} colorClass="text-gray-900"/>
-  
-</div>
-</div>
+        <hr className='mt-3' />
+        <div className='px-2.5 py-3 flex    justify-between items-center'>
+          <div className='flex items-center gap-2 mr-3'>
+            <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
+              <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </span>      <div>
+              <h1 className='text font-medium text-black'>{adminDetails.firstName} {adminDetails.lastName}</h1>
+              <h3 className='text-sm text-[#75808c]'>{adminDetails.email}</h3>
+            </div>
+          </div>
+          <SSIconButton Icon={EllipsisHorizontalIcon} colorClass="text-gray-900" />
+
+        </div>
+      </div>
       <button
         type="button"
         onClick={handleLogout}
@@ -137,7 +129,7 @@ function Sidebar() {
         <ArrowLeftOnRectangleIcon className="-ml-0.5 mr-2 h-5 w-5   " aria-hidden="true" />
         Logout
       </button>
-    
+
     </div>
   )
 }

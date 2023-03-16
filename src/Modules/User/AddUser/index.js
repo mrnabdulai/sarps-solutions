@@ -130,7 +130,9 @@ export default function AddUser() {
         const currentJob = e.target.currentJob.value
         const skills = e.target.skills.value
         const jobType = e.target.jobType.value
-
+        
+        // Agent infor
+        const agentCode = e.target.agentCode.value
 
         if (Object.keys(errors).length > 0) {
             e.target[Object.keys(errors)[0]].focus()
@@ -204,6 +206,7 @@ export default function AddUser() {
             current_job: currentJob,
             skills: skills,
             job_type: jobType,
+            agent_code:agentCode
             // reg_status: "pending",
             // payment_status: "not_paid",
             // payment_method: "null",
@@ -1791,9 +1794,7 @@ export default function AddUser() {
 
                                                 </div>
                                             </div>
-                                            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                                <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit</button>
-                                            </div>
+                                         
                                         </div>
 
                                     </div>
@@ -1801,7 +1802,62 @@ export default function AddUser() {
                                 </div>
                             </div>
                         </div >
+                        <div SectionSeparator />
+                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900"></h3>
+                                        <p className="mt-1 text-sm text-gray-600"></p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div action="#" method="POST">
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                                <div className="grid grid-cols-6 gap-6">
+
+                                                    <AddUserInput label="Agent Code" name="agentCode" 
+                                                    required={false}
+                                                        // onChange={
+                                                        //     (e) => {
+                                                        //         const errorMessage = getSurnameValidator(e.target.value)
+                                                        //         console.log(errorMessage)
+                                                        //         if (!errorMessage) {
+                                                        //             let tempErrors = { ...errors }
+                                                        //             delete tempErrors.currentJob
+                                                        //             setErrors(tempErrors)
+                                                        //             console.log(errors)
+                                                        //         }
+                                                        //         else {
+                                                        //             setErrors(
+                                                        //                 { ...errors, currentJob: errorMessage }
+                                                        //             )
+                                                        //         }
+                                                        //     }
+                                                        // }
+                                                    />
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                                                <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div >
                     </div >
+
+
+                    
                 </div>
 
             </form >
