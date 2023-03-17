@@ -27,10 +27,13 @@ import PayoutDetails from './Modules/Payouts/PayoutDetails';
 import Agents from './Modules/Agents';
 import AddAgent from './Modules/Agents/AddAgent';
 import AgentDetails from './Modules/Agents/AgentDetails';
+import AgentsRoot from './Modules/Agents/AgentsDashboard';
+import AgentsDashboard from './Modules/Agents/AgentsDashboard/AgentsDashboard';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
   const userAuth = sessionStorage.getItem("user")
+  const agentAuth = sessionStorage.getItem("agent")
   const dispatch = useDispatch()
   // const verifyToken = async () => {
   //   try {
@@ -39,7 +42,7 @@ function App() {
   //     {
   //       dispatch(doLogout())
   //       localStorage.clear()
-      
+
   //     }
   //   } catch (err) {
   //       console.log(err)
@@ -58,16 +61,16 @@ function App() {
         {/* <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} /> */}
         <Route path="/login" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
         {/* user routes  */}
-        <Route path="/user/*" element={userAuth ?  <UserRoot /> : <Navigate to="/user/login" replace/>} >
-          <Route path="profile" element={<UserProfile  />} />
-          <Route path="dashboard" element={<UserApplicationsList  />} />
-          <Route path="complaints" element={<UserComplaints  />} />
-          <Route path="applications/:id" element={<UserApplicationDetails  />} />
-        
+        <Route path="/user/*" element={userAuth ? <UserRoot /> : <Navigate to="/user/login" replace />} >
+          <Route path="profile" element={<UserProfile />} />
+          <Route path="dashboard" element={<UserApplicationsList />} />
+          <Route path="complaints" element={<UserComplaints />} />
+          <Route path="applications/:id" element={<UserApplicationDetails />} />
+
         </Route>
-          <Route path="/user/add" element={<AddUser />} />
-          <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" /> : <UserAuth /> } />
-          <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth}/>} />
+        <Route path="/user/add" element={<AddUser />} />
+        <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" />  : agentAuth ? <Navigate to="/agent/dashboard" />  :  <UserAuth />} />
+        <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth} />} />
         <Route path='/app/*' element={isAuth ? <AppLayouts /> : <Navigate to="/login" replace />}>
           <Route path='dashboard' element={<Dashboard />} />
           {/* Application routes */}
@@ -82,15 +85,18 @@ function App() {
 
 
           {/* Payouts routes */}
-         <Route path='payouts' element={<Payouts />} />
-         <Route path='payouts/add' element={<AddPayout />} />
-         <Route path='payouts/:id' element={<PayoutDetails />} />
+          <Route path='payouts' element={<Payouts />} />
+          <Route path='payouts/add' element={<AddPayout />} />
+          <Route path='payouts/:id' element={<PayoutDetails />} />
 
-         {/* Agents */}
-         <Route path='agents' element={<Agents />} />
-         <Route path='agents/add' element={<AddAgent />} />
-         <Route path='agents/:id' element={<AgentDetails />} />
+          {/* Agents */}
+          <Route path='agents' element={<Agents />} />
+          <Route path='agents/add' element={<AddAgent />} />
+          <Route path='agents/:id' element={<AgentDetails />} />
 
+        </Route>
+        <Route path='/agent/*' element={agentAuth ? <AgentsRoot /> : <Navigate to="/user/login" />}  >
+          <Route path='dashboard' element={<AgentsDashboard />} />
         </Route>
       </Routes>
     </Router>

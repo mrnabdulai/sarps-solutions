@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import AlLoadingOverlay from "../../../Shared/Components/AlLoadingOverlay"
 import ErrorNotification from "../../../Shared/Components/ErrorNotification"
 import Axios from "../../../Shared/utils/axios_instance"
 import { emailValidator, passwordValidator } from "../../../Shared/utils/validators"
+import { doSetAgent } from "../../Agents/AgentsDashboard/duck/actions"
 
 /*
   This example requires some changes to your config:
@@ -23,6 +25,7 @@ export default function UserAuth() {
   const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState("")
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -32,11 +35,17 @@ export default function UserAuth() {
       const email = e.target.email.value
       const password = e.target.password.value
       setIsSubmitting(true)
+      let url;
       //Call routes
       try {
         setSubmitError("")
-  
-        const response = await Axios.post("/api/application/login", {
+        if (e.target.isAgent.checked == true ){
+          url = "/api/user/loginUser"
+        }
+        else{
+          url ="/api/application/login"
+        }
+        const response = await Axios.post(url, {
           email,
           password
         }, {
@@ -46,12 +55,18 @@ export default function UserAuth() {
         });
         localStorage.clear()
         sessionStorage.setItem("token", response.data.token)
-        sessionStorage.setItem("user", JSON.stringify(response.data.user))
-        // dispatch({ type: ActionTypes.LOGGED_IN, payload: response.data.token })
-        window.location.replace("/user/dashboard")
+        if(e.target.isAgent.checked == true ){
+          sessionStorage.setItem("agent", JSON.stringify(response.data.user))
+          dispatch(doSetAgent(response.data.user))
+          window.location.replace("/user/dashboard")
+        }
+        else{
+          sessionStorage.setItem("user", JSON.stringify(response.data.user))
+        window.location.replace("/agent/dashboard")
+        }
       }
       catch (err) {
-       
+       console.log(err)
         if(err.response) setSubmitError(err.response.data.error)
         setSubmitError("Something went wrong")
   
@@ -157,13 +172,13 @@ export default function UserAuth() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
                             <input
-                              id="remember-me"
-                              name="remember-me"
+                              id="isAgent"
+                              name="isAgent"
                               type="checkbox"
                               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                             />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                              Remember me
+                              Agent
                             </label>
                           </div>
                           <div className="text-sm">

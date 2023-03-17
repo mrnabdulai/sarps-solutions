@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+  const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
@@ -12,6 +13,9 @@ module.exports = {
       //   heading: ["Josefin Sans"],
       //   mainBody: ["Sofia"]
       // },
+        colors: {
+          cyan: colors.cyan,
+        },
       spacing: {
         '96': '24rem',
         '128': '32rem',
