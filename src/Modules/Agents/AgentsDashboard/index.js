@@ -47,7 +47,7 @@ import {
     MagnifyingGlassIcon,
 } from '@heroicons/react/20/solid'
 import { Outlet } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { doSetAgent } from './duck/actions'
 
 const navigation = [
@@ -97,6 +97,8 @@ export default function AgentsRoot() {
         const agentDetails  = JSON.parse(sessionStorage.getItem('agent'))
         dispatch(doSetAgent(agentDetails))
     }, [])
+    const {agent} = useSelector(state => state.agentReducer)
+
     return (
         <>
             {/*
@@ -285,13 +287,13 @@ export default function AgentsRoot() {
                                 <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
-                                            <img
-                                                className="h-8 w-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                alt=""
-                                            />
+                                        <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
+        <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      </span>
                                             <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
-                                                <span className="sr-only">Open user menu for </span>Emilia Birch
+                                                <span className="sr-only">Open user menu for </span>{agent?.firstName + " " + agent?.lastName }
                                             </span>
                                             <ChevronDownIcon
                                                 className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
