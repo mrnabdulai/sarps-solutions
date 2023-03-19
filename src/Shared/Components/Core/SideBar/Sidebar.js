@@ -59,7 +59,7 @@ function Sidebar() {
         />
                 <SideBarAction Icon={UserGroupIcon} isAlert={false} to="/app/agents" text="Agents" />
 
-        <SideBarAction Icon={DocumentDuplicateIcon} isAlert={false} to="/app/screen" text="Documents" />
+        {/* <SideBarAction Icon={DocumentDuplicateIcon} isAlert={false} to="/app/screen" text="Documents" />
 
         <SideBarAction Icon={ChartBarSquareIcon} isAlert={false} to="/app/screen" text="Reports"
           children={[
@@ -96,7 +96,7 @@ function Sidebar() {
             { title: 'About', to: '/app/screen' },
           ]}
         />
-
+ */}
 
       </div>
 
