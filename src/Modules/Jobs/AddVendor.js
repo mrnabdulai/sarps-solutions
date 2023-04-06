@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AlLoadingOverlay from "../../Shared/Components/AlLoadingOverlay";
 import ErrorNotification from "../../Shared/Components/ErrorNotification";
 import Axios from "../../Shared/utils/axios_instance";
+import { nationalities } from "../../Shared/utils/countries";
 
 /*
   This example requires some changes to your config:
@@ -19,7 +20,7 @@ import Axios from "../../Shared/utils/axios_instance";
   }
   ```
 */
-export default function AddAgent() {
+export default function AddVendor() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
@@ -29,33 +30,38 @@ export default function AddAgent() {
         setSubmitError("");
         setIsSubmitting(true);
         e.preventDefault()
-        const firstName = e.target.firstName.value;
-        const lastName = e.target.lastName.value;
-        const email = e.target.email.value;
-        const phone = e.target.phone.value;
-        const password = e.target.password.value;   
+        const name = e.target.name.value;
+        const country = e.target.country.value;
+        const address = e.target.address.value;
+        const contact = e.target.contact.value;
+        const jobName = e.target.jobName.value;
+        const jobType = e.target.jobType.value;
+        const numberOfWorkers = e.target.numberOfWorkers.value;
         // const role = e.target.role.value;   
-        const sex = e.target.sex.value;   
+        
 
 
         // const currentAdmin = JSON.parse(localStorage.getItem("admin"));
         // const createdBy = currentAdmin.id;
         const data = {
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
-            role:"agent",
-            sex
+            name,
+            country: nationalities[country],
+            address,
+            contact,
+           job_name: jobName,
+           type_of_job : jobType,
+          number_of_workers:   numberOfWorkers,
+
+
 
         }
+     
         try {
-            const response = await Axios.post("/api/user/addUser", data);
+            const response = await Axios.post("api/vendor/addVendor", data);
             console.log(response);
             setIsSubmitting(false);
 
-            navigate("/app/agents")
+            navigate("/app/jobs")
         }
         catch (err) {
             console.log(err);
@@ -66,24 +72,24 @@ export default function AddAgent() {
 
     }
     return (
-        <AlLoadingOverlay show={isSubmitting} text="Adding payout">
+        <AlLoadingOverlay show={isSubmitting} text="Adding vendor">
             <form onSubmit={handleSubmit} className="space-y-8 divide-y divide-gray-200 mb-5">
-                
+
                 <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
                     <div>
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">Agent Details</h3>
-                        <p className="mt-1 max-w-2xl text-sm text-gray-500">Enter agents personal details and login credentials</p>
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">Vendor Details</h3>
+                        <p className="mt-1 max-w-2xl text-sm text-gray-500">Enter vendor details and job details</p>
                     </div>
                     <div className="space-y-6 sm:space-y-5">
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                First name
+                            <label htmlFor="fname" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                                Nname
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <input
                                     type="text"
-                                    name="firstName"
-                                    id="first-name"
+                                    name="name"
+                                    id="name"
                                     autoComplete="given-name"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 />
@@ -91,43 +97,51 @@ export default function AddAgent() {
                         </div>
 
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Last name
+                            <label htmlFor="country" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                                Country
+                            </label>
+                            <div className="mt-1 sm:col-span-2 sm:mt-0">
+                                <select
+                                    id="country"
+                                    name="country"
+                                    autoComplete=""
+                                    value={70}
+                                    required
+                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                >
+                                    {
+                                        nationalities.map((nationality, index) => (
+                                            <option key={index} value={index}>{nationality}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label htmlFor="address" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                               Address
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <input
+                                    id="address"
+                                    name="address"
                                     type="text"
-                                    name="lastName"
-                                    id="last-name"
-                                    autoComplete="family-name"
-                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
                         </div>
 
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Email address
-                            </label>
-                            <div className="mt-1 sm:col-span-2 sm:mt-0">
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                            </div>
-                        </div>
-                         
-                        <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Phone
+                                Contact
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <input
                                     type="text"
-                                    name="phone"
-                                    id="phone"
+                                    name="contact"
+                                    id="contact"
                                     autoComplete="address-level2"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 />
@@ -135,13 +149,13 @@ export default function AddAgent() {
                         </div>
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Password
+                                Job Name
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
+                                    type="text"
+                                    name="jobName"
+                                    id="jobName"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 />
                             </div>
@@ -164,23 +178,36 @@ export default function AddAgent() {
                         </div> */}
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                             <label htmlFor="sex" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Sex
+                                Type of Job
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <select
-                                    id="sex"
-                                    name="sex"
+                                    id="jobType"
+                                    name="jobType"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 >
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="skilled">Skilled</option>
+                                    <option value="unskilled">Unskilled</option>
                                 </select>
                             </div>
                         </div>
 
-                      
+                        <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label htmlFor="numberOfWorkers" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                                No. Of Workers
+                            </label>
+                            <div className="mt-1 sm:col-span-2 sm:mt-0">
+                                <input
+                                    type="number"
+                                    name="numberOfWorkers"
+                                    id="numberOfWorkers"
+                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                />
+                            </div>
+                        </div>
 
-                  
+
+
                     </div>
                 </div>
 

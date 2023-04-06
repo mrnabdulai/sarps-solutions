@@ -1,4 +1,4 @@
-import { BuildingOffice2Icon, UsersIcon, CheckCircleIcon, ExclamationCircleIcon,  XCircleIcon } from '@heroicons/react/24/outline'
+import { BuildingOffice2Icon, UsersIcon, CheckCircleIcon, ExclamationCircleIcon,  XCircleIcon, AcademicCapIcon, BriefcaseIcon, UserMinusIcon } from '@heroicons/react/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -43,6 +43,10 @@ function Dashboard() {
       {title: 'Total Completed Applications', value: totalCompletedApplicationsResponse.data, icon:CheckCircleIcon, color: 'bg-green-500'}, 
       {title: 'Total Pending Applications', value: totalPendingApplicationsResponse.data, icon:ExclamationCircleIcon, color: 'bg-yellow-400'}, 
       {title: 'Total Rejected Applications', value: totalRejectedApplicationsResponse.data, icon:XCircleIcon, color: 'bg-red-500'}, 
+      //TODO: Fetch from applications response
+      {title: 'Total Student Applications', value: 0, icon:AcademicCapIcon, color: 'bg-indigo-500'}, 
+      {title: 'Total Workers Applications', value: 0, icon:BriefcaseIcon, color: 'bg-cyan-500'}, 
+      {title: 'Total Applications Withdrawn', value: 0, icon:UserMinusIcon, color: 'bg-red-500'}, 
     ]
       tempDashboardStats.applicationStats = applicationStats
       tempDashboardStats.summaryStats = summaryStats
@@ -66,7 +70,7 @@ function Dashboard() {
   return (
     <div>
     { Object.keys(dashboardData).length > 0 && <div className='flex gap-x-8'>
-          <div className='bg-white pl-5 pr-8 py-2 rounded-md' style={{
+          <div className='bg-white pl-5 pr-8 py-2 rounded-md '  style={{
             flex: 1,
           }}>
             <h6 className='font-semibold text-lg mb-3 text-'>Summary</h6>

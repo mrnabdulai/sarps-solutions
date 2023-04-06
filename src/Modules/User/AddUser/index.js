@@ -130,7 +130,7 @@ export default function AddUser() {
         const currentJob = e.target.currentJob.value
         const skills = e.target.skills.value
         const jobType = e.target.jobType.value
-        
+
         // Agent infor
         const agentCode = e.target.agentCode.value
 
@@ -181,13 +181,13 @@ export default function AddUser() {
             fContact: fatherContact,
             mSurname: motherSurname,
             mOtherName: motherOtherNames,
-            mNationality: motherNationality,
+            mNationality: nationalities[motherNationality],
             mHometown: motherHometown,
             mOccupation: motherOccupation,
             mContact: motherContact,
             emergency_surname: emergencyContactSurname,
             emergency_otherName: emergencyContactOtherNames,
-            emergency_nationality: emergencyContactNationality,
+            emergency_nationality: nationalities[emergencyContactNationality],
             emergency_hometown: emergencyContactHometown,
             emegency_occupation: emergencyContactOccupation,
             emergency_contact: emergencyContactContact,
@@ -206,7 +206,7 @@ export default function AddUser() {
             current_job: currentJob,
             skills: skills,
             job_type: jobType,
-            agent_code:agentCode
+            agent_code: agentCode
             // reg_status: "pending",
             // payment_status: "not_paid",
             // payment_method: "null",
@@ -236,9 +236,9 @@ export default function AddUser() {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
-                 setSubmitError("Something went wrong")
+                setSubmitError("Something went wrong")
                 console.log(err.request);
-              }
+            }
             else setSubmitError("Something went wrong")
             setIsSubmitting(false)
 
@@ -725,7 +725,7 @@ export default function AddUser() {
                                                                 }
                                                             }
                                                         />
-                                                        <AddUserInput label="Eye Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} error={errors.eyeColour} name="eyeColour"
+                                                        <AddUserInput label="Eye Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-1"} error={errors.eyeColour} name="eyeColour"
                                                             onChange={
                                                                 (e) => {
                                                                     const errorMessage = genericRequired(e.target.value)
@@ -744,6 +744,25 @@ export default function AddUser() {
                                                                 }
                                                             }
                                                         />
+                                                        <div className="col-span-6 sm:col-span-4">
+                                                            <label class="block text-sm font-medium text-gray-700">Passport photo</label>
+                                                            <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                                                                <div class="space-y-1 text-center">
+                                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    </svg>
+                                                                    <div class="flex text-sm text-gray-600">
+                                                                        <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                                            <span>Upload a file</span>
+                                                                            <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                                                                        </label>
+                                                                        <p class="pl-1">or drag and drop</p>
+                                                                    </div>
+                                                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1794,7 +1813,7 @@ export default function AddUser() {
 
                                                 </div>
                                             </div>
-                                         
+
                                         </div>
 
                                     </div>
@@ -1817,25 +1836,25 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
 
-                                                    <AddUserInput label="Agent Code" name="agentCode" 
-                                                    required={false}
-                                                        // onChange={
-                                                        //     (e) => {
-                                                        //         const errorMessage = getSurnameValidator(e.target.value)
-                                                        //         console.log(errorMessage)
-                                                        //         if (!errorMessage) {
-                                                        //             let tempErrors = { ...errors }
-                                                        //             delete tempErrors.currentJob
-                                                        //             setErrors(tempErrors)
-                                                        //             console.log(errors)
-                                                        //         }
-                                                        //         else {
-                                                        //             setErrors(
-                                                        //                 { ...errors, currentJob: errorMessage }
-                                                        //             )
-                                                        //         }
-                                                        //     }
-                                                        // }
+                                                    <AddUserInput label="Agent Code" name="agentCode"
+                                                        required={false}
+                                                    // onChange={
+                                                    //     (e) => {
+                                                    //         const errorMessage = getSurnameValidator(e.target.value)
+                                                    //         console.log(errorMessage)
+                                                    //         if (!errorMessage) {
+                                                    //             let tempErrors = { ...errors }
+                                                    //             delete tempErrors.currentJob
+                                                    //             setErrors(tempErrors)
+                                                    //             console.log(errors)
+                                                    //         }
+                                                    //         else {
+                                                    //             setErrors(
+                                                    //                 { ...errors, currentJob: errorMessage }
+                                                    //             )
+                                                    //         }
+                                                    //     }
+                                                    // }
                                                     />
 
 
@@ -1857,7 +1876,7 @@ export default function AddUser() {
                     </div >
 
 
-                    
+
                 </div>
 
             </form >

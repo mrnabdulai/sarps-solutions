@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SideBarAction from './SideBarAction'
-import { BellIcon, PlusIcon, EllipsisHorizontalIcon, HomeIcon, ExclamationCircleIcon, TruckIcon, CubeIcon, FlagIcon, UserIcon, CalculatorIcon, WalletIcon, DocumentDuplicateIcon, ListBulletIcon, CalendarDaysIcon, ShoppingCartIcon, ChartBarSquareIcon, CogIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, ChatBubbleLeftEllipsisIcon, UserGroupIcon } from '@heroicons/react/24/outline'
+import { BellIcon, PlusIcon, EllipsisHorizontalIcon, HomeIcon, ExclamationCircleIcon, TruckIcon, CubeIcon, FlagIcon, UserIcon, CalculatorIcon, WalletIcon, DocumentDuplicateIcon, ListBulletIcon, CalendarDaysIcon, ShoppingCartIcon, ChartBarSquareIcon, CogIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, ChatBubbleLeftEllipsisIcon, UserGroupIcon, UserPlusIcon, BriefcaseIcon } from '@heroicons/react/24/outline'
 import SSIconButton from '../../AlIconButton'
 import { AVATAR_IMG_URL } from '../../../Constants/mock'
 import { useDispatch } from 'react-redux'
@@ -57,7 +57,27 @@ function Sidebar() {
         <SideBarAction Icon={WalletIcon} isAlert={false} to="/app/payouts" text="Payouts"
 
         />
-                <SideBarAction Icon={UserGroupIcon} isAlert={false} to="/app/agents" text="Agents" />
+        <SideBarAction Icon={BriefcaseIcon} isAlert={false} to="/app/jobs" text="Jobs"
+
+        />
+        <SideBarAction Icon={UserGroupIcon} isAlert={false} to="/app/agents" text="Agents" />
+        <SideBarAction Icon={UserPlusIcon} isAlert={false} to="/app/staff" text="Staff" />
+        <SideBarAction Icon={Cog8ToothIcon} isAlert={false} to="/app/general" text="General"
+
+          children={[
+            { title: 'Tickets', to: '/app/general/tickets' },
+            { title: 'Events', to: '/app/general/events' },
+          ]}
+        />
+        <SideBarAction Icon={CalculatorIcon} isAlert={false} to="/app/accounts" text="Accounts"
+          children={[
+            { title: 'Income and Expenditure', to: '/app/accounts/income-and-expenditure' },
+            { title: 'Account Payable', to: '/app/accounts/account-payable' },
+            { title: 'Account Receivables', to: '/app/accounts/account-receivable' },
+            { title: 'Petty Cash', to: '/app/account/petty-cash' },
+
+          ]}
+        />
 
         {/* <SideBarAction Icon={DocumentDuplicateIcon} isAlert={false} to="/app/screen" text="Documents" />
 

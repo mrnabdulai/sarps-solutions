@@ -19,7 +19,7 @@ import Axios from "../../Shared/utils/axios_instance";
   }
   ```
 */
-export default function AddAgent() {
+export default function AddStaff() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
@@ -46,7 +46,7 @@ export default function AddAgent() {
             email,
             phone,
             password,
-            role:"agent",
+            role:"staff",
             sex
 
         }
@@ -55,7 +55,7 @@ export default function AddAgent() {
             console.log(response);
             setIsSubmitting(false);
 
-            navigate("/app/agents")
+            navigate("/app/staff")
         }
         catch (err) {
             console.log(err);
@@ -66,13 +66,13 @@ export default function AddAgent() {
 
     }
     return (
-        <AlLoadingOverlay show={isSubmitting} text="Adding payout">
+        <AlLoadingOverlay show={isSubmitting} text="Adding staff">
             <form onSubmit={handleSubmit} className="space-y-8 divide-y divide-gray-200 mb-5">
                 
                 <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
                     <div>
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">Agent Details</h3>
-                        <p className="mt-1 max-w-2xl text-sm text-gray-500">Enter agents personal details and login credentials</p>
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">Staff Member Details</h3>
+                        <p className="mt-1 max-w-2xl text-sm text-gray-500">Enter staff member personal details and login credentials</p>
                     </div>
                     <div className="space-y-6 sm:space-y-5">
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">

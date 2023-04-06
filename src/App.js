@@ -29,6 +29,24 @@ import AddAgent from './Modules/Agents/AddAgent';
 import AgentDetails from './Modules/Agents/AgentDetails';
 import AgentsRoot from './Modules/Agents/AgentsDashboard';
 import AgentsDashboard from './Modules/Agents/AgentsDashboard/AgentsDashboard';
+import Staff from './Modules/Staff';
+import AddStaff from './Modules/Staff/AddStaff';
+import Jobs from './Modules/Jobs';
+import AddVendor from './Modules/Jobs/AddVendor';
+import VendorDetails from './Modules/Jobs/VendorDeatails';
+import Tickets from './Modules/Tickets';
+import AddTicket from './Modules/Tickets/AddTicket';
+import TicketDetails from './Modules/Tickets/TicketDetails';
+import Events from './Modules/Events';
+import Expenditure from './Modules/Expenditure';
+import AddExpenditure from './Modules/Expenditure/AddExpenditure';
+import ExpenditureDetails from './Modules/Expenditure/ExpenditureDetails';
+import AccountPayable from './Modules/AccountsPayable';
+import AddAccountPayable from './Modules/AccountsPayable/AddAccountPayable';
+import AccountPayableDetails from './Modules/AccountsPayable/AccountPayableDetails';
+import AccountReceivable from './Modules/AccountsReceivable';
+import AddAccountReceivable from './Modules/AccountsReceivable/AddAccountReceivable';
+import AccountReceivableDetails from './Modules/AccountsReceivable/AccountReceivableDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -66,10 +84,9 @@ function App() {
           <Route path="dashboard" element={<UserApplicationsList />} />
           <Route path="complaints" element={<UserComplaints />} />
           <Route path="applications/:id" element={<UserApplicationDetails />} />
-
         </Route>
         <Route path="/user/add" element={<AddUser />} />
-        <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" />  : agentAuth ? <Navigate to="/agent/dashboard" />  :  <UserAuth />} />
+        <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" /> : agentAuth ? <Navigate to="/agent/dashboard" /> : <UserAuth />} />
         <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth} />} />
         <Route path='/app/*' element={isAuth ? <AppLayouts /> : <Navigate to="/login" replace />}>
           <Route path='dashboard' element={<Dashboard />} />
@@ -89,10 +106,44 @@ function App() {
           <Route path='payouts/add' element={<AddPayout />} />
           <Route path='payouts/:id' element={<PayoutDetails />} />
 
+
+          {/* Jobs routes */}
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="vendors/add" element={<AddVendor />} />
+          <Route path="vendors/:id" element={<VendorDetails />} />
+
+
+          {/* ticket routes */}
+          <Route path="general/tickets" element={<Tickets />} />
+          <Route path="general/tickets/add" element={<AddTicket />} />
+          <Route path="general/tickets/:id" element={<TicketDetails />} />
+
+          {/* Event routes  */}
+
+          <Route path="general/events" element={<Events />} />
+
+          {/* Accounts routes */}
+          <Route path="accounts/income-and-expenditure" element={<Expenditure />} />
+          <Route path="accounts/income-and-expenditure/add" element={<AddExpenditure />} />
+          <Route path="accounts/income-and-expenditure/:id" element={<ExpenditureDetails   />} />
+          
+          <Route path="accounts/account-payable" element={<AccountPayable />} />
+          <Route path="accounts/account-payable/add" element={<AddAccountPayable />} />
+          <Route path="accounts/account-payable/:id" element={<AccountPayableDetails   />} />
+          
+          <Route path="accounts/account-receivable" element={<AccountReceivable />} />
+          <Route path="accounts/account-receivable/add" element={<AddAccountReceivable />} />
+          <Route path="accounts/account-receivable/:id" element={<AccountReceivableDetails   />} />
+          
           {/* Agents */}
           <Route path='agents' element={<Agents />} />
           <Route path='agents/add' element={<AddAgent />} />
           <Route path='agents/:id' element={<AgentDetails />} />
+
+          {/* Staff */}
+          <Route path='staff' element={<Staff />} />
+          <Route path='staff/add' element={<AddStaff />} />
+          <Route path='staff/:id' element={<AgentDetails />} />
 
         </Route>
         <Route path='/agent/*' element={agentAuth ? <AgentsRoot /> : <Navigate to="/user/login" />}  >
