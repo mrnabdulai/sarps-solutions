@@ -38,7 +38,7 @@ function Expenditure() {
             setData(response.data)
             dispatch(doSetExpenditure(response.data))
             const totalExpenditureResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
-            setTotalExpenditure(totalExpenditureResponse.data)
+            setTotalExpenditure(totalExpenditureResponse.data[0].total)
             console.log(response.data)
         } catch (err) {
             console.log(err)

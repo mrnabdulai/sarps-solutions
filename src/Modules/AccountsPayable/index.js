@@ -38,8 +38,8 @@ function AccountPayable() {
             }
             setData(response.data)
             dispatch(doSetAccountsPayable(response.data))
-            const totalAccountPayableResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
-            setTotalAccountPayable(totalAccountPayableResponse.data)
+            const totalAccountPayableResponse = await Axios.get("/api/accountPayable/getTotalAccountPayable")
+            setTotalAccountPayable(totalAccountPayableResponse.data[0].total)
             console.log(response.data)
         } catch (err) {
             console.log(err)

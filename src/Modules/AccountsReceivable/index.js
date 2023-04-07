@@ -28,7 +28,7 @@ function AccountReceivable() {
         try {
             setFetching(true)
             setFetchError("")
-            const response = await Axios.get("/api/accountPayable/getAccountReceivables")
+            const response = await Axios.get("/api/accountReceivable/getAccountReceivables")
             if (response.status == 403) {
                 localStorage.clear()
                 dispatch(doLogout())
@@ -37,8 +37,8 @@ function AccountReceivable() {
             }
             setData(response.data)
             dispatch(doSetAccountsReceivable(response.data))
-            const totalAccountReceivableResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
-            setTotalAccountReceivable(totalAccountReceivableResponse.data)
+            const totalAccountReceivableResponse = await Axios.get("/api/accountReceivable/getTotalAccountReceivable")
+            setTotalAccountReceivable(totalAccountReceivableResponse.data[0].total)
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -180,8 +180,8 @@ function AccountReceivable() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((item, index) => {
-                            function mapStatusToStatus(){
-                                switch(item.status){
+                            function mapStatusToStatus() {
+                                switch (item.status) {
                                     case 'paid':
                                         return 'Approve'
                                     case 'unpaid':
