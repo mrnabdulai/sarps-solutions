@@ -105,6 +105,12 @@ export default function Events() {
                 return
             }
             setData(response.data)
+            if (currentEvents.length > 0) {
+                setCurrentEvents(response.data.filter(x =>  { 
+                    console.log(x.date === format(value, "dd-MM-yyyy"));
+                   return  x.date === format(value, "dd-MM-yyyy")}))
+
+            }
             // dispatch(doSetComplaints(response.data))
             console.log(response.data)
         } catch (err) {
@@ -156,8 +162,8 @@ export default function Events() {
             setIsSubmitting(false);
             setAddSuccess(true)
             //Reset form
-            e.target.reset()
             fetchData()
+            e.target.reset()
             // navigate("/app/jobs")
         }
         catch (err) {
@@ -183,7 +189,7 @@ export default function Events() {
             'py-2',
             'rounded-full',
             'cursor-pointer',
-            hasEvents ? isSelected ? "bg-blue-500 text-white" :  'bg-green-500 text-white' : '',
+            hasEvents ? isSelected ? "bg-blue-500 text-white" : 'bg-green-500 text-white' : '',
             isSelected ? 'bg-blue-500 text-white' : '',
             isWeekend ? 'text-red-500' : '',
             isPrevMonth ? 'text-gray-400' : '',
@@ -272,6 +278,7 @@ export default function Events() {
                         <Calendar
                             className="bg-white p-4 rounded-lg shadow-lg mb-2 text-center w-full max-w-2xl"
                             tileClassName={tileClassName}
+
                             calendarType="US"
                             prev2Label={null}
                             next2Label={null}

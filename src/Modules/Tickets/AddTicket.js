@@ -1,5 +1,5 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AlLoadingOverlay from "../../Shared/Components/AlLoadingOverlay";
 import ErrorNotification from "../../Shared/Components/ErrorNotification";
@@ -24,9 +24,21 @@ export default function AddTicket() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
+    const [staffList, setStaffList] = useState([])
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const getStaff = () => {
+        Axios.get("/api/user/getStaff")
+            .then(res => {
+                console.log(res.data)
+                setStaffList(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+        const handleSubmit = async (e) => {
         setSubmitError("");
         setIsSubmitting(true);
         e.preventDefault()
@@ -66,6 +78,9 @@ export default function AddTicket() {
         }
 
     }
+    useEffect(() => {
+        getStaff()
+    }, [])
     return (
         <AlLoadingOverlay show={isSubmitting} text="Adding ticket">
             <form onSubmit={handleSubmit} className="space-y-8 divide-y divide-gray-200 mb-5">
@@ -128,7 +143,7 @@ export default function AddTicket() {
                                     name="priority"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 >
-                                   
+
                                     <option value="low">Low</option>
                                     <option value="medium">Medium</option>
                                     <option value="high">High</option>
@@ -139,18 +154,30 @@ export default function AddTicket() {
                             <label htmlFor="assignedTo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                                 Assign to
                             </label>
-                            <div className="mt-1 sm:col-span-2 sm:mt-0">
-                                <select
-                                    id="assignedTo"
-                                    name="assignedTo"
-                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
-                                >
+                            <div className="mt-1 sm:col-span-2 sm:mt-0 after:content-none ">
+                                <div className="max-w-lg sm:max-w-xs w-full relative">
+                                    <select
+                                        id="assignedTo"
+                                        name="assignedTo"
+                                        placeholder="Select staff member"
+                                        disabled={staffList.length === 0}
+                                        className=" block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500  sm:text-sm"
+                                    >
+                                        {staffList.length > 0 && staffList.map((staff) => (
+                                            <option value={staff.id}>{staff.firstName} {staff.lastName}</option>
+                                        ))}
 
-                                    <option value="user_1">User 1 </option>
-                                    <option value="user_2">User 2</option>
-                                    <option value="user_3">User 3</option>
-                                </select>
+                                    </select>
+                                    {staffList.length === 0 &&
+                                        <svg class="absolute -right-10 top-2 animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    }
+                                </div>
+
                             </div>
+
                         </div>
 
 

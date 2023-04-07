@@ -27,7 +27,7 @@ function Tickets() {
         try {
             setFetching(true)
             setFetchError("")
-            const response = await Axios.get("/api/vendor/getVendors")
+            const response = await Axios.get("/api/ticket/getTickets")
             if (response.status == 403) {
                 localStorage.clear()
                 dispatch(doLogout())
@@ -82,7 +82,7 @@ function Tickets() {
                                 scope="col"
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                             >
-                                Subject
+                                Title
                             </th>
                             <th
                                 scope="col"
@@ -90,7 +90,7 @@ function Tickets() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Content
+                                Description
                             </th>
 
                             <th
@@ -98,7 +98,15 @@ function Tickets() {
                                 align='center'
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                            >User
+                            >Assigned To
+
+                            </th>
+                            <th
+                                scope="col"
+                                align='center'
+
+                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                            >Ticket Code
 
                             </th>
 
@@ -118,9 +126,23 @@ function Tickets() {
                             >
                                 Status
                             </th>
+                            <th
+                                scope="col"
+                                align='center'
+
+                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                            >
+                                Priority
+                            </th>
 
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Created At
+                            </th>
+                            <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                                Updated At
+                            </th>
+                            <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                                Closed At
                             </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Actions
@@ -132,44 +154,73 @@ function Tickets() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((vendor, index) => {
+                            function mapStatusToStatus(){
+                                switch(vendor.status){
+                                    case 'open':
+                                        return 'approved'
+                                    case 'closed':
+                                    return 'rejected'
+                                }
+                            }
 
+                            function mapPriorityToStatus(){
+                                switch(vendor.priority){
+                                    case 'low':
+                                        return 'rejected'
+                                    case 'medium':
+                                    return 'pending'
+                                    case 'high':
+                                    return 'approved'
+                                }
+                            }
                             return (<tr key={vendor.id}>
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                                     {vendor.id}
                                     <dl className="font-normal lg:hidden">
-                                        <dt className="sr-only">subject</dt>
-                                        <dd className="mt-1 truncate text-gray-700">{vendor.subject}</dd>
-                                        <dt className="sr-only sm:hidden">content</dt>
-                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{vendor.content}</dd>
+                                        <dt className="sr-only">title</dt>
+                                        <dd className="mt-1 truncate text-gray-700">{vendor.title}</dd>
+                                        <dt className="sr-only sm:hidden">description</dt>
+                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">{vendor.description}</dd>
                                     </dl>
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{vendor.subject}</td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{vendor.title}</td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {vendor.content}
+                                    {vendor.description}
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {vendor.user}
+                                    {vendor.assigned_to}
 
                                 </td>
-                              
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                                    {vendor.ticket_code}
+
+                                </td>
+
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {vendor.createdBy}
 
                                 </td>
-                              
+
 
                                 <td className="hidden px-3 ppy-4 text-sm text-gray-500 sm:table-cell">
-                                    <AlBadge status={vendor.status} statusText={vendor.status} />
+                                    <AlBadge status={mapStatusToStatus()} statusText={vendor.status} />
+
+
+                                </td>
+                                <td className="hidden px-3 ppy-4 text-sm text-gray-500 sm:table-cell">
+                                    <AlBadge status={mapPriorityToStatus()} statusText={vendor.priority} />
 
 
                                 </td>
 
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(vendor.createdAt), 'MM/dd/yyyy')}</td>
+                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{vendor.updatedAt != null ?  format(Date.parse(vendor.updatedAt), 'MM/dd/yyyy') : "N/A"}</td>
+                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{vendor.closed_at != null ? format(Date.parse(vendor.closed_at), 'MM/dd/yyyy') : "N/A"}</td>
                                 <td className="py-4 text-right text-sm font-medium ">
                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >
                                         <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
-                                            navigate("/app/tickets/" + vendor.id)
+                                            navigate("/app/general/tickets/" + vendor.id)
                                         }} />
                                         {/* <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" /> */}
                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
@@ -180,7 +231,7 @@ function Tickets() {
                             )
                         }
                         )) : !fetching ? (<tr>
-                            <td colspan={8} className="text-center py-4">
+                            <td colspan={12} className="text-center py-4">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto h-12 w-12 text-gray-400">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -208,6 +259,11 @@ function Tickets() {
                                 <td className="hidden px-3 py-4 text-sm h-2 bg-slate-700 rounded sm:table-cell">
                                     <div className='h-2 bg-gray-300 rounded'></div>
 
+
+                                </td>
+                                <td className="hidden px-3 py-4 text-sm h-2 bg-slate-700 rounded sm:table-cell">
+
+                                    <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm h-2 bg-slate-700 rounded sm:table-cell">

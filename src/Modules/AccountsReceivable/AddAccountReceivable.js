@@ -1,5 +1,5 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
@@ -33,20 +33,29 @@ export default function AddAccountReceivable() {
     }
     const [query, setQuery] = useState('')
     const [selectedPerson, setSelectedPerson] = useState(null)
-    const people = [
-        { id: 1, name: 'Leslie Alexander' },
-        // More users...
-    ]
 
-    const filteredPeople =
+    const [vendors, setVendors] = useState([])
+    const comboboxBtnRef = useRef(null)
+    const handleComboBOxFocus = () => comboboxBtnRef.current?.click();
+    const getVendors = () => {
+        Axios.get("/api/vendor/getVendors")
+            .then(res => {
+                console.log(res.data)
+                setVendors(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const filteredVendors =
         query === ''
-            ? people
-            : people.filter((person) => {
+            ? vendors
+            : vendors.filter((person) => {
                 return person.name.toLowerCase().includes(query.toLowerCase())
             })
     const handleSubmit = async (e) => {
         setSubmitError("");
-       
+
         setIsSubmitting(true);
         e.preventDefault()
         const title = e.target.title.value;
@@ -64,7 +73,7 @@ export default function AddAccountReceivable() {
             amount,
             createdBy,
             status,
-            vendorId: ""
+            vendorId: selectedPerson.id
             //TODO: Resolve vendorId
 
         }
@@ -84,13 +93,16 @@ export default function AddAccountReceivable() {
         }
 
     }
+    useEffect(()=>{
+        getVendors()
+    }, [])
     return (
         <AlLoadingOverlay show={isSubmitting} text="Adding account receivable">
             <form onSubmit={handleSubmit} className="space-y-8 divide-y divide-gray-200 mb-5">
 
                 <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
                     <div>
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">Create a new account payable record record</h3>
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">Create a new account receivable  record</h3>
                     </div>
                     <div className="space-y-6 sm:space-y-5">
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
@@ -170,53 +182,68 @@ export default function AddAccountReceivable() {
                                     <option value="paid">Paid</option>
                                     <option value="unpaid">Unpaid </option>
                                 </select> */}
-                                <Combobox as="div" value={selectedPerson} onChange={setSelectedPerson}>
-                                    <div className="relative mt-1 max-w-lg sm:max-w-xs">
-                                        <Combobox.Input
-                                        placeholder="Search for a vendor"
-                                            className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
-                                            onChange={(event) => setQuery(event.target.value)}
-                                            displayValue={(person) => person?.name}
-                                        />
-                                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                                            <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                        </Combobox.Button>
+                                <div className="max-w-lg sm:max-w-xs w-full relative">
 
-                                        {filteredPeople.length > 0 && (
-                                            <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                                {filteredPeople.map((person) => (
-                                                    <Combobox.Option
-                                                        key={person.id}
-                                                        value={person}
-                                                        className={({ active }) =>
-                                                            classNames(
-                                                                'relative cursor-default select-none py-2 pl-3 pr-9',
-                                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-                                                            )
-                                                        }
-                                                    >
-                                                        {({ active, selected }) => (
-                                                            <>
-                                                                <span className={classNames('block truncate', selected && 'font-semibold')}>{person.name}</span>
+                                    <Combobox disabled={vendors.length == 0} as="div" value={selectedPerson} onChange={setSelectedPerson}>
+                                   
+                                   {({ open }) => (
+                                        <div className="relative mt-1 ">
+                                            <Combobox.Input
+                                                placeholder="Search for a vendor"
+                                                onFocus={() => {
+                                                    if(!open) handleComboBOxFocus()
+                                                }}
+                                                className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                                onChange={(event) => setQuery(event.target.value)}
+                                                displayValue={(person) => person?.name}
+                                            />
+                                            <Combobox.Button ref={comboboxBtnRef} className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                                                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </Combobox.Button>
 
-                                                                {selected && (
-                                                                    <span
-                                                                        className={classNames(
-                                                                            'pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3',
-                                                                            active ? 'text-white' : 'text-indigo-600'
-                                                                        )}
-                                                                    >
-                                                                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                                    </span>
-                                                                )}
-                                                            </>
-                                                        )}
-                                                    </Combobox.Option>
-                                                ))}
-                                            </Combobox.Options>
-                                        )}
-                                    </div>
-                                </Combobox>
+                                            {filteredVendors.length > 0 && (
+                                                <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                    {filteredVendors.map((person) => (
+                                                        <Combobox.Option
+                                                            key={person.id}
+                                                            value={person}
+                                                            className={({ active }) =>
+                                                                classNames(
+                                                                    'relative cursor-default select-none py-2 pl-3 pr-9',
+                                                                    active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+                                                                )
+                                                            }
+                                                        >
+                                                            {({ active, selected }) => (
+                                                                <>
+                                                                    <span className={classNames('block truncate', selected && 'font-semibold')}>{person.name}</span>
+
+                                                                    {selected && (
+                                                                        <span
+                                                                            className={classNames(
+                                                                                'pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3',
+                                                                                active ? 'text-white' : 'text-indigo-600'
+                                                                            )}
+                                                                        >
+                                                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                                        </span>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                        </Combobox.Option>
+                                                    ))}
+                                                </Combobox.Options>
+                                            )}
+                                        </div>
+                                   )}
+                                    </Combobox>
+                                    {vendors.length === 0 &&
+                                        <svg class="absolute -right-10 top-2 animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    }
+                                </div>
                             </div>
                         </div>
 

@@ -21,6 +21,7 @@ function Expenditure() {
     const [data, setData] = useState([])
     const [fetching, setFetching] = useState(false)
     const [fetchError, setFetchError] = useState("")
+    const [totalExpenditure, setTotalExpenditure] = useState(null)
     const dispatch = useDispatch()
     const fetchData = async () => {
         setData([])
@@ -36,6 +37,8 @@ function Expenditure() {
             }
             setData(response.data)
             dispatch(doSetExpenditure(response.data))
+            const totalExpenditureResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
+            setTotalExpenditure(totalExpenditureResponse.data)
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -78,7 +81,15 @@ function Expenditure() {
                             </div>
                             <div class="pt-1 text-right">
                                 <p class="text-sm font-light capitalize">Total Expenditure</p>
-                                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC 5,644</h4>
+                                {totalExpenditure != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalExpenditure}</h4> :
+                                    (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
+                                        <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </h4>)
+
+                                }
                             </div>
                         </div>
                         {/* <hr class="opacity-50" />
@@ -88,7 +99,7 @@ function Expenditure() {
                     </div>
                 </div>
                 <AlButton text="Add Expenditure" onClick={() => {
-                    navigate('/app/accounts/income-and-expenditure')
+                    navigate('/app/accounts/income-and-expenditure/add')
                 }} />
 
             </div>
@@ -217,7 +228,7 @@ function Expenditure() {
                                 </svg>
 
 
-                                <h3 className="mt-2 text-sm font-medium text-gray-900">No Tickets created yet</h3>
+                                <h3 className="mt-2 text-sm font-medium text-gray-900">No Expenditure records created yet</h3>
                                 {/* <p className="mt-1 text-sm text-gray-500">Get started by filling a complaint.</p> */}
                                 <div className="mt-6">
 

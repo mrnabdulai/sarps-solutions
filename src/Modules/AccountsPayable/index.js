@@ -21,6 +21,8 @@ function AccountPayable() {
     const [data, setData] = useState([])
     const [fetching, setFetching] = useState(false)
     const [fetchError, setFetchError] = useState("")
+    const [totalAccountPayable, setTotalAccountPayable] = useState(null)
+
     const dispatch = useDispatch()
     const fetchData = async () => {
         setData([])
@@ -36,6 +38,8 @@ function AccountPayable() {
             }
             setData(response.data)
             dispatch(doSetAccountsPayable(response.data))
+            const totalAccountPayableResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
+            setTotalAccountPayable(totalAccountPayableResponse.data)
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -78,7 +82,15 @@ function AccountPayable() {
                             </div>
                             <div class="pt-1 text-right">
                                 <p class="text-sm font-light capitalize">Total Account Payable</p>
-                                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC 5,644</h4>
+                                {totalAccountPayable != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalAccountPayable}</h4> :
+                                    (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
+                                        <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </h4>)
+
+                                }
                             </div>
                         </div>
                         {/* <hr class="opacity-50" />
@@ -170,7 +182,14 @@ function AccountPayable() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((item, index) => {
-
+                            function mapStatusToStatus(){
+                                switch(item.status){
+                                    case 'paid':
+                                        return 'Approve'
+                                    case 'unpaid':
+                                        return 'rejected'
+                                }
+                            }
                             return (<tr key={item.id}>
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                                     {item.id}
@@ -202,7 +221,7 @@ function AccountPayable() {
 
 
                                 <td className="hidden px-3 ppy-4 text-sm text-gray-500 sm:table-cell">
-                                    <AlBadge status={item.status} statusText={item.status} />
+                                    <AlBadge status={mapStatusToStatus()} statusText={item.status} />
 
 
                                 </td>

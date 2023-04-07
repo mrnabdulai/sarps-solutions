@@ -60,7 +60,7 @@ export default function TicketDetails() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-    const paramsList = useSelector(state => state.vendorsReducer.vendors)
+    const paramsList = useSelector(state => state.ticketsReducer.tickets)
 
     console.log(paramsList)
     // const mapStatusToTimelineEvent = (status) =>{
@@ -116,6 +116,26 @@ export default function TicketDetails() {
         setData(paramsList[indexOfThisVendor])
     }, [])
 
+    function mapStatusToStatus() {
+        switch (data.status) {
+            case 'open':
+                return 'approved'
+            case 'closed':
+                return 'rejected'
+        }
+    }
+
+    function mapPriorityToStatus() {
+        switch (data.priority) {
+            case 'low':
+                return 'rejected'
+            case 'medium':
+                return 'pending'
+            case 'high':
+                return 'approved'
+        }
+    }
+
     return (
 
         <>
@@ -131,10 +151,13 @@ export default function TicketDetails() {
                                 <div>
                                     <div className="flex gap-x-4 items-center">
                                         <h1 className="text-2xl font-bold text-gray-900">#{data.id}</h1>
-                                        {/* <AlBadge status={data.status} statusText={data.status} /> */}
+                                        <AlBadge status={mapStatusToStatus()} statusText={data.status} />
                                         <p className="text-sm font-medium text-gray-500">
-                                            Vendor created on on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
+                                            Ticket  created on on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
                                         </p>
+                                        <h4>Priority:</h4>
+                                        <AlBadge status={mapPriorityToStatus()} statusText={data.priority} />
+
                                     </div>
 
 
@@ -161,47 +184,56 @@ export default function TicketDetails() {
                         <section aria-labelledby="applicant-information-title">
                             <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-4">
                                 <div className="px-4 py-5 sm:px-6">
-                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Vendor Details</h3>
+                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Ticket Details</h3>
                                     {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
                                 </div>
                                 <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
                                     <dl className="sm:divide-y sm:divide-gray-200">
                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Name</dt>
-                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{data.name}</dd>
+                                            <dt className="text-sm font-medium text-gray-500">Title</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{data.title}</dd>
                                         </div>
 
 
                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Address</dt>
+                                            <dt className="text-sm font-medium text-gray-500">Description</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                {data.address}
+                                                {data.description}
                                             </dd>
                                         </div>
                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Country</dt>
+                                            <dt className="text-sm font-medium text-gray-500">Assigned To</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                {data.country}
+                                                {data.assigned_to}
                                             </dd>
                                         </div>
                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Job Name</dt>
+                                            <dt className="text-sm font-medium text-gray-500">Ticket Code</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                {data.job_name}
+                                                {data.ticket_code}
                                             </dd>
                                         </div>
                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Number of Workers</dt>
+                                            <dt className="text-sm font-medium text-gray-500">Created By</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                {data.number_of_workers}
+                                                {data.createdBy}
                                             </dd>
                                         </div>
-                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Type of Job</dt>
+
+                                        {data.updatedAt != null && <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Updated At</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                {data.type_of_job}
-                                            </dd>
+                                                {format(Date.parse(data.updatedAt), "MMM dd,YYY ")}                                            </dd>
                                         </div>
+                                        }
+                                        {data.closed_at != null && <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Closed At</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                                {format(Date.parse(data.closed_at), "MMM dd,YYY ")}                                            </dd>
+
+                                        </div>
+                                        }
+
 
                                     </dl>
                                 </div>
@@ -279,7 +311,7 @@ export default function TicketDetails() {
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
                 {updateSuccess && <SuccessNotification message={updateSuccess} />}
-            </AlLoadingOverlay>
+            </AlLoadingOverlay >
         </>
     )
 }
