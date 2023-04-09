@@ -26,6 +26,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
+import moment from 'moment/moment'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -102,7 +103,7 @@ export default function Example() {
     }
 
     useEffect(() => {
-        
+
         const indexOfThisApplication = paramsList.findIndex((application) => {
             return application.id == id
         })
@@ -125,10 +126,10 @@ export default function Example() {
         if (data.payment_status === "part_payment") return "pending"
         if (data.payment_status === "paid") return "success"
     }
-    const getPaymentMethodIcon = () =>{
-        if (data.payment_method === "cash") return "cash.png" 
-        if (data.payment_method === "bank") return "icons8-bank-building-50.png" 
-        if (data.payment_method === "mobile_money") return "momoghana.jpg" 
+    const getPaymentMethodIcon = () => {
+        if (data.payment_method === "cash") return "cash.png"
+        if (data.payment_method === "bank") return "icons8-bank-building-50.png"
+        if (data.payment_method === "mobile_money") return "momoghana.jpg"
         return "momoghana.jpg"
     }
     return (
@@ -156,16 +157,16 @@ export default function Example() {
                                         <AlBadge status={"rejected"} statusText={"Not paid"} />
 
                                     </div>
-                                  {/* {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
+                                    {/* {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
                                         <span className="inline-block  text-sm font-medium">Payment Method:</span>
                                         <span className="inline-block  text-sm  text-gray-700">{sentenceCase(data.payment_method)}</span>
                                         <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
                                     </div>  } */}
-                                  {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
+                                    {data.payment_method != null && <div className="mt-2 flex gap-x-2 items-center">
                                         <span className="inline-block  text-sm font-medium">Payment Method:</span>
                                         <span className="inline-block  text-sm  text-gray-700">{"Mobile Money"}</span>
                                         <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
-                                    </div>  }
+                                    </div>}
                                 </div>
                             </div>
                             <div className="justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
@@ -211,7 +212,8 @@ export default function Example() {
                                                 </div>
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{format(Date.parse(data.dob), "MMM dd,YYY ")}</dd>
+                                                    {/* <dd className="mt-1 text-sm text-gray-900">{moment(data.dob, "MMM dd,YYY ")}</dd> */}
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.dob}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Nationality</dt>
@@ -256,7 +258,8 @@ export default function Example() {
 
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Date of Issue</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{format(Date.parse(data.dateofissue), "MMM dd,YYY ")}</dd>
+                                                    {/* <dd className="mt-1 text-sm text-gray-900">{moment(data.dateofissue, "dd/mm/yy").format("MMM ddd,YYYY")}</dd> */}
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.dateOfIssue}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Date of Expiry</dt>
@@ -681,7 +684,7 @@ export default function Example() {
                             </section>
                         </div>
                     </main>}
-                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus}/>
+                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} />
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
                 {updateSuccess && <SuccessNotification message={updateSuccess} />}
