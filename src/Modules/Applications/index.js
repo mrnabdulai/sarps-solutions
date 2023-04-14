@@ -27,13 +27,13 @@ function ApplicationList() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/application/getApplications")
-            if(response.status == 403){
+            if (response.status == 403) {
                 localStorage.clear()
                 dispatch(doLogout())
                 window.location.replace('/login')
                 return
             }
-            
+
             setData(response.data)
             dispatch(doSetApplications(response.data))
             console.log(response.data)

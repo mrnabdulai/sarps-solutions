@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import { nationalities } from "../../../Shared/utils/countries";
 import AddUserInput from "./components/AddUserInput";
 import FormSectionSeparator from "./components/FormSectionSeparator";
+import { PlusIcon, MinusIcon } from '@heroicons/react/20/solid'
+
 import { idTypes, maritalStatuses, applicantRelations, jobTypes } from "./options";
 import { genericRequired, getOtherNamesValidator, getSurnameValidator, phoneValidator, genericMetricValidator, emailValidator, passwordValidator } from "../../../Shared/utils/validators";
 import Axios from "../../../Shared/utils/axios_instance";
@@ -31,10 +33,17 @@ function classNames(...classes) {
 export default function AddUser() {
     const accountTypes = ["Type A", "Type B"];
     const [welcomeEmail, setWelcomeEmail] = useState(false)
+    const [childrenList, setChildrenList] = useState([
+        ""
+    ])
+    const [countriesOfInterestList, setCountriesOfInterestList] = useState([
+        ""
+    ])
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState("")
+    // const [selectedP]
     const handleSubmit = async (e) => {
         // const formData = {
         //     surname:
@@ -77,7 +86,7 @@ export default function AddUser() {
         const maritalStatus = e.target.maritalStatus.value
         //TODO: handle names of children
         const nameOfSpouse = e.target.nameOfSpouse.value
-        const namesOfChildren = e.target.namesOfChildren.value
+        // const namesOfChildren = e.target.namesOfChildren.value
 
 
 
@@ -88,7 +97,7 @@ export default function AddUser() {
         const fatherHometown = e.target.fatherHometown.value
         const fatherOccupation = e.target.fatherOccupation.value
         const fatherContact = e.target.fatherContact.value
-        const applicantFatherRelation = e.target.applicantFatherRelation.value
+        // const applicantFatherRelation = e.target.applicantFatherRelation.value
 
 
 
@@ -99,7 +108,7 @@ export default function AddUser() {
         const motherHometown = e.target.motherHometown.value
         const motherOccupation = e.target.motherOccupation.value
         const motherContact = e.target.motherContact.value
-        const applicantMotherRelation = e.target.applicantMotherRelation.value
+        // const applicantMotherRelation = e.target.applicantMotherRelation.value
 
 
         //Emmergency contact info
@@ -126,7 +135,7 @@ export default function AddUser() {
 
 
         //Countries of interest and other details
-        const countriesOfInterest = e.target.countriesOfInterest.value
+        // const countriesOfInterest = e.target.countriesOfInterest.value
         const currentJob = e.target.currentJob.value
         const skills = e.target.skills.value
         const jobType = e.target.jobType.value
@@ -172,7 +181,7 @@ export default function AddUser() {
             workExperience: workExperience,
             marritalStatus: maritalStatus,
             spouse: nameOfSpouse,
-            children: namesOfChildren,
+            children: childrenList,
             fSurname: fatherSurname,
             fOtherName: fatherOtherNames,
             fNationality: nationalities[fatherNationality],
@@ -202,7 +211,7 @@ export default function AddUser() {
             guarantor_placeofwork: guarantorPlaceOfWork,
             guarantor_name_contact_of_employer: guarantorEmployerDetails,
             guarantor_ID: guarantorIdNumber,
-            countries_of_interest: countriesOfInterest,
+            countries_of_interest: countriesOfInterestList,
             current_job: currentJob,
             skills: skills,
             job_type: jobType,
@@ -744,9 +753,9 @@ export default function AddUser() {
                                                                 }
                                                             }
                                                         />
-                                                        <div className="col-span-6 sm:col-span-4">
+                                                        <div className="col-span-6 sm:col-span-3">
                                                             <label class="block text-sm font-medium text-gray-700">Passport photo</label>
-                                                            <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                                                            <div class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300 px- pt-7 pb-8 w-5/6	 h-60	">
                                                                 <div class="space-y-1 text-center">
                                                                     <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -898,7 +907,7 @@ export default function AddUser() {
                                 <div className="md:col-span-1">
                                     <div className="px-4 sm:px-0">
                                         <h3 className="text-base font-semibold leading-6 text-gray-900">MARITAL STATUS AND FAMILY INFORMATION</h3>
-                                        <p className="mt-1 text-sm text-gray-600">PLEASE CIRCLE OR TICK APPROPRIATE ONE</p>
+                                        <p className="mt-1 text-sm text-gray-600">(Please select the appropriate)</p>
                                     </div>
                                 </div>
                                 <div className="mt-5 md:col-span-2 md:mt-0">
@@ -926,45 +935,88 @@ export default function AddUser() {
                                                             ))
                                                         }
                                                     </div>
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="If Married ? Name of Spouse" name="nameOfSpouse" error={errors.nameOfSpouse}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.nameOfSpouse
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, nameOfSpouse: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} required={false} label="If Married ? Name of Spouse" name="nameOfSpouse" 
+                                                        // onChange={
+                                                        //     (e) => {
+                                                        //         const errorMessage = genericRequired(e.target.value)
+                                                        //         console.log(errorMessage)
+                                                        //         if (!errorMessage) {
+                                                        //             let tempErrors = { ...errors }
+                                                        //             delete tempErrors.nameOfSpouse
+                                                        //             setErrors(tempErrors)
+                                                        //             console.log(errors)
+                                                        //         }
+                                                        //         else {
+                                                        //             setErrors(
+                                                        //                 { ...errors, nameOfSpouse: errorMessage }
+                                                        //             )
+                                                        //         }
+                                                        //     }
+                                                        // }
                                                     />
                                                     {/* TODO: handle names of children */}
-                                                    <AddUserInput label="Names of Children" error={errors.hasOwnProperty("namesOfChildren")} name="namesOfChildren"
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.namesOfChildren
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
+
+
+                                                    {childrenList.map((childForm, index) => (
+                                                        <>
+                                                            <AddUserInput label={index == 0 && "Names of Children"} error={errors.hasOwnProperty("namesOfChildren")} name="namesOfChildren"
+                                                                onChange={
+                                                                    (e) => {
+                                                                        childrenList[index] = e.target.value
+                                                                        // const errorMessage = genericRequired(e.target.value)
+                                                                        // console.log(errorMessage)
+                                                                        // if (!errorMessage) {
+                                                                        //     let tempErrors = { ...errors }
+                                                                        //     delete tempErrors.namesOfChildren
+                                                                        //     setErrors(tempErrors)
+                                                                        //     console.log(errors)
+                                                                        // }
+                                                                        // else {
+                                                                        //     setErrors(
+                                                                        //         { ...errors, namesOfChildren: errorMessage }
+                                                                        //     )
+                                                                        // }
+                                                                    }
                                                                 }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, namesOfChildren: errorMessage }
-                                                                    )
+
+                                                            />
+                                                            <div className="flex items-end gap-x-3 ">
+
+                                                                {index == childrenList.length - 1 && <button
+                                                                    onClick={() => {
+                                                                        const tempChildrenList = [...childrenList]
+                                                                        tempChildrenList.push("")
+                                                                        console.log(tempChildrenList)
+                                                                        setChildrenList(tempChildrenList)
+                                                                    }}
+                                                                    type="button"
+                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-indigo-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                                >
+                                                                    <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                                                    Add
+                                                                </button>
                                                                 }
-                                                            }
-                                                        }
-                                                    />
+                                                                {index != 0 && <button
+                                                                    onClick={() => {
+                                                                        const tempChildrenList = [...childrenList]
+                                                                        tempChildrenList.splice(index, 1)
+                                                                        console.log(tempChildrenList)
+                                                                        setChildrenList(tempChildrenList)
+                                                                    }}
+                                                                    type="button"
+                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-red-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                                                >
+                                                                    <MinusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                                                    Remove
+                                                                </button>
+
+                                                                }
+                                                            </div>
+                                                        </>
+                                                    ))
+
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1107,24 +1159,24 @@ export default function AddUser() {
                                                         }
                                                     />
 
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-3">
-                                                        <label htmlFor="applicantFatherRelation" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Relation With Applicant
-                                                        </label>
-                                                        <select
-                                                            id="applicantFatherRelation"
-                                                            name="applicantFatherRelation"
-                                                            autoComplete=""
-                                                            value={70}
-                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        >
-                                                            {
-                                                                applicantRelations.map((applicantRelation, index) => (
-                                                                    <option key={index} value={index}>{applicantRelation}</option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
+                                                    {/* <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                            <label htmlFor="applicantFatherRelation" className="block text-sm font-medium leading-6 text-gray-900">
+                                                                Relation With Applicant
+                                                            </label>
+                                                            <select
+                                                                id="applicantFatherRelation"
+                                                                name="applicantFatherRelation"
+                                                                autoComplete=""
+                                                                value={70}
+                                                                className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            >
+                                                                {
+                                                                    applicantRelations.map((applicantRelation, index) => (
+                                                                        <option key={index} value={index}>{applicantRelation}</option>
+                                                                    ))
+                                                                }
+                                                            </select>
+                                                        </div> */}
 
                                                 </div>
                                             </div>
@@ -1264,24 +1316,24 @@ export default function AddUser() {
                                                         }
                                                     />
 
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-3">
-                                                        <label htmlFor="applicantMotherRelation" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Relation With Applicant
-                                                        </label>
-                                                        <select
-                                                            id="applicantMotherRelation"
-                                                            name="applicantMotherRelation"
-                                                            autoComplete=""
-                                                            value={70}
-                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        >
-                                                            {
-                                                                applicantRelations.map((applicantRelation, index) => (
-                                                                    <option key={index} value={index}>{applicantRelation}</option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
+                                                    {/* <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                            <label htmlFor="applicantMotherRelation" className="block text-sm font-medium leading-6 text-gray-900">
+                                                                Relation With Applicant
+                                                            </label>
+                                                            <select
+                                                                id="applicantMotherRelation"
+                                                                name="applicantMotherRelation"
+                                                                autoComplete=""
+                                                                value={70}
+                                                                className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            >
+                                                                {
+                                                                    applicantRelations.map((applicantRelation, index) => (
+                                                                        <option key={index} value={index}>{applicantRelation}</option>
+                                                                    ))
+                                                                }
+                                                            </select>
+                                                        </div> */}
 
                                                 </div>
                                             </div>
@@ -1326,7 +1378,8 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="emergencyContactOtherNames" error={errors.emergencyContactOtherNames}
-                                                        require={false}
+                                                                                                                required={false}
+
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1406,6 +1459,9 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" name="emergencyContactContact" placeholder="eg: +233 55 xxx xxxx" error={errors.emergencyContactContact}
+                                                        
+                                                        required={false}
+
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1582,24 +1638,26 @@ export default function AddUser() {
                                                         }
                                                     />
 
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-3">
-                                                        <label htmlFor="applicantguarantorRelation" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Relation With Applicant
-                                                        </label>
-                                                        <select
-                                                            id="applicantguarantorRelation"
-                                                            name="applicantguarantorRelation"
-                                                            autoComplete=""
-                                                            value={70}
-                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        >
-                                                            {
-                                                                applicantRelations.map((applicantRelation, index) => (
-                                                                    <option key={index} value={index}>{applicantRelation}</option>
-                                                                ))
+
+                                                    <AddUserInput label="   Relation With Applicant" name="applicantguarantorRelation" error={errors.applicantguarantorRelation}
+                                                        onChange={
+                                                            (e) => {
+                                                                const errorMessage = genericRequired(e.target.value)
+                                                                console.log(errorMessage)
+                                                                if (!errorMessage) {
+                                                                    let tempErrors = { ...errors }
+                                                                    delete tempErrors.applicantguarantorRelation
+                                                                    setErrors(tempErrors)
+                                                                    console.log(errors)
+                                                                }
+                                                                else {
+                                                                    setErrors(
+                                                                        { ...errors, applicantguarantorRelation: errorMessage }
+                                                                    )
+                                                                }
                                                             }
-                                                        </select>
-                                                    </div>
+                                                        }
+                                                    />
                                                     <AddUserInput label="Place of Work" name="guarantorPlaceOfWork" error={errors.guarantorPlaceOfWork}
                                                         onChange={
                                                             (e) => {
@@ -1660,7 +1718,29 @@ export default function AddUser() {
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
-                                                    <AddUserInput label="ID copy/number" name="guarantorIdNumber" error={errors.guarantorIdNumber}
+                                                    <div className="col-span-6 flex items-center  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                            ID Type:
+                                                        </legend>
+                                                        {
+                                                            idTypes.map((idType, index) => (
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={idType.trim()}
+                                                                        name="guarnaterIdType"
+                                                                        value={idType}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                        {idType}
+                                                                    </label>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                    <AddUserInput label="ID Number" name="guarantorIdNumber" error={errors.guarantorIdNumber}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1679,7 +1759,26 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
+                                                    <br />
+                                                    <div className="col-span-6 sm:col-span-3">
+                                                        <label class="block text-sm font-medium text-gray-700">Upload ID</label>
+                                                        <div class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300 px- pt-7 pb-8 	">
+                                                            <div class="space-y-1 text-center">
+                                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                                <div class="flex text-sm text-gray-600">
+                                                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                                        <span>Upload a file</span>
+                                                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                                                                    </label>
+                                                                    <p class="pl-1">or drag and drop</p>
+                                                                </div>
+                                                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                            </div>
 
+                                                        </div>
+                                                    </div>
 
 
 
@@ -1714,13 +1813,13 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
 
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                    {/* <div className="col-span-6 sm:col-span-3 lg:col-span-3">
                                                         <label htmlFor={""} className="block text-sm font-medium leading-6 text-gray-900">
                                                             &nbsp;
                                                         </label>
                                                         <textarea name="countriesOfInterest" placeholder="eg: USA, Canada, Denmark" rows={3} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                                        </textarea>
-                                                    </div>
+                                                        </textarea> */}
+                                                    {/* </div> */}
                                                     <AddUserInput label="Currrent Job" name="currentJob" error={errors.currentJob}
                                                         onChange={
                                                             (e) => {
@@ -1762,6 +1861,65 @@ export default function AddUser() {
                                                     />
 
 
+{countriesOfInterestList.map((country, index) => (
+                                                        <>
+                                                            <AddUserInput label={index == 0 && ""} placeholder="eg: USA, Canada, Denmark" error={errors.hasOwnProperty("countriesOfInterest")} name="countriesOfInterest"
+                                                                onChange={
+                                                                    (e) => {
+                                                                        countriesOfInterestList[index] = e.target.value
+                                                                        // const errorMessage = genericRequired(e.target.value)
+                                                                        // console.log(errorMessage)
+                                                                        // if (!errorMessage) {
+                                                                        //     let tempErrors = { ...errors }
+                                                                        //     delete tempErrors.namesOfChildren
+                                                                        //     setErrors(tempErrors)
+                                                                        //     console.log(errors)
+                                                                        // }
+                                                                        // else {
+                                                                        //     setErrors(
+                                                                        //         { ...errors, namesOfChildren: errorMessage }
+                                                                        //     )
+                                                                        // }
+                                                                    }
+                                                                }
+
+                                                            />
+                                                            <div className="flex items-end gap-x-3 ">
+
+                                                                {index == countriesOfInterestList.length - 1 && <button
+                                                                    onClick={() => {
+                                                                        const tempcountriesOfInterestList = [...countriesOfInterestList]
+                                                                        tempcountriesOfInterestList.push("")
+                                                                        console.log(tempcountriesOfInterestList)
+                                                                        setCountriesOfInterestList(tempcountriesOfInterestList)
+                                                                    }}
+                                                                    type="button"
+                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-indigo-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                                >
+                                                                    <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                                                    Add
+                                                                </button>
+                                                                }
+                                                                {index != 0 && <button
+                                                                    onClick={() => {
+                                                                        const tempcountriesOfInterestList = [...countriesOfInterestList]
+                                                                        tempcountriesOfInterestList.splice(index, 1)
+                                                                        console.log(tempcountriesOfInterestList)
+                                                                        setCountriesOfInterestList(tempcountriesOfInterestList)
+                                                                    }}
+                                                                    type="button"
+                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-red-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                                                >
+                                                                    <MinusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                                                    Remove
+                                                                </button>
+
+                                                                }
+                                                            </div>
+                                                        </>
+                                                    ))
+
+                                                    }
 
 
 
