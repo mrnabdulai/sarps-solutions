@@ -47,6 +47,7 @@ import AccountPayableDetails from './Modules/AccountsPayable/AccountPayableDetai
 import AccountReceivable from './Modules/AccountsReceivable';
 import AddAccountReceivable from './Modules/AccountsReceivable/AddAccountReceivable';
 import AccountReceivableDetails from './Modules/AccountsReceivable/AccountReceivableDetails';
+import StudentForm from './Modules/User/AddUser/StudentForm';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -75,7 +76,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
-
         {/* <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} /> */}
         <Route path="/login" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
         {/* user routes  */}
@@ -86,6 +86,8 @@ function App() {
           <Route path="applications/:id" element={<UserApplicationDetails />} />
         </Route>
         <Route path="/user/add" element={<AddUser />} />
+        <Route path="/user/add-student" element={<StudentForm />} />
+        
         <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" /> : agentAuth ? <Navigate to="/agent/dashboard" /> : <UserAuth />} />
         <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth} />} />
         <Route path='/app/*' element={isAuth ? <AppLayouts /> : <Navigate to="/login" replace />}>

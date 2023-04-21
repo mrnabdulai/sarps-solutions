@@ -13,24 +13,25 @@
   ```
 */
 
+
 import { Switch } from "@headlessui/react";
 import LoadingOverlay from 'react-loading-overlay';
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { nationalities } from "../../../Shared/utils/countries";
+import { nationalities, countryList } from "../../../Shared/utils/countries";
 import AddUserInput from "./components/AddUserInput";
 import FormSectionSeparator from "./components/FormSectionSeparator";
 import { PlusIcon, MinusIcon } from '@heroicons/react/20/solid'
 
-import { idTypes, maritalStatuses, applicantRelations, jobTypes } from "./options";
+import { idTypes, maritalStatuses, applicantRelations, jobTypes, titles } from "./options";
 import { genericRequired, getOtherNamesValidator, getSurnameValidator, phoneValidator, genericMetricValidator, emailValidator, passwordValidator } from "../../../Shared/utils/validators";
 import Axios from "../../../Shared/utils/axios_instance";
 import ErrorNotification from '../../../Shared/Components/ErrorNotification'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-export default function AddUser() {
+export default function StudentForm() {
     const accountTypes = ["Type A", "Type B"];
     const [welcomeEmail, setWelcomeEmail] = useState(false)
     const [childrenList, setChildrenList] = useState([
@@ -39,6 +40,7 @@ export default function AddUser() {
     const [countriesOfInterestList, setCountriesOfInterestList] = useState([
         ""
     ])
+    const [passportFile, setPassportFile] = useState(null)
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -50,43 +52,48 @@ export default function AddUser() {
         // }
         e.preventDefault();
         //Basic infor values
-        const surname = e.target.surname.value
-        const otherNames = e.target.otherNames.value
+        const title = e.target.title.value
+        const familyName = e.target.familyName.value
+        const givenNames = e.target.givenNames.value
+        const preferredNames = e.target.preferredNames.value
         const dob = e.target.dob.value
-        const nationality = e.target.nationality
         const gender = e.target.gender.value
-        const hometown = e.target.hometown.value
-        const occupation = e.target.occupation.value
-        const residence = e.target.residence.value
-        const citizenship = e.target.citizenship.value
-        const phone = e.target.phone.value
-        const otherPhone = e.target.otherPhone.value
         const email = e.target.email.value
-        const password = e.target.password.value 
-        const religion = e.target.religion.value
-        const postalAddress = e.target.postalAddress.value
-        const idType = e.target.idType.value
+        const password = e.target.password.value
+        const address = e.target.address.value
+        const mobilePhone = e.target.mobilePhone.value
+        const homePhone = e.target.homePhone.value
+        const birthCountry = e.target.birthCountry.value
+        //Take index
+        const nationality = e.target.nationality.value
+        //Take index
+        
+        const permanetResNewZeland = e.target.permanetResNewZeland.value
         const passportNumber = e.target.passportNumber.value
-        const doIssue = e.target.doIssue.value
-        const doExpiry = e.target.doExpiry.value
-        const placeOfIssue = e.target.placeOfIssue.value
-        const height = e.target.height.value
-        const weight = e.target.weight.value
-        const hairColour = e.target.hairColour.value
-        const eyeColour = e.target.eyeColour.value
-        const languagesSpoken = e.target.languagesSpoken.value
+        const otherCountriesCitizenShip = e.target.otherCountriesCitizenShip.value
+        const ieTScore = e.target.ieTScore.value
+        const otherScore = e.target.otherScore.value
+        const toStudyInNewZeland = e.target.toStudyInNewZeland.value
+        const yesOtherStudySchool = e.target.yesOtherStudySchool.value
+        const studyWhenDates = e.target.studyWhenDates.value
+        const secondarySchoolAttented = e.target.secondarySchoolAttented.value
+        const secondarySchoolQualitification = e.target.secondarySchoolQualitification.value
+        const secondarySchoolCountry = e.target.secondarySchoolCountry.value
+        const secondarySchoolLanguage = e.target.secondarySchoolLanguage.value
+        const postSchoolName = e.target.postSchoolName.value
+        const postSchoolQualification = e.target.postSchoolQualification.value
+        const postSchoolCompleted = e.target.postSchoolCompleted.value
+        const postExpectedCompleteData = e.target.postExpectedCompleteData.value
+        const underTakenStudyInNZ = e.target.underTakenStudyInNZ.value
+        const previosStudyDetails = e.target.previosStudyDetails.value
+        const program1 = e.target.program1.value
+        const program2 = e.target.program2.value
+        const program3 = e.target.program3.value
+        //take index
+        
 
-        //Education values
-        const nameOfLastSchoolAttended = e.target.nameOfLastSchoolAttended.value
-        const schoolLevel = e.target.schoolLevel.value
-        const schoolDateAttendedFrom = e.target.schoolDateAttendedFrom.value
-        const schoolDateAttendedTo = e.target.schoolDateAttendedTo.value
-        const qualification = e.target.qualification.value
-        const workExperience = e.target.workExperience.value
-        const maritalStatus = e.target.maritalStatus.value
-        //TODO: handle names of children
-        const nameOfSpouse = e.target.nameOfSpouse.value
-        // const namesOfChildren = e.target.namesOfChildren.value
+
+        
 
 
 
@@ -132,13 +139,15 @@ export default function AddUser() {
         const guarantorPlaceOfWork = e.target.guarantorPlaceOfWork.value
         const guarantorEmployerDetails = e.target.guarantorEmployerDetails.value
         const guarantorIdNumber = e.target.guarantorIdNumber.value
-
-
-        //Countries of interest and other details
-        // const countriesOfInterest = e.target.countriesOfInterest.value
-        const currentJob = e.target.currentJob.value
-        const skills = e.target.skills.value
-        const jobType = e.target.jobType.value
+        
+        
+        //Career stuff
+        const careerIntensions = e.target.careerIntensions.value
+        const accomodationRequired = e.target.accomodationRequired.value
+        const accomodationType = e.target.accomodationType.value
+        const airportPickupRequired = e.target.airportPickupRequired.value
+        const requestLearningSupport = e.target.requestLearningSupport.value
+        
 
         // Agent infor
         const agentCode = e.target.agentCode.value
@@ -147,41 +156,42 @@ export default function AddUser() {
             e.target[Object.keys(errors)[0]].focus()
             return
         }
+        const formData  = new FormData()
         const data = {
-            surname,
-            otherNames,
-            dob,
-            nationality: nationalities[nationality],
-            gender,
-            hometown,
-            occupation,
-            residence,
-            citizenship,
-            phone,
-            email,
-            otherPhone,
-            religion,
-            postalAddress,
-            typeofId: idType,
-            passportNo: passportNumber,
-            dateofissue: doIssue,
-            placeofissue: doExpiry,
-            dateofexpiry: placeOfIssue,
-            languages: languagesSpoken,
-            height,
-            weight,
-            hairColor: hairColour,
-            eyeColor: eyeColour,
-            password: password,
-            lastSchool: nameOfLastSchoolAttended,
-            levelOfEducation: schoolLevel,
-            dateAttendedFrom: schoolDateAttendedFrom,
-            dateAttendedTo: schoolDateAttendedTo,
-            qualification: qualification,
-            workExperience: workExperience,
-            marritalStatus: maritalStatus,
-            spouse: nameOfSpouse,
-            children: childrenList,
+            title, 
+            family_name :familyName, 
+            given_name: givenNames, 
+            preferred_name: preferredNames, 
+            dob, 
+            gender, 
+            email, 
+            password, 
+            address, 
+            phone:mobilePhone, 
+            home_telephone:homePhone, 
+            country_of_birth:countryList[birthCountry], 
+            nationality:nationalities[nationality], 
+            //TODO: passport file
+            // passport_file, 
+            passport_no : passportNumber, 
+            permanent_resident_status:permanetResNewZeland, 
+            other_countries_citizenship:otherCountriesCitizenShip, 
+            ielts_toefl_score:ieTScore, 
+            other_proficiency_score:otherScore, 
+            studying_english:toStudyInNewZeland, 
+            school_name:yesOtherStudySchool, 
+            start_date:studyWhenDates, 
+            name_of_qualification:secondarySchoolQualitification, 
+            school_attended:secondarySchoolAttented, 
+            country:countryList[secondarySchoolCountry], 
+            language_of_instruction:secondarySchoolLanguage, 
+            //post secondary and further education 
+            name_of_qualification:postSchoolQualification, 
+            institution_attended:postSchoolName, 
+            completed:postSchoolCompleted, 
+            expected_completion_date:postExpectedCompleteData, 
+            taken_study_in_newzealand:underTakenStudyInNZ, 
+            attach_details:previosStudyDetails, 
             fSurname: fatherSurname,
             fOtherName: fatherOtherNames,
             fNationality: nationalities[fatherNationality],
@@ -211,19 +221,29 @@ export default function AddUser() {
             guarantor_placeofwork: guarantorPlaceOfWork,
             guarantor_name_contact_of_employer: guarantorEmployerDetails,
             guarantor_ID: guarantorIdNumber,
-            countries_of_interest: countriesOfInterestList,
-            current_job: currentJob,
-            skills: skills,
-            job_type: jobType,
+            
             agent_code: agentCode
             // reg_status: "pending",
             // payment_status: "not_paid",
             // payment_method: "null",
         }
+        // console.log(JSON.stringify(data))
+        for (var key in data){
+            formData.append(key, data[key])
+        }
+        formData.append("passport_file", passportFile)
+        console.log([...formData])
+        // return
         try {
             setSubmitError("")
             setIsSubmitting(true)
-            const response = await Axios.post("/api/application/addApplication", data)
+            const response = await Axios.post("/api/student/addApplication", formData, {
+                
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                
+            })
             console.log(response.data)
             setIsSubmitting(false)
 
@@ -282,53 +302,47 @@ export default function AddUser() {
                                 <div className="md:col-span-1">
                                     <div className="px-4 sm:px-0">
                                         <h3 className="text-base font-semibold leading-6 text-gray-900">BASIC INFORMATION</h3>
-                                        <p className="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p>
+                                        {/* <p className="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p> */}
                                     </div>
                                 </div>
                                 <div className="mt-5 md:col-span-2 md:mt-0">
                                     <div action="#" method="POST">
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
+                                            <div className="col-span-6 flex items-center mb-3  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Title:
+                                                        </legend>
+                                                        {
+                                                            titles.map((idType, index) => (
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={idType.trim()}
+                                                                        name="title"
+                                                                        value={idType}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                        {idType}
+                                                                    </label>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
                                                 <div className="grid grid-cols-6 gap-6">
-                                                    <AddUserInput label="Surname" placeholder="" name="surname" error={errors.surname}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.surname
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, surname: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                    <AddUserInput label="Family Name" placeholder="" name="familyName" 
+                                                      
                                                     />
-                                                    <AddUserInput label="Other Names" name="otherNames" error={errors.otherNames}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = getOtherNamesValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.otherNames
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, otherNames: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                    <AddUserInput label="Given Names" name="givenNames" 
+                                                       
                                                     />
-                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                                                    <AddUserInput label="Preferred Names" name="preferredNames" error={errors.otherNames}
+                                                       
+                                                    />
+                                                    <br />
+                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-3">
                                                         <label htmlFor="dob" className="block text-sm font-medium leading-6 text-gray-900">
                                                             Date of Birth*
                                                         </label>
@@ -344,26 +358,8 @@ export default function AddUser() {
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                        <label htmlFor="nationality" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Nationality*
-                                                        </label>
-                                                        <select
-                                                            id="nationality"
-                                                            name="nationality"
-                                                            autoComplete=""
-                                                            value={70}
-                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                            required
-                                                        >
-                                                            {
-                                                                nationalities.map((nationality, index) => (
-                                                                    <option key={index} value={index}>{nationality}</option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                                                    
+                                                    <div className="col-span-6 sm:col-span-3 lg:col-span-3">
                                                         <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
                                                             Gender*
                                                         </label>
@@ -378,121 +374,7 @@ export default function AddUser() {
                                                             <option value={"female"}>Female</option>
                                                         </select>
                                                     </div>
-                                                    <AddUserInput label="Hometown" name="hometown" error={errors.hometown}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.hometown
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, hometown: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Occupation" name="occupation" error={errors.occupation}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.occupation
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, occupation: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Residence" name="residence" error={errors.residence}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.residence
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, residence: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Citizenship" name="citizenship" placeholder="eg: Ghanaian" error={errors.citizenship}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.citizenship
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, citizenship: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Phone" name="phone" placeholder="eg: +233 55 xxx xxxx" error={errors.phone}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = phoneValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.phone
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, phone: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Other Phone" placeholder="eg: +233 55 xxx xxxx" name="otherPhone" required={false} error={errors.otherPhone}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = phoneValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.otherPhone
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, otherPhone: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
+                                                      <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = emailValidator(e.target.value)
@@ -530,249 +412,41 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Religion" name="religion" required={false} error={errors.religion}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.religion
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, religion: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <AddUserInput label="Postal address" name="postalAddress" error={errors.postalAddress}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.postalAddress
-                                                                    setErrors(tempErrors)
 
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, postalAddress: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <div className="col-span-6 flex items-center  ">
-                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
-                                                            ID Type:
-                                                        </legend>
-                                                        {
-                                                            idTypes.map((idType, index) => (
-                                                                <div className="flex items-center gap-x-2 mr-5">
-                                                                    <input
-                                                                        id={idType.trim()}
-                                                                        name="idType"
-                                                                        value={idType}
-                                                                        type="radio"
-                                                                        defaultChecked={false}
-                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
-                                                                    />
-                                                                    <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
-                                                                        {idType}
-                                                                    </label>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} label="Passport No." name="passportNumber" error={errors.passportNumber}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.passportNumber
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, passportNumber: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                        <label htmlFor="do-issue" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Date of Issue*
-                                                        </label>
-                                                        <input
-                                                            type="date"
-                                                            name="doIssue"
-                                                            id="do-issue"
-                                                            autoComplete=""
-                                                            required
-                                                            className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
-                                                    </div>
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} label="Place of Issue" name="placeOfIssue" error={errors.placeOfIssue}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.placeOfIssue
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, placeOfIssue: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                        <label htmlFor="do-expriry" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Date of Expiry*
-                                                        </label>
-                                                        <input
-                                                            type="date"
-                                                            name="doExpiry"
-                                                            id="do-expriry"
-                                                            autoComplete=""
-                                                            required
-                                                            className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
-                                                    </div>
-                                                    <div className="col-span-6 sm:col-span-4">
-                                                        <label htmlFor="email-address" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Languages Spoken*
-                                                            {/* TODO:fix languages spoken input */}
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            name="languagesSpoken"
-                                                            id="languages-spoken"
-                                                            required
-                                                            placeholder="eg: English, French, Arabic"
-                                                            className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
-                                                    </div>
-                                                    <div className="grid col-span-6 grid-cols-8 gap-5">
-                                                        <AddUserInput label="Height" type="number" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} name="height" error={errors.height}
-                                                            endAdorment={
-                                                                <span class="text-gray-500 sm:text-sm" id="price-currency">ft</span>
+                                                    <div className="col-span-6 sm:col-span-3">
+                                                        <label class="block text-sm font-medium text-gray-700">Upload Passport Photo</label>
+                                                        <label for="passport-file-upload" class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300  pt-7 pb-8 	w-5/6 h-60">
+                                                        <input required={passportFile == null} onChange={(e)=>{
+                                                                            const {files} = e.target
+                                                                            console.log(files)
+                             console.log(files)
 
-                                                            }
-                                                            onChange={
-                                                                (e) => {
-                                                                    const errorMessage = genericMetricValidator(e.target.value)
-                                                                    console.log(errorMessage)
-                                                                    if (!errorMessage) {
-                                                                        let tempErrors = { ...errors }
-                                                                        delete tempErrors.height
-                                                                        setErrors(tempErrors)
-                                                                        console.log(errors)
-                                                                    }
-                                                                    else {
-                                                                        setErrors(
-                                                                            { ...errors, height: errorMessage }
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-                                                        />
-                                                        <AddUserInput label="Weight" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2 "} name="weight" type="number" error={errors.weight}
-                                                            endAdorment={
-                                                                <span class="text-gray-500 sm:text-sm" id="price-currency">kg</span>
+                                                                            if(files && files.length > 0){
+                                                                                setPassportFile(files[0])
+                                                                            }
 
-                                                            }
-                                                            onChange={
-                                                                (e) => {
-                                                                    const errorMessage = genericMetricValidator(e.target.value)
-                                                                    console.log(errorMessage)
-                                                                    if (!errorMessage) {
-                                                                        let tempErrors = { ...errors }
-                                                                        delete tempErrors.weight
-                                                                        setErrors(tempErrors)
-                                                                        console.log(errors)
-                                                                    }
-                                                                    else {
-                                                                        setErrors(
-                                                                            { ...errors, weight: errorMessage }
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-                                                        />
-                                                        <AddUserInput label="Hair Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} error={errors.hairColour} name="hairColour"
-                                                            onChange={
-                                                                (e) => {
-                                                                    const errorMessage = genericRequired(e.target.value)
-                                                                    console.log(errorMessage)
-                                                                    if (!errorMessage) {
-                                                                        let tempErrors = { ...errors }
-                                                                        delete tempErrors.hairColour
-                                                                        setErrors(tempErrors)
-                                                                        console.log(errors)
-                                                                    }
-                                                                    else {
-                                                                        setErrors(
-                                                                            { ...errors, hairColour: errorMessage }
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-                                                        />
-                                                        <AddUserInput label="Eye Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-1"} error={errors.eyeColour} name="eyeColour"
-                                                            onChange={
-                                                                (e) => {
-                                                                    const errorMessage = genericRequired(e.target.value)
-                                                                    console.log(errorMessage)
-                                                                    if (!errorMessage) {
-                                                                        let tempErrors = { ...errors }
-                                                                        delete tempErrors.eyeColour
-                                                                        setErrors(tempErrors)
-                                                                        console.log(errors)
-                                                                    }
-                                                                    else {
-                                                                        setErrors(
-                                                                            { ...errors, eyeColour: errorMessage }
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-                                                        />
-                                                        <div className="col-span-6 sm:col-span-3">
-                                                            <label class="block text-sm font-medium text-gray-700">Passport photo</label>
-                                                            <div class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300 px- pt-7 pb-8 w-5/6	 h-60	">
-                                                                <div class="space-y-1 text-center">
-                                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                    </svg>
-                                                                    <div class="flex text-sm text-gray-600">
-                                                                        <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
-                                                                            <span>Upload a file</span>
-                                                                            <input id="file-upload" name="file-upload" type="file" class="sr-only" />
-                                                                        </label>
-                                                                        <p class="pl-1">or drag and drop</p>
+                                                                        }}  id="passport-file-upload" name="passportFileUpload" type="file" accept="image/*" class="sr-only" />
+                                                          { passportFile ? <img src={URL.createObjectURL(passportFile)} alt="passport photo" className="object-cover h-60"/>
+                                                            :
+                                                            <> <div class="space-y-1 text-center">
+                                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                                <div class="flex text-center justify-center text-sm text-gray-600">
+                                                                    <div  class="text-center relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                                        <span>Upload a file</span>
+                                                                       
                                                                     </div>
-                                                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                                    {/* <p class="pl-1">or drag and drop</p> */}
                                                                 </div>
-
+                                                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                                                             </div>
-                                                        </div>
+                                                            </>
+                                                            }
+
+                                                        </label>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -785,7 +459,7 @@ export default function AddUser() {
                             <div className="md:grid md:grid-cols-3 md:gap-6">
                                 <div className="md:col-span-1">
                                     <div className="px-4 sm:px-0">
-                                        <h3 className="text-base font-semibold leading-6 text-gray-900">EDUCATION & WORK EXPERIENCE</h3>
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">CONTACT DETAILS</h3>
                                         {/* <p className="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p> */}
                                     </div>
                                 </div>
@@ -793,107 +467,272 @@ export default function AddUser() {
                                     <div action="#" method="POST">
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
+                                            
                                                 <div className="grid grid-cols-6 gap-6">
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Name of Last School Attended" name="nameOfLastSchoolAttended" error={errors.nameOfLastSchoolAttended}
+                                                <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Address in home country (must be applicant’s address):" name="address" 
+                                                     
+                                                    />
+                                                <AddUserInput label="Mobile Telephone" name="mobilePhone" placeholder="eg: +233 55 xxx xxxx" error={errors.mobilePhone}
                                                         onChange={
                                                             (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
+                                                                const errorMessage = phoneValidator(e.target.value)
                                                                 console.log(errorMessage)
                                                                 if (!errorMessage) {
                                                                     let tempErrors = { ...errors }
-                                                                    delete tempErrors.nameOfLastSchoolAttended
+                                                                    delete tempErrors.mobilePhone
                                                                     setErrors(tempErrors)
                                                                     console.log(errors)
                                                                 }
                                                                 else {
                                                                     setErrors(
-                                                                        { ...errors, nameOfLastSchoolAttended: errorMessage }
+                                                                        { ...errors, mobilePhone: errorMessage }
                                                                     )
                                                                 }
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Level" name="schoolLevel" error={errors.schoolLevel}
+                                                    <AddUserInput label="Home telephone:" placeholder="eg: +233 55 xxx xxxx" name="homePhone" required={false} error={errors.homePhone}
                                                         onChange={
                                                             (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
+                                                                const errorMessage = phoneValidator(e.target.value)
                                                                 console.log(errorMessage)
                                                                 if (!errorMessage) {
                                                                     let tempErrors = { ...errors }
-                                                                    delete tempErrors.schoolLevel
+                                                                    delete tempErrors.homePhone
                                                                     setErrors(tempErrors)
                                                                     console.log(errors)
                                                                 }
                                                                 else {
                                                                     setErrors(
-                                                                        { ...errors, schoolLevel: errorMessage }
+                                                                        { ...errors, homePhone: errorMessage }
                                                                     )
                                                                 }
                                                             }
                                                         }
                                                     />
-                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                        <label htmlFor="school-date-attend-from" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Date attended from
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div >
+                        <div SectionSeparator />
+                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">NATIONALITY/CITIZENSHIP</h3>
+                                        {/* <p className="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p> */}
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div action="#" method="POST">
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                            
+                                                <div className="grid grid-cols-6 gap-6">
+                                                <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                        <label htmlFor="birthCountry" className="block text-sm font-medium leading-6 text-gray-900">
+                                                            Country of Birth*
                                                         </label>
-                                                        <input
-                                                            type="date"
-                                                            name="schoolDateAttendedFrom"
-                                                            id="school-date-attend-from"
+                                                        <select
+                                                            id="birthCountry"
+                                                            name="birthCountry"
                                                             autoComplete=""
-                                                            className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
+                                                            value={83}
+                                                            required
+                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        >
+                                                            {
+                                                                countryList.map((country, index) => (
+                                                                    <option key={index} value={index}>{country}</option>
+                                                                ))
+                                                            }
+                                                        </select>
                                                     </div>
-                                                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                        <label htmlFor="school-date-attend-to" className="block text-sm font-medium leading-6 text-gray-900">
-                                                            Date attended to
+
+                                                       <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                        <label htmlFor="nationality" className="block text-sm font-medium leading-6 text-gray-900">
+                                                            Nationality*
                                                         </label>
-                                                        <input
-                                                            type="date"
-                                                            name="schoolDateAttendedTo"
-                                                            id="school-date-attend-to"
+                                                        <select
+                                                            id="nationality"
+                                                            name="nationality"
                                                             autoComplete=""
-                                                            className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
+                                                            value={70}
+                                                            required
+                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        >
+                                                            {
+                                                                nationalities.map((nationality, index) => (
+                                                                    <option key={index} value={index}>{nationality}</option>
+                                                                ))
+                                                            }
+                                                        </select>
                                                     </div>
-                                                    <AddUserInput label="Qualification" name="qualification" error={errors.qualification}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.qualification
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, qualification: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-3"} label="Passport No." name="passportNumber" error={errors.passportNumber}
+                                                       
                                                     />
-                                                    <AddUserInput name="workExperience" label="Work Experience" error={errors.workExperience}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = genericRequired(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.workExperience
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, workExperience: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-3"} label="Other Countries CitizenShip" required={false} name="otherCountriesCitizenShip" error={errors.passportNumber}
+                                                       
                                                     />
+
+<div className="col-span-6 flex items-center mb-3  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Do you hold Permanent Resident status in New Zealand or Australia?                                            </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"perm-res-nz-yes-radio"}
+                                                                        name="permanetResNewZeland"
+                                                                        value={"yes"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"perm-res-nz-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"perm-res-nz-no-radio"}
+                                                                        name="permanetResNewZeland"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"perm-res-nz-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                                      
+
+                                                    </div>
+                                                  
+                                                         
+                                                
+                                                    </div>
+                                                      
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div >
+                        <div SectionSeparator />
+                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">ENGLISH PROFICIENCY</h3>
+                                        {/* <p className="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p> */}
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div action="#" method="POST">
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                            
+                                                <div className="grid grid-cols-6 gap-6">
+                                                <AddUserInput label="IELTS or TOEFL score:" placeholder="" name="ieTScore" 
+                                                      
+                                                      />
+                                                <AddUserInput label="Other" placeholder="" name="otherScore" 
+                                                      
+                                                      />
+                                                    <div className="col-span-6 flex items-center mb-3  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Will you be studying English in New Zealand before starting at UCIC?                                                         </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"yes-radio"}
+                                                                        name="toStudyInNewZeland"
+                                                                        value={"yes"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"no-radio"}
+                                                                        name="toStudyInNewZeland"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                                      
+
+                                                    </div>
+                                                  
+                                                    <AddUserInput label="If “Yes”, name of school:" placeholder="" required={false} name="yesOtherStudySchool" error={errors.surname}
+                                                    colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"}
+                                                      
+                                                      />
+                                                    <AddUserInput label="When? (Dates)" placeholder="" name="studyWhenDates" 
+                                                      required={false}
+                                                      />
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div >
+                        <div SectionSeparator />
+                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">EDUCATION DETAILS</h3>
+                                         <p className="mt-1 text-sm text-gray-600">Secondary Education – highest level achieved</p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div action="#" method="POST">
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                                <div className="grid grid-cols-6 gap-6">
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="School attended:" name="secondarySchoolAttented" 
+                                                        
+                                                    />
+                                                  
+                                                    <AddUserInput label="Name of qualiﬁcation" placeholder="eg Year 12, HKDSE or ‘A’ Levels" name="secondarySchoolQualitification" error={errors.schoolLevel}
+                                                        
+                                                    />
+                                                     <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                        <label htmlFor="nationality" className="block text-sm font-medium leading-6 text-gray-900">
+                                                            Country
+                                                        </label>
+                                                        <select
+                                                            id="nationality"
+                                                            name="secondarySchoolCountry"
+                                                            autoComplete=""
+                                                            value={83}
+                                                            required
+                                                            className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        >
+                                                            {
+                                                                countryList.map((country, index) => (
+                                                                    <option key={index} value={index}>{country}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <AddUserInput  label="Language of institution:" name="secondarySchoolLanguage" 
+                                                        
+                                                        />
+                                                  
                                                 </div>
                                             </div>
                                         </div>
@@ -902,12 +741,11 @@ export default function AddUser() {
                             </div>
                         </div>
                         <div SectionSeparator />
-                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
                             <div className="md:grid md:grid-cols-3 md:gap-6">
                                 <div className="md:col-span-1">
-                                    <div className="px-4 sm:px-0">
-                                        <h3 className="text-base font-semibold leading-6 text-gray-900">MARITAL STATUS AND FAMILY INFORMATION</h3>
-                                        <p className="mt-1 text-sm text-gray-600">(Please select the appropriate)</p>
+                                <div className="px-4 sm:px-0">
+                                         <p className="mt-1 text-sm text-gray-600">Post-secondary and further education</p>
                                     </div>
                                 </div>
                                 <div className="mt-5 md:col-span-2 md:mt-0">
@@ -915,49 +753,114 @@ export default function AddUser() {
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
-                                                    <div className="col-span-6 flex items-center  ">
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Institution  attended:" name="postSchoolName" error={errors.nameOfLastSchoolAttended}
+                                                        
+                                                    />
+                                                    
+                                                    <AddUserInput label="Name of qualiﬁcation" placeholder="eg Year 12, HKDSE or ‘A’ Levels" name="postSchoolQualification" error={errors.schoolLevel}
+                                                       
+                                                    />
 
-                                                        {
-                                                            maritalStatuses.map((maritalStatus, index) => (
+<div className="col-span-6 flex items-center mb-3  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Completed:?
+                                                        </legend>
                                                                 <div className="flex items-center gap-x-2 mr-5">
                                                                     <input
-                                                                        id={maritalStatus.trim()}
-                                                                        name="maritalStatus"
+                                                                        id={"yes-radio"}
+                                                                        name="postSchoolCompleted"
+                                                                        value={"yes"}
                                                                         type="radio"
-                                                                        value="maritalStatus"
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
-                                                                    <label htmlFor={maritalStatus.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
-                                                                        {maritalStatus}
+                                                                    <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
                                                                     </label>
                                                                 </div>
-                                                            ))
-                                                        }
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"no-radio"}
+                                                                        name="postSchoolCompleted"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                                      
+
                                                     </div>
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} required={false} label="If Married ? Name of Spouse" name="nameOfSpouse" 
-                                                        // onChange={
-                                                        //     (e) => {
-                                                        //         const errorMessage = genericRequired(e.target.value)
-                                                        //         console.log(errorMessage)
-                                                        //         if (!errorMessage) {
-                                                        //             let tempErrors = { ...errors }
-                                                        //             delete tempErrors.nameOfSpouse
-                                                        //             setErrors(tempErrors)
-                                                        //             console.log(errors)
-                                                        //         }
-                                                        //         else {
-                                                        //             setErrors(
-                                                        //                 { ...errors, nameOfSpouse: errorMessage }
-                                                        //             )
-                                                        //         }
-                                                        //     }
-                                                        // }
-                                                    />
-                                                    {/* TODO: handle names of children */}
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="If “No”, when do you expect to complete" name="postExpectedCompleteData" error={errors.nameOfLastSchoolAttended}
+                                                        required={false}
+                                                        />
 
 
-                                                    {childrenList.map((childForm, index) => (
+
+<div className="col-span-6 flex items-center mb-3  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Have you previously undertaken any study in New Zealand?
+                                                        </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"yes-radio"}
+                                                                        name="underTakenStudyInNZ"
+                                                                        value={"yes"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"no-radio"}
+                                                                        name="underTakenStudyInNZ"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                                      
+
+                                                    </div>
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="If “Yes”, please attach details." name="previosStudyDetails"
+                                                            required={false}
+                                                        />
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+              
+                        <div SectionSeparator />
+                        <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">PROGRAMME SELECTION</h3>
+                                        {/* <p className="mt-1 text-sm text-gray-600">(Please select the appropriate)</p> */}
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div action="#" method="POST">
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                                <div className="grid grid-cols-6 gap-6">
+                                                 
+                                                    {/* {childrenList.map((childForm, index) => (
                                                         <>
                                                             <AddUserInput label={index == 0 && "Names of Children"} error={errors.hasOwnProperty("namesOfChildren")} name="namesOfChildren"
                                                                 onChange={
@@ -1015,8 +918,18 @@ export default function AddUser() {
                                                         </>
                                                     ))
 
-                                                    }
+                                                    } */}
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="" name="program1" 
+                                                        
+                                                        />
 
+<AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="" name="program2"
+                                                        
+                                                        />
+
+<AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="" name="program3"
+                                                        
+                                                        />
                                                 </div>
                                             </div>
                                         </div>
@@ -1501,7 +1414,6 @@ export default function AddUser() {
                                                         }
                                                     />
                                             
-
                                                 </div>
                                             </div>
                                         </div>
@@ -1770,9 +1682,9 @@ export default function AddUser() {
                                                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                 </svg>
                                                                 <div class="flex text-sm text-gray-600">
-                                                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                                    <label for="guranter-id-file-upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                                                         <span>Upload a file</span>
-                                                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                                                                        <input id="guranter-id-file-upload" name="guarantorIdUpload" type="file" accept="image/*" class="sr-only" />
                                                                     </label>
                                                                     <p class="pl-1">or drag and drop</p>
                                                                 </div>
@@ -1805,7 +1717,7 @@ export default function AddUser() {
                             <div className="md:grid md:grid-cols-3 md:gap-6">
                                 <div className="md:col-span-1">
                                     <div className="px-4 sm:px-0">
-                                        <h3 className="text-base font-semibold leading-6 text-gray-900">COUNTRIES OF INTEREST: (PLEASE WRITE)</h3>
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">FUTURE CAREER INTENTIONS</h3>
                                         <p className="mt-1 text-sm text-gray-600"></p>
                                     </div>
                                 </div>
@@ -1815,116 +1727,15 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
 
-                                                    {/* <div className="col-span-6 sm:col-span-3 lg:col-span-3">
+                                                  <div className="col-span-6 sm:col-span-3 lg:col-span-4">
                                                         <label htmlFor={""} className="block text-sm font-medium leading-6 text-gray-900">
-                                                            &nbsp;
+                                                        Brieﬂy explain your future career intentions upon completion of your
+university qualiﬁcation:
                                                         </label>
-                                                        <textarea name="countriesOfInterest" placeholder="eg: USA, Canada, Denmark" rows={3} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                                        </textarea> */}
-                                                    {/* </div> */}
-                                                    <AddUserInput label="Currrent Job" name="currentJob" error={errors.currentJob}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.currentJob
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, currentJob: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-
-                                                    <AddUserInput label="Skills" name="skills" placeholder="coding, writing, video editing" error={errors.skills}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.skills
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, skills: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
-                                                    />
-
-
-{countriesOfInterestList.map((country, index) => (
-                                                        <>
-                                                            <AddUserInput label={index == 0 && ""} placeholder="eg: USA, Canada, Denmark" error={errors.hasOwnProperty("countriesOfInterest")} name="countriesOfInterest"
-                                                                onChange={
-                                                                    (e) => {
-                                                                        countriesOfInterestList[index] = e.target.value
-                                                                        // const errorMessage = genericRequired(e.target.value)
-                                                                        // console.log(errorMessage)
-                                                                        // if (!errorMessage) {
-                                                                        //     let tempErrors = { ...errors }
-                                                                        //     delete tempErrors.namesOfChildren
-                                                                        //     setErrors(tempErrors)
-                                                                        //     console.log(errors)
-                                                                        // }
-                                                                        // else {
-                                                                        //     setErrors(
-                                                                        //         { ...errors, namesOfChildren: errorMessage }
-                                                                        //     )
-                                                                        // }
-                                                                    }
-                                                                }
-
-                                                            />
-                                                            <div className="flex items-end gap-x-3 ">
-
-                                                                {index == countriesOfInterestList.length - 1 && <button
-                                                                    onClick={() => {
-                                                                        const tempcountriesOfInterestList = [...countriesOfInterestList]
-                                                                        tempcountriesOfInterestList.push("")
-                                                                        console.log(tempcountriesOfInterestList)
-                                                                        setCountriesOfInterestList(tempcountriesOfInterestList)
-                                                                    }}
-                                                                    type="button"
-                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-indigo-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                                >
-                                                                    <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                                                                    Add
-                                                                </button>
-                                                                }
-                                                                {index != 0 && <button
-                                                                    onClick={() => {
-                                                                        const tempcountriesOfInterestList = [...countriesOfInterestList]
-                                                                        tempcountriesOfInterestList.splice(index, 1)
-                                                                        console.log(tempcountriesOfInterestList)
-                                                                        setCountriesOfInterestList(tempcountriesOfInterestList)
-                                                                    }}
-                                                                    type="button"
-                                                                    className="inline-flex justify-center  max-h-min items-center rounded-md border border-transparent text-red-600 px-3 py-2 text-sm font-medium leading-4 shadow-sm hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                                                                >
-                                                                    <MinusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                                                                    Remove
-                                                                </button>
-
-                                                                }
-                                                            </div>
-                                                        </>
-                                                    ))
-
-                                                    }
-
-
-
+                                                        <textarea name="careerIntensions" placeholder="" rows={3} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                        </textarea> 
+                                                    </div>
+                                                 
 
                                                 </div>
                                             </div>
@@ -1935,11 +1746,12 @@ export default function AddUser() {
                         </div >
                         <div SectionSeparator />
 
+                    
                         <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
                             <div className="md:grid md:grid-cols-3 md:gap-6">
                                 <div className="md:col-span-1">
                                     <div className="px-4 sm:px-0">
-                                        <h3 className="text-base font-semibold leading-6 text-gray-900"> JOB TYPE (PLEASE TICK)</h3>
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">ACCOMODATION</h3>
                                         <p className="mt-1 text-sm text-gray-600"></p>
                                     </div>
                                 </div>
@@ -1948,29 +1760,201 @@ export default function AddUser() {
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
-
-                                                    <div className="col-span-6   flex items-center">
-
-                                                        {
-                                                            jobTypes.map((jobType, index) => (
+                                                <div className="col-span-6 flex items-center   ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Do you require accommodation?
+                                                        </legend>
                                                                 <div className="flex items-center gap-x-2 mr-5">
                                                                     <input
-                                                                        id={jobType.trim()}
-                                                                        name="jobType"
+                                                                        id={"acc-req-yes-radio"}
+                                                                        name="accomodationRequired"
+                                                                        value={"yes"}
                                                                         type="radio"
-                                                                        value={jobType}
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
-                                                                    <label htmlFor={jobType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
-                                                                        {jobType}
+                                                                    <label htmlFor={"acc-req-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
                                                                     </label>
                                                                 </div>
-                                                            ))
-                                                        }
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"acc-req-no-radio"}
+                                                                        name="accomodationRequired"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"acc-req-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                              
+
                                                     </div>
 
+                                                    <div className="col-span-6 flex items-center  ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        If “Yes”, what type of accommodation?
+                                                        </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"acc-type-yes-radio"}
+                                                                        name="accomodationType"
+                                                                        value={"Campus"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"acc-type-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                    Campus
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"acc-type-no-radio"}
+                                                                        name="accomodationType"
+                                                                        value={"Own arrangements"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"acc-type-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                    Own arrangements
+                                                                    </label>
+                                                                </div>
+                                                      </div>
 
+                                                      <div className="col-span-6 flex items-center text-gray-800 text-sm ">
+                                                      Homestay
+                                                      <br />
+Once you accept your oﬀer, apply for campus accommodation
+at least two weeks before you arrive in the campus
+</div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div >
+                        <div SectionSeparator />
+
+                            <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">AIRPORT RECEPTION</h3>
+                                        <p className="mt-1 text-sm text-gray-600"></p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div>
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                                <div className="grid grid-cols-6 gap-6">
+                                                <div className="col-span-6 flex items-center   ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        Do you require airport pick-up?
+                                                        </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"airport-pickup-yes-radio"}
+                                                                        name="airportPickupRequired"
+                                                                        value={"yes"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"airport-pickup-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"airport-pickup-no-radio"}
+                                                                        name="airportPickupRequired"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"airport-pickup-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                              
+
+                                                    </div>
+
+                                                  
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div >
+                        <div SectionSeparator />
+                            <div className="mt-10 sm:mt-0 py-6 sm:px-6 lg:px-8">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <div className="px-4 sm:px-0">
+                                        <h3 className="text-base font-semibold leading-6 text-gray-900">REQUEST FOR LEARNING SUPPORT</h3>
+                                        <p className="mt-1 text-sm text-gray-600"></p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div>
+                                        <div className="overflow-hidden shadow sm:rounded-md">
+                                            <div className="bg-white px-4 py-5 sm:p-6">
+                                                <div className="grid grid-cols-6 gap-6">
+                                                <div className="col-span-6 flex items-center   ">
+                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                        If there is anything that may aﬀect your learning (for example, impairments to
+your mobility, sight, hearing, reading or writing), please notify us so that we
+can support you. Please indicate your needs on a separate sheet of paper and
+attach it to this application.
+                                                        </legend>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"req-learn-support-yes-radio"}
+                                                                        name="requestLearningSupport"
+                                                                        value={"yes"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"req-learn-support-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     Yes
+                                                                    </label>
+                                                                </div>
+                                                                <div className="flex items-center gap-x-2 mr-5">
+                                                                    <input
+                                                                        id={"req-learn-support-no-radio"}
+                                                                        name="requestLearningSupport"
+                                                                        value={"no"}
+                                                                        type="radio"
+                                                                        defaultChecked={false}
+                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                                                    />
+                                                                    <label htmlFor={"req-learn-support-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
+                                                                     No
+                                                                    </label>
+                                                                </div>
+                                              
+
+                                                    </div>
+
+                                                  
                                                 </div>
                                             </div>
 

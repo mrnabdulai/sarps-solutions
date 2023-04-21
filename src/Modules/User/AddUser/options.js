@@ -20,3 +20,8 @@ export const jobTypes = [
     "SKILLED",
     "UNSKILLED"
 ]
+
+
+export const titles =[
+    "Mr", "Mrs" , "Miss", "Ms", "Other"
+]
