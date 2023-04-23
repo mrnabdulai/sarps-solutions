@@ -46,7 +46,7 @@ function Sidebar() {
             { title: 'New application', to: '/user/add' },
             { title: 'Alls applications', to: '/app/applications/list' },
             { title: 'Worker Applications', to: '/app/applications/list' },
-            { title: 'Student Applications', to: '/app/applications/list' },
+            { title: 'Student Applications', to: 'applications-students/list' },
             // {title: 'Companies', to: '/app/screen'},
             // {title: 'Groups', to: '/app/screen'},
             // {title: 'Files', to: '/app/screen'},
