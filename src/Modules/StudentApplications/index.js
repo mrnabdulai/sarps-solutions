@@ -26,7 +26,7 @@ function StudentApplicationsList() {
         try {
             setFetching(true)
             setFetchError("")
-            const response = await Axios.get("/api/application/getApplications")
+            const response = await Axios.get("/api/student/getApplications")
             if (response.status == 403) {
                 localStorage.clear()
                 dispatch(doLogout())

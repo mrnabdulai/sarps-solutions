@@ -45,7 +45,7 @@ function AddUserInput({ label, onChange, value, type, name, placeholder, error, 
 AddUserInput.defaultProps = {
     type: "text",
     // TODO: make required true
-    required: true,
+    required: false,
     disabled: false,
     hasAutoComplete: false,
     colsSpanDef: "col-span-6 sm:col-span-3 relative",
