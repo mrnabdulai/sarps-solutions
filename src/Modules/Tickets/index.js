@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doSetTickets } from './duck/action'
 import { doLogout } from '../Auth/Login/duck/action'
+import { exportToPdf } from '../../Shared/utils/export_utils'
 
 function Tickets() {
     const navigate = useNavigate()
@@ -68,8 +69,9 @@ function Tickets() {
                     <div className='flex gap-x-2'>
                         <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
                         <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
-                        <ExportBtn Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />
-                    </div>
+                        <ExportBtn onClick={() => {
+                            exportToPdf(data, "Tickets")
+                        }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                      </div>
                     <AlSearchInput placeholder="Search " />
                 </div>
                 <table className="min-w-full divide-y divide-gray-300">

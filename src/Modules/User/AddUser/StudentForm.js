@@ -240,7 +240,8 @@ export default function StudentForm() {
             const response = await Axios.post("/api/student/addApplication", formData, {
                 
                     headers: {
-                      'Content-Type': 'multipart/form-data'
+                      'Content-Type': 'multipart/form-data',
+                      
                     }
                 
             })

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doLogout } from '../Auth/Login/duck/action'
-
+import { exportToPdf } from '../../Shared/utils/export_utils'
 function StudentApplicationsList() {
     const navigate = useNavigate()
     const [data, setData] = useState([])
@@ -53,6 +53,8 @@ function StudentApplicationsList() {
     const doneFetchingAndHasData = () => {
         return !fetching && data.length > 0
     }
+
+   
     return (
         <section className='pr-5'>
             <div className="items-center flex justify-between mb-5">
@@ -68,7 +70,9 @@ function StudentApplicationsList() {
                     <div className='flex gap-x-2'>
                         <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
                         <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
-                        <ExportBtn Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />
+                        <ExportBtn onClick={() => {
+                            exportToPdf(data, "Student Applications")
+                        }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />
                     </div>
                     <AlSearchInput placeholder="Search " />
                 </div>

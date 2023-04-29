@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 // import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
 import {  doSetStaff } from './duck/action'
+import { exportToPdf } from '../../Shared/utils/export_utils'
 // import { doSetPayouts } from './duck/action'
 // import { doSetComplaints } from './duck/action'
 // import { doLogout } from '../Auth/Login/duck/action'
@@ -70,8 +71,9 @@ function Staff() {
                     <div className='flex gap-x-2'>
                         <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
                         <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
-                        <ExportBtn Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />
-                    </div>
+                        <ExportBtn onClick={() => {
+                            exportToPdf(data, "Staff")
+                        }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                      </div>
                     <AlSearchInput placeholder="Search " />
                 </div>
                 <table className="min-w-full divide-y divide-gray-300">
