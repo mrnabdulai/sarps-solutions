@@ -441,7 +441,7 @@ export default function EditStudentApplicationForm() {
                                                     <div className="col-span-6 sm:col-span-3">
                                                         <label class="block text-sm font-medium text-gray-700">Upload Passport Photo</label>
                                                         <label for="passport-file-upload" class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300  pt-7 pb-8 	w-5/6 h-60">
-                                                        <input required={passportFile  == null} onChange={(e)=>{
+                                                        <input  onChange={(e)=>{
                                                                             const {files} = e.target
                                                                             console.log(files)
                              console.log(files)
