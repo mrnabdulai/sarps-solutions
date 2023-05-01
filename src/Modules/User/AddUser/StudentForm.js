@@ -221,8 +221,14 @@ export default function StudentForm() {
             guarantor_placeofwork: guarantorPlaceOfWork,
             guarantor_name_contact_of_employer: guarantorEmployerDetails,
             guarantor_ID: guarantorIdNumber,
-            
-            agent_code: agentCode
+            career_intentions:careerIntensions,
+            airport_reception:airportPickupRequired,
+            require_accommodation:accomodationRequired,
+            type_of_accommodation:accomodationType,
+            request_for_learning_support:requestLearningSupport,
+            agent_code: agentCode,
+
+
             // reg_status: "pending",
             // payment_status: "not_paid",
             // payment_method: "null",

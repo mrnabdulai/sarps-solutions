@@ -77,7 +77,7 @@ export default function EditStudentApplicationForm() {
         const dob = e.target.dob.value
         const gender = e.target.gender.value
         const email = e.target.email.value
-        const password = e.target.password.value
+        // const password = e.target.password.value
         const address = e.target.address.value
         const mobilePhone = e.target.mobilePhone.value
         const homePhone = e.target.homePhone.value
@@ -183,7 +183,7 @@ export default function EditStudentApplicationForm() {
             dob, 
             gender, 
             email, 
-            password, 
+            // password, 
             address, 
             phone:mobilePhone, 
             home_telephone:homePhone, 
@@ -239,7 +239,12 @@ export default function EditStudentApplicationForm() {
             guarantor_placeofwork: guarantorPlaceOfWork,
             guarantor_name_contact_of_employer: guarantorEmployerDetails,
             guarantor_ID: guarantorIdNumber,
-            
+            career_intentions:careerIntensions,
+            airport_reception:airportPickupRequired,
+            require_accommodation:accomodationRequired,
+            type_of_accommodation:accomodationType,
+            request_for_learning_support:requestLearningSupport,
+            agent_code: agentCode,
             agent_code: agentCode
             // reg_status: "pending",
             // payment_status: "not_paid",
@@ -255,7 +260,7 @@ export default function EditStudentApplicationForm() {
         try {
             setSubmitError("")
             setIsSubmitting(true)
-            const response = await Axios.post("/api/student/addApplication", formData, {
+            const response = await Axios.put(`/api/application/updateApplication/${applicationData.id}`, formData, {
                 
                     headers: {
                       'Content-Type': 'multipart/form-data',
@@ -1809,7 +1814,7 @@ export default function EditStudentApplicationForm() {
                                                         Brieﬂy explain your future career intentions upon completion of your
 university qualiﬁcation:
                                                         </label>
-                                                        <textarea name="careerIntensions" placeholder="" rows={3} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                        <textarea name="careerIntensions" placeholder="" rows={3} value={applicationData.career_intentions} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                                         </textarea> 
                                                     </div>
                                                  
@@ -1847,6 +1852,7 @@ university qualiﬁcation:
                                                                         name="accomodationRequired"
                                                                         value={"yes"}
                                                                         type="radio"
+                                                                        checked={applicationData.require_accommodation == "yes"}
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -1860,6 +1866,8 @@ university qualiﬁcation:
                                                                         name="accomodationRequired"
                                                                         value={"no"}
                                                                         type="radio"
+                                                                        checked={applicationData.require_accommodation == "no"}
+
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -1881,6 +1889,8 @@ university qualiﬁcation:
                                                                         name="accomodationType"
                                                                         value={"Campus"}
                                                                         type="radio"
+                                                                        checked={applicationData.type_of_accommodation == "Campus"}
+
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -1894,6 +1904,8 @@ university qualiﬁcation:
                                                                         name="accomodationType"
                                                                         value={"Own arrangements"}
                                                                         type="radio"
+                                                                        checked={applicationData.type_of_accommodation == "Own arrangements"}
+
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -1945,6 +1957,8 @@ at least two weeks before you arrive in the campus
                                                                         name="airportPickupRequired"
                                                                         value={"yes"}
                                                                         type="radio"
+                                                                        checked={applicationData.airport_reception == "yes"}
+
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -1958,6 +1972,7 @@ at least two weeks before you arrive in the campus
                                                                         name="airportPickupRequired"
                                                                         value={"no"}
                                                                         type="radio"
+                                                                        checked={applicationData.airport_reception == "no"}
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
@@ -2006,6 +2021,8 @@ attach it to this application.
                                                                         id={"req-learn-support-yes-radio"}
                                                                         name="requestLearningSupport"
                                                                         value={"yes"}
+                                                                        checked={applicationData.request_for_learning_support == "yes"}
+
                                                                         type="radio"
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
@@ -2019,6 +2036,8 @@ attach it to this application.
                                                                         id={"req-learn-support-no-radio"}
                                                                         name="requestLearningSupport"
                                                                         value={"no"}
+                                                                        checked={applicationData.request_for_learning_support == "no"}
+
                                                                         type="radio"
                                                                         defaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"

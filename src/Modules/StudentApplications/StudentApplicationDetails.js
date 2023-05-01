@@ -150,7 +150,7 @@ export default function StudentApplicationDetails() {
                                         <AlBadge status={data.reg_status} statusText={data.reg_status} />
                                     </div>
                                     <p className="text-sm font-medium text-gray-500">
-                                        Applied   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
+                                        Applied   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")} by Agent #{data.agent_code}</time>
                                     </p>
                                     <div className="mt-2">
                                         <span className="inline-block mr-3 text-sm font-medium">Payment Status:</span>
@@ -176,7 +176,16 @@ export default function StudentApplicationDetails() {
                                     onClick={handleUpdate}
                                     className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3  font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                                 >
-                                    Update
+                                    Update Status
+                                </button>
+                                <button
+                                    type="button"
+                                    autoFocus={true}
+                                    onClick={handleUpdate}
+                                    className="inline-flex items-center justify-center rounded-md border border-transparent border-blue-600 px-8 py-3  outline-blue-500 font-medium text-blue-600 shadow-sm hover:outline-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                                >
+                                
+                                   Edit Application
                                 </button>
                             </div>
 
@@ -199,16 +208,64 @@ export default function StudentApplicationDetails() {
                                         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                                             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.phone}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Title</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.title}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Other Phone</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.otherPhone ? data.otherPhone : "N/A"}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Family Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.family_name ? data.family_name : "N/A"}</dd>
                                                 </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Given Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.given_name}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Preferred Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.preferred_name}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
+                                                    {/* <dd className="mt-1 text-sm text-gray-900">{moment(data.dob, "MMM dd,YYY ")}</dd> */}
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.dob}</dd>
+                                                </div>
+
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Gender</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.gender}</dd>
+                                                </div>
+
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Email</dt>
                                                     <dd className="mt-1 text-sm text-gray-900">{data.email}</dd>
+                                                </div>
+
+
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                                BASIC INFORMATION
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Title</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.title}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Family Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.family_name ? data.family_name : "N/A"}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Given Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.given_name}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+                                                    <dt className="text-sm font-medium text-gray-500">Preferred Name</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.preferred_name}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
                                                     <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
@@ -228,80 +285,28 @@ export default function StudentApplicationDetails() {
                                                     <dd className="mt-1 text-sm text-gray-900">{data.hometown}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Occupation</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.occupation}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Email</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.email}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Residence</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.residence}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Address</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.address}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Citizenship</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.citizenship}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.phone}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Religion</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.religion}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Home Phone</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.home_telephone}</dd>
                                                 </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Postal Address</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.postalAddress}</dd>
-                                                </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Id Type</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.typeofId}</dd>
-                                                </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Passport No.</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.passportNo}</dd>
-                                                </div>
-
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Date of Issue</dt>
-                                                    {/* <dd className="mt-1 text-sm text-gray-900">{moment(data.dateofissue, "dd/mm/yy").format("MMM ddd,YYYY")}</dd> */}
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.dateOfIssue}</dd>
-                                                </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Date of Expiry</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.dateofexpiry}</dd>
-                                                </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Place of Issue</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.placeofissue}</dd>
-                                                </div>
-
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Languages Spoken</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.languages}</dd>
-                                                </div>
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Height</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.height}ft</dd>
-                                                </div>
-
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Weight</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.height}kg</dd>
-                                                </div>
-
-
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Hair Color</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.hairColor}</dd>
-                                                </div>
-
-                                                <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Eye Color</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.eyeColor}</dd>
-                                                </div>
-
-
 
                                             </dl>
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                                EDUCATION & WORK EXPERIENCE
+                                                CONTACT DETAILS
+
 
 
                                             </h2>
@@ -310,34 +315,185 @@ export default function StudentApplicationDetails() {
                                         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                                             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Name of Last School Attended</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.lastSchool}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Address</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.address}</dd>
                                                 </div>
 
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Level</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.levelOfEducation}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.phone}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Date Attended From</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.dateAttendedFrom}</dd>
+                                                    <dt className="text-sm font-medium text-gray-500">Home Phone</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.home_telephone}</dd>
                                                 </div>
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                                NATIONALITY/CITIZENSHIP
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
 
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Date Attended To</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.dateAttendedTo}</dd>
+
+                                                    <dt className="text-sm font-medium text-gray-500">Nationality</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.nationality}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Country Of Birth</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.country_of_birth}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Passport Number</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.passport_no}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Other Countries CitizenShip</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.other_countries_citizenship}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Do you hold Permanent Resident status in New Zealand or Australia?</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.permanent_resident_status}</dd>
                                                 </div>
 
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                                ENGLISH PROFICIENCY
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
 
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Qualification</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.qualification}</dd>
+
+                                                    <dt className="text-sm font-medium text-gray-500">IELTS or TOEFL score</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.ielts_toefl_score}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Other Proficiency Score</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.other_proficiency_score}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Will you be studying English in New Zealand before starting at UCIC?</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.studying_english}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">If “Yes”, name of school:</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.school_name}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">When? (Dates)</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.start_date}</dd>
                                                 </div>
 
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                                EDUCATION DETAILS (Secondary Education – highest level achieved)
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Work Experience</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.workExperience}</dd>
+
+                                                    <dt className="text-sm font-medium text-gray-500">School attended</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.school_attended}</dd>
                                                 </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Name of qualiﬁcation</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.name_of_qualification}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Country</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.country}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Language of Institution</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.language_of_instruction}</dd>
+                                                </div>
+
+
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                            Post-secondary and further education
+
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Institution attended</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.institution_attended}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Name of qualiﬁcation</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.name_of_qualification}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Completed?</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.completed}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Expected Completion Date</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.expected_completion_date}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Have you previously undertaken any study in New Zealand?</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.taken_study_in_newzealand}</dd>
+                                                </div>
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Attached Details for Study</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.attach_details}</dd>
+                                                </div>
+
 
                                             </dl>
                                         </div>
@@ -591,29 +747,121 @@ export default function StudentApplicationDetails() {
                                             </h2>
                                             {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
                                         </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                            FUTURE CAREER INTENTIONS
+
+
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
                                         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                                             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
 
-                                                <div className="sm:col-span-2">
-                                                    <dt className="text-sm font-medium text-gray-500">Countries of Inteerest</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">
-                                                        {data.countries_of_interest}
-                                                    </dd>
+                                                <div className="sm:col-span-1">
+
+                                                    {/* <dt className="text-sm font-medium text-gray-500">Institution attended</dt> */}
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.career_intentions}</dd>
+                                                </div>
+                                         
+
+
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                            ACCOMODATION
+
+
+
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Accomodation Required</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.require_accommodation}</dd>
                                                 </div>
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Current Job </dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.current_job}</dd>
+
+                                                    <dt className="text-sm font-medium text-gray-500">Type of  Accomodation</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.type_of_accommodation}</dd>
                                                 </div>
-                                                <div className="sm:col-span-2">
-                                                    <dt className="text-sm font-medium text-gray-500">Skills</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">
-                                                        {data.skills}
-                                                    </dd>
-                                                </div>
+                                         
+
+
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                            AIRPORT RECEPTION
+
+
+
+
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+
                                                 <div className="sm:col-span-1">
-                                                    <dt className="text-sm font-medium text-gray-500">Job Type </dt>
-                                                    <dd className="mt-1 text-sm text-gray-900">{data.job_type}</dd>
+
+                                                    <dt className="text-sm font-medium text-gray-500">Airport Pickup Required</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.airport_reception}</dd>
                                                 </div>
+                                              
+                                         
+
+
+                                            </dl>
+                                        </div>
+                                        <div className="px-4 py-5 sm:px-6">
+                                            <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
+                                            REQUEST FOR LEARNING SUPPORT
+
+
+
+
+
+
+
+
+
+
+                                            </h2>
+                                            {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
+                                        </div>
+                                        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+
+                                                <div className="sm:col-span-1">
+
+                                                    <dt className="text-sm font-medium text-gray-500">Learning Support Request Details</dt>
+                                                    <dd className="mt-1 text-sm text-gray-900">{data.request_for_learning_support}</dd>
+                                                </div>
+                                              
+                                         
+
+
                                             </dl>
                                         </div>
 
