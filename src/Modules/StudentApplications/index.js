@@ -183,9 +183,11 @@ function StudentApplicationsList() {
                                 <td className="py-4 text-right text-sm font-medium ">
                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >
                                         <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
-                                            navigate("/app/applications/" + application.id)
+                                            navigate("/app/applications-students/" + application.id)
                                         }} />
-                                        <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" />
+                                        <AlIconButton onClick={() => {
+                                            navigate("/app/applications-students/edit/" + application.id)
+                                        }} Icon={PencilSquareIcon} colorClass="text-yellow-400" />
                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
                                     </div>
 

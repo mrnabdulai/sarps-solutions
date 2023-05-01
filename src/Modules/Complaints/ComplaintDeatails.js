@@ -134,7 +134,7 @@ export default function ComplaintDetails() {
                                         <AlBadge status={data.status} statusText={data.status} />
                                     </div>
                                     <p className="text-sm font-medium text-gray-500">
-                                        Complaint made on   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
+                                        Ticket made on   on <time dateTime={data.createdAt}>{format(Date.parse(data.createdAt), "MMM dd,YYY ")}</time>
                                     </p>
                                    
                                 </div>
@@ -160,7 +160,7 @@ export default function ComplaintDetails() {
                                 <section aria-labelledby="applicant-information-title">
                                 <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-4">
       <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Complaint Details</h3>
+        <h3 className="text-lg font-medium leading-6 text-gray-900">Ticket Details</h3>
         {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p> */}
       </div>
       <div className="border-t border-gray-200 px-4 py-5 sm:p-0">

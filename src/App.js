@@ -49,6 +49,8 @@ import AddAccountReceivable from './Modules/AccountsReceivable/AddAccountReceiva
 import AccountReceivableDetails from './Modules/AccountsReceivable/AccountReceivableDetails';
 import StudentForm from './Modules/User/AddUser/StudentForm';
 import StudentApplicationsList from './Modules/StudentApplications';
+import EditStudentApplicationForm from './Modules/StudentApplications/EditStudentForm';
+import StudentApplicationDetails from './Modules/StudentApplications/StudentApplicationDetails';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -96,6 +98,8 @@ function App() {
           {/* Application routes */}
           <Route path='applications/list' element={<ApplicationList />} />
           <Route path='applications-students/list' element={<StudentApplicationsList />} />
+          <Route path='applications-students/edit/:id' element={<EditStudentApplicationForm />} />
+          <Route path='applications-students/:id' element={<StudentApplicationDetails />} />
           <Route path='applications/:id' element={<ApplicationDetails />} />
           <Route path="clients/list" element={<ClientList />} />
 

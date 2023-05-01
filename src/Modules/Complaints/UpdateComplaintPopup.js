@@ -107,9 +107,9 @@ export default function UpdateComplaintPopup({ onUpdateConfirm, open, setOpen , 
               {/* < className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"> */}
               <Dialog.Panel className="bg-white shadow sm:rounded-lg relative transform overflow-hidden rounded-lg  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
       <div className="px-4 py-5 sm:p-6">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Update complaint status</h3>
+        <h3 className="text-lg font-medium leading-6 text-gray-900">Update ticket status</h3>
         <div className="mt-2 max-w-xl text-sm text-gray-500">
-          <p>Select new status for this complaint</p>
+          <p>Select new status for this ticket</p>
         </div>
         <div className="mt-5 sm:flex sm:items-center">
           <div className="w-full sm:max-w-xs">

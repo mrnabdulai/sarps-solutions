@@ -50,7 +50,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function StudentApplicationDetails() {
     const [data, setData] = useState({})
     const [timeline, setTimeline] = useState([])
     const [updateOpen, setUpdateOpen] = useState(false)

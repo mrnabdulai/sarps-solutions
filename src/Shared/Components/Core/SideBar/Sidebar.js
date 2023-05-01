@@ -53,7 +53,7 @@ function Sidebar() {
 
           ]}
         />
-        <SideBarAction Icon={ChatBubbleLeftEllipsisIcon} isAlert={false} to="/app/complaints" text="Complaints" />
+        <SideBarAction Icon={ChatBubbleLeftEllipsisIcon} isAlert={false} to="/app/complaints" text="Tickets" />
 
 
         <SideBarAction Icon={WalletIcon} isAlert={false} to="/app/payouts" text="Payouts"
