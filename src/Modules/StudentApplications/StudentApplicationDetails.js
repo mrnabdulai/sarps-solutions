@@ -60,6 +60,8 @@ export default function StudentApplicationDetails() {
     const [updateSuccess, setUpdateSuccess] = useState("")
     const [selectedStatus, setSelectedStatus] = useState("accepted")
     const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("not_paid")
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
+    const [selectedPaidAmount, setSelectedPaidAmount] = useState(0)
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -82,7 +84,9 @@ export default function StudentApplicationDetails() {
             setIsUpdating(true)
             const response = await Axios.put(`/api/student/updateApplication/${id}`, {
                 reg_status: selectedStatus,
-                payment_status: selectedPaymentStatus
+                payment_status: selectedPaymentStatus,
+                payment_method: selectedPaymentMethod,
+                paid_amount: selectedPaidAmount,
             })
             console.log("this is the response data")
             console.log(response)
@@ -120,6 +124,8 @@ export default function StudentApplicationDetails() {
         setTimeline(tempTimelines)
         setData(paramsList[indexOfThisApplication])
         setSelectedStatus(paramsList[indexOfThisApplication].reg_status)
+        setSelectedPaymentMethod(paramsList[indexOfThisApplication].payment_method)
+        setSelectedPaidAmount(paramsList[indexOfThisApplication].total)
         if(paramsList[indexOfThisApplication].payment_status != null) setSelectedPaymentStatus(paramsList[indexOfThisApplication].payment_status)
     }, [])
     const mapPaymentStatusToStatus = () => {
@@ -166,7 +172,7 @@ export default function StudentApplicationDetails() {
                                     </div>  } */}
                                     {data.payment_method != null && <div className="mt-2 flex gap-x-2 items-center">
                                         <span className="inline-block  text-sm font-medium">Payment Method:</span>
-                                        <span className="inline-block  text-sm  text-gray-700">{"Mobile Money"}</span>
+                                        <span className="inline-block  text-sm  text-gray-700">{sentenceCase(data.payment_method)}</span>
                                         <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
                                     </div>}
                                 </div>
@@ -937,7 +943,7 @@ export default function StudentApplicationDetails() {
                             </section>
                         </div>
                     </main>}
-                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} />
+                    <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} selectedPaymentMethod={selectedPaymentMethod} setSelectedPaymentMethod={setSelectedPaymentMethod} selectedPaidAmount={selectedPaidAmount} setSelectedPaidAmount={setSelectedPaidAmount} />
                 </div>
                 {updateError && <ErrorNotification errorMessage={updateError} />}
                 {updateSuccess && <SuccessNotification message={updateSuccess} />}

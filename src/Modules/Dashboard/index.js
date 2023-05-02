@@ -36,8 +36,8 @@ function Dashboard() {
       console.log(totalApplicationsResponse)
       console.log(totalVisaProcessesResponse)
       const applicationStats = [
-        {title: 'Total Applications', value: totalApplicationsResponse.data, icon:UsersIcon, color: 'bg-green-500', changeType: 'increase', change: '122'},
-        {title: 'Total Visa Applications', value: totalVisaProcessesResponse.data, icon:BuildingOffice2Icon, color: 'bg-green-500', changeType: 'increase', change: '24'},
+        {title: 'Total Visa Applications', value: totalApplicationsResponse.data, icon:UsersIcon, color: 'bg-green-500', changeType: 'increase', change: '122'},
+        {title: 'Total Student Applications', value: totalVisaProcessesResponse.data, icon:BuildingOffice2Icon, color: 'bg-green-500', changeType: 'increase', change: '24'},
     ]
     const summaryStats = [
       {title: 'Total Completed Applications', value: totalCompletedApplicationsResponse.data, icon:CheckCircleIcon, color: 'bg-green-500'}, 
