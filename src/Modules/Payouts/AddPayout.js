@@ -79,6 +79,7 @@ export default function AddPayout() {
                                         type="number"
                                         name="amount"
                                         id="amount"
+                                        
                                         className="block w-full max-w-lg rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                         placeholder=""
                                     />

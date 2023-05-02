@@ -80,7 +80,7 @@ export default function StudentApplicationDetails() {
         try {
             setUpdateError("")
             setIsUpdating(true)
-            const response = await Axios.put(`/api/application/updateApplication/${id}`, {
+            const response = await Axios.put(`/api/student/updateApplication/${id}`, {
                 reg_status: selectedStatus,
                 payment_status: selectedPaymentStatus
             })
@@ -120,8 +120,10 @@ export default function StudentApplicationDetails() {
         setTimeline(tempTimelines)
         setData(paramsList[indexOfThisApplication])
         setSelectedStatus(paramsList[indexOfThisApplication].reg_status)
+        if(paramsList[indexOfThisApplication].payment_status != null) setSelectedPaymentStatus(paramsList[indexOfThisApplication].payment_status)
     }, [])
     const mapPaymentStatusToStatus = () => {
+        if(data.payment_status == null) return "rejected"
         if (data.payment_status === "not_paid") return "rejected"
         if (data.payment_status === "part_payment") return "pending"
         if (data.payment_status === "paid") return "success"
@@ -154,7 +156,7 @@ export default function StudentApplicationDetails() {
                                     </p>
                                     <div className="mt-2">
                                         <span className="inline-block mr-3 text-sm font-medium">Payment Status:</span>
-                                        <AlBadge status={"rejected"} statusText={"Not paid"} />
+                                        <AlBadge status={mapPaymentStatusToStatus()} statusText={data.payment_status == null ? "Not paid" : sentenceCase(data.payment_status)} />
 
                                     </div>
                                     {/* {data.payment_method != null  && <div className="mt-2 flex gap-x-2 items-center">
@@ -181,7 +183,10 @@ export default function StudentApplicationDetails() {
                                 <button
                                     type="button"
                                     autoFocus={true}
-                                    onClick={handleUpdate}
+                                    onClick={()=>{
+                                        navigate("/app/applications-students/edit/" + data.id)
+
+                                    }}
                                     className="inline-flex items-center justify-center rounded-md border border-transparent border-blue-600 px-8 py-3  outline-blue-500 font-medium text-blue-600 shadow-sm hover:outline-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                                 >
                                 

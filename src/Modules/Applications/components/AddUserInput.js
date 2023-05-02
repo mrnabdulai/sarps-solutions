@@ -2,7 +2,7 @@ import React from 'react'
 import { useId } from 'react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
 
-function AddUserInput({ label, onChange, value, type, name, placeholder, error, trailing, required, disabled, className, hasAutoComplete, colsSpanDef, endAdorment, ...props }) {
+function AddUserInput({ label, onChange, value, type, name, placeholder, error, trailing, required, disabled, className, hasAutoComplete, colsSpanDef, endAdorment,defaultValue, ...props }) {
     const labelId = useId()
     function showStar(){
         if(label && required){
@@ -22,13 +22,14 @@ function AddUserInput({ label, onChange, value, type, name, placeholder, error, 
                 <input
                     type={type ??= "text"}
                     name={name}
-                    value={value}
+                    // value={value}
                     onChange={onChange}
                     id={labelId.toString()}
                     autoComplete={hasAutoComplete ? "on" : "off"}
                     required={required}
                     disabled={disabled}
                     placeholder={placeholder}
+                    defaultValue={defaultValue}
                     className={`mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 ${error ? "ring-error focus:ring-error" : ""} sm:text-sm sm:leading-6 ${className}}`}
                 />
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

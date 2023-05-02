@@ -16,21 +16,23 @@
 import { Switch } from "@headlessui/react";
 import LoadingOverlay from 'react-loading-overlay';
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { nationalities } from "../../../Shared/utils/countries";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { nationalities } from "../../Shared/utils/countries";
 import AddUserInput from "./components/AddUserInput";
 import FormSectionSeparator from "./components/FormSectionSeparator";
 import { PlusIcon, MinusIcon } from '@heroicons/react/20/solid'
 
 import { idTypes, maritalStatuses, applicantRelations, jobTypes } from "./options";
-import { genericRequired, getOtherNamesValidator, getSurnameValidator, phoneValidator, genericMetricValidator, emailValidator, passwordValidator } from "../../../Shared/utils/validators";
-import Axios from "../../../Shared/utils/axios_instance";
-import ErrorNotification from '../../../Shared/Components/ErrorNotification'
+import { useSelector } from 'react-redux'
+
+import { genericRequired, getOtherNamesValidator, getSurnameValidator, phoneValidator, genericMetricValidator, emailValidator, passwordValidator } from "../../Shared/utils/validators";
+import Axios from "../../Shared/utils/axios_instance";
+import ErrorNotification from '../../Shared/Components/ErrorNotification'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-export default function AddUser() {
+export default function EditApplicationForm() {
     const accountTypes = ["Type A", "Type B"];
     const [welcomeEmail, setWelcomeEmail] = useState(false)
     const [childrenList, setChildrenList] = useState([
@@ -43,6 +45,26 @@ export default function AddUser() {
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState("")
+
+    const [applicationData, setAppliationData] =  useState({})
+
+    const { id } = useParams()
+
+const paramsList = useSelector(state => state.applicationsReducer.applications)
+
+    useEffect(() => {
+
+        const indexOfThisApplication = paramsList.findIndex((application) => {
+            return application.id == id
+        })
+        const tempTimelines = []
+        //TODO: do timeline algorithms and stuff
+        console.log(paramsList[indexOfThisApplication])
+        setAppliationData(paramsList[indexOfThisApplication])
+        setChildrenList(paramsList[indexOfThisApplication].children)
+        setCountriesOfInterestList(paramsList[indexOfThisApplication].countries_of_interest)
+        // setSelectedStatus(paramsList[indexOfThisApplication].reg_status)
+    }, [])
     // const [selectedP]
     const handleSubmit = async (e) => {
         // const formData = {
@@ -62,7 +84,7 @@ export default function AddUser() {
         const phone = e.target.phone.value
         const otherPhone = e.target.otherPhone.value
         const email = e.target.email.value
-        const password = e.target.password.value 
+        // const password = e.target.password.value 
         const religion = e.target.religion.value
         const postalAddress = e.target.postalAddress.value
         const idType = e.target.idType.value
@@ -165,14 +187,14 @@ export default function AddUser() {
             typeofId: idType,
             passportNo: passportNumber,
             dateofissue: doIssue,
-            placeofissue: doExpiry,
-            dateofexpiry: placeOfIssue,
+            placeofissue: placeOfIssue,
+            dateofexpiry: doExpiry,
             languages: languagesSpoken,
             height,
             weight,
             hairColor: hairColour,
             eyeColor: eyeColour,
-            password: password,
+            // password: password,
             lastSchool: nameOfLastSchoolAttended,
             levelOfEducation: schoolLevel,
             dateAttendedFrom: schoolDateAttendedFrom,
@@ -223,7 +245,7 @@ export default function AddUser() {
         try {
             setSubmitError("")
             setIsSubmitting(true)
-            const response = await Axios.post("/api/application/addApplication", data)
+            const response = await Axios.put(`/api/application/updateApplication/${applicationData.id}`, data)
             console.log(response.data)
             setIsSubmitting(false)
 
@@ -273,7 +295,8 @@ export default function AddUser() {
             text="Submitting your form ........"
         >
             <form onSubmit={handleSubmit} className="pt-5">
-
+            <span class="-mb-1 block bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text pb-1 text-transparent text-3xl font-bold">Edit Application</span>
+            <hr className="mt-2 mb-5"/>
                 <div className="mb-20">
                     <h4 className="font-bold text-2xl mb-5 ml-8">PERSONAL INFORMATION</h4>
                     <div className="bg-gray-100 mx-auto max-w-7xl rounded-xl">
@@ -291,6 +314,7 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" placeholder="" name="surname" error={errors.surname}
+                                                       defaultValue={applicationData.surname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -310,6 +334,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="otherNames" error={errors.otherNames}
+                                                                 defaultValue={applicationData.otherNames}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -338,6 +363,7 @@ export default function AddUser() {
                                                             }}
                                                             type="date"
                                                             name="dob"
+                                                            defaultValue={applicationData.dob}
                                                             id="dob"
                                                             autoComplete=""
                                                             required
@@ -352,7 +378,8 @@ export default function AddUser() {
                                                             id="nationality"
                                                             name="nationality"
                                                             autoComplete=""
-                                                            value={70}
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.nationality)}                                                        
+
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             required
                                                         >
@@ -370,6 +397,7 @@ export default function AddUser() {
                                                         <select
                                                             id="gender"
                                                             name="gender"
+                                                            defaultValue={applicationData.gender}
                                                             autoComplete=""
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             required
@@ -379,6 +407,7 @@ export default function AddUser() {
                                                         </select>
                                                     </div>
                                                     <AddUserInput label="Hometown" name="hometown" error={errors.hometown}
+                                                           defaultValue={applicationData.hometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -398,6 +427,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" name="occupation" error={errors.occupation}
+                                                           defaultValue={applicationData.occupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -417,6 +447,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Residence" name="residence" error={errors.residence}
+                                                           defaultValue={applicationData.residence}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -436,6 +467,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Citizenship" name="citizenship" placeholder="eg: Ghanaian" error={errors.citizenship}
+                                                      defaultValue={applicationData.citizenship}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -455,6 +487,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Phone" name="phone" placeholder="eg: +233 55 xxx xxxx" error={errors.phone}
+                                                       defaultValue={applicationData.phone}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -474,6 +507,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Phone" placeholder="eg: +233 55 xxx xxxx" name="otherPhone" required={false} error={errors.otherPhone}
+                                                      defaultValue={applicationData.otherPhone}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -493,6 +527,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
+                                                        defaultValue={applicationData.email}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = emailValidator(e.target.value)
@@ -511,7 +546,7 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Passowrd" type="password" name="password" required={true} error={errors.password}
+                                                    {/* <AddUserInput label="Passowrd" type="password" name="password" required={true} error={errors.password}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = passwordValidator(e.target.value)
@@ -529,8 +564,9 @@ export default function AddUser() {
                                                                 }
                                                             }
                                                         }
-                                                    />
+                                                    /> */}
                                                     <AddUserInput label="Religion" name="religion" required={false} error={errors.religion}
+                                                       defaultValue={applicationData.religion}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -550,6 +586,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Postal address" name="postalAddress" error={errors.postalAddress}
+                                                        defaultValue={applicationData.postalAddress}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -580,7 +617,7 @@ export default function AddUser() {
                                                                         name="idType"
                                                                         value={idType}
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        defaultdefaultChecked={idType == applicationData.typeofId}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -591,6 +628,7 @@ export default function AddUser() {
                                                         }
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} label="Passport No." name="passportNumber" error={errors.passportNumber}
+                                                              defaultValue={applicationData.passportNo}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -617,12 +655,14 @@ export default function AddUser() {
                                                             type="date"
                                                             name="doIssue"
                                                             id="do-issue"
+                                                            defaultValue={applicationData.dateofissue}
                                                             autoComplete=""
                                                             required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} label="Place of Issue" name="placeOfIssue" error={errors.placeOfIssue}
+                                                        defaultValue={applicationData.placeofissue}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -649,6 +689,7 @@ export default function AddUser() {
                                                             type="date"
                                                             name="doExpiry"
                                                             id="do-expriry"
+                                                            defaultValue={applicationData.dateofexpiry}
                                                             autoComplete=""
                                                             required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -664,6 +705,7 @@ export default function AddUser() {
                                                             name="languagesSpoken"
                                                             id="languages-spoken"
                                                             required
+                                                            defaultValue={applicationData.languages}
                                                             placeholder="eg: English, French, Arabic"
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
@@ -674,6 +716,7 @@ export default function AddUser() {
                                                                 <span class="text-gray-500 sm:text-sm" id="price-currency">ft</span>
 
                                                             }
+                                                            defaultValue={applicationData.height}
                                                             onChange={
                                                                 (e) => {
                                                                     const errorMessage = genericMetricValidator(e.target.value)
@@ -697,6 +740,7 @@ export default function AddUser() {
                                                                 <span class="text-gray-500 sm:text-sm" id="price-currency">kg</span>
 
                                                             }
+                                                            defaultValue={applicationData.weight}
                                                             onChange={
                                                                 (e) => {
                                                                     const errorMessage = genericMetricValidator(e.target.value)
@@ -716,6 +760,8 @@ export default function AddUser() {
                                                             }
                                                         />
                                                         <AddUserInput label="Hair Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-2"} error={errors.hairColour} name="hairColour"
+                                                            
+                                                            defaultValue={applicationData.hairColor}
                                                             onChange={
                                                                 (e) => {
                                                                     const errorMessage = genericRequired(e.target.value)
@@ -735,6 +781,7 @@ export default function AddUser() {
                                                             }
                                                         />
                                                         <AddUserInput label="Eye Color" colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-1"} error={errors.eyeColour} name="eyeColour"
+                                                          defaultValue={applicationData.eyeColor}
                                                             onChange={
                                                                 (e) => {
                                                                     const errorMessage = genericRequired(e.target.value)
@@ -795,6 +842,7 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Name of Last School Attended" name="nameOfLastSchoolAttended" error={errors.nameOfLastSchoolAttended}
+                                                        defaultValue={applicationData.lastSchool}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -814,6 +862,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Level" name="schoolLevel" error={errors.schoolLevel}
+                                                      defaultValue={applicationData.levelOfEducation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -840,6 +889,7 @@ export default function AddUser() {
                                                             type="date"
                                                             name="schoolDateAttendedFrom"
                                                             id="school-date-attend-from"
+                                                            defaultValue={applicationData.dateAttendedFrom}
                                                             autoComplete=""
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
@@ -852,11 +902,13 @@ export default function AddUser() {
                                                             type="date"
                                                             name="schoolDateAttendedTo"
                                                             id="school-date-attend-to"
+                                                            defaultValue={applicationData.dateAttendedTo}
                                                             autoComplete=""
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
                                                     <AddUserInput label="Qualification" name="qualification" error={errors.qualification}
+                                                    defaultValue={applicationData.qualification}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -876,6 +928,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput name="workExperience" label="Work Experience" error={errors.workExperience}
+                                                    defaultValue={applicationData.workExperience}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -924,8 +977,8 @@ export default function AddUser() {
                                                                         id={maritalStatus.trim()}
                                                                         name="maritalStatus"
                                                                         type="radio"
-                                                                        value="maritalStatus"
-                                                                        defaultChecked={false}
+                                                                        value={maritalStatus}
+                                                                        defaultdefaultChecked={applicationData.marritalStatus == maritalStatus}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={maritalStatus.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -936,6 +989,7 @@ export default function AddUser() {
                                                         }
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} required={false} label="If Married ? Name of Spouse" name="nameOfSpouse" 
+                                                    defaultValue={applicationData.spouse}
                                                         // onChange={
                                                         //     (e) => {
                                                         //         const errorMessage = genericRequired(e.target.value)
@@ -960,6 +1014,7 @@ export default function AddUser() {
                                                     {childrenList.map((childForm, index) => (
                                                         <>
                                                             <AddUserInput label={index == 0 && "Names of Children"} error={errors.hasOwnProperty("namesOfChildren")} name="namesOfChildren"
+                                                            default={childForm}
                                                                 onChange={
                                                                     (e) => {
                                                                         childrenList[index] = e.target.value
@@ -1043,6 +1098,7 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="fatherSurname" error={errors.fatherSurname}
+                                                    defaultValue={applicationData.fSurname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1062,6 +1118,7 @@ export default function AddUser() {
                                                         }
                                                         f />
                                                     <AddUserInput label="Other Names" name="fatherOtherNames" error={errors.fatherOtherNames}
+                                                    defaultValue={applicationData.fOtherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1089,7 +1146,8 @@ export default function AddUser() {
                                                             id="nationality"
                                                             name="fatherNationality"
                                                             autoComplete=""
-                                                            value={70}
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.fNationality)}                                                        
+
                                                             required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
@@ -1102,6 +1160,7 @@ export default function AddUser() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="fatherHometown" error={errors.fatherHometown}
+                                                    defaultValue={applicationData.fHometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1121,6 +1180,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" error={errors.fatherOccupation} name="fatherOccupation"
+                                                    defaultValue={applicationData.fOccupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1140,6 +1200,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: +233 55 xxx xxxx" name="fatherContact" error={errors.fatherContact}
+                                                    defaultValue={applicationData.fContact}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1201,6 +1262,7 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="motherSurname" error={errors.motherSurname}
+                                                    defaultValue={applicationData.mSurname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1220,6 +1282,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="motherOtherNames" error={errors.motherOtherNames}
+                                                    defaultValue={applicationData.mOtherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1247,7 +1310,8 @@ export default function AddUser() {
                                                             id="mother-nationality"
                                                             name="motherNationality"
                                                             autoComplete=""
-                                                            value={70}
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.mNationality)}                                                        
+
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1259,6 +1323,7 @@ export default function AddUser() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="motherHometown" error={errors.motherHometown}
+                                                    defaultValue={applicationData.mHometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1278,6 +1343,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" name="motherOccupation" error={errors.motherOccupation}
+                                                    defaultValue={applicationData.mOccupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1297,6 +1363,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: +233 55 xxx xxxx" name="motherContact" error={errors.motherContact}
+                                                    defaultValue={applicationData.mContact}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1359,6 +1426,7 @@ export default function AddUser() {
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="emergencyContactSurname" error={errors.emmergencyContactSurname}
                                                         required={false}
+                                                        defaultValue={applicationData.emergency_surname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1379,7 +1447,7 @@ export default function AddUser() {
                                                     />
                                                     <AddUserInput label="Other Names" name="emergencyContactOtherNames" error={errors.emergencyContactOtherNames}
                                                                                                                 required={false}
-
+                                                                                                                defaultValue={applicationData.emergency_otherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1407,7 +1475,8 @@ export default function AddUser() {
                                                             id="emergencyContactNationality"
                                                             name="emergencyContactNationality"
                                                             autoComplete=""
-                                                            value={70}
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.emergency_nationality)}                                                        
+
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1420,6 +1489,7 @@ export default function AddUser() {
 
                                                     <AddUserInput label="Hometown/Residence" name="emergencyContactHometown" error={errors.emergencyContactHomeTown}
                                                         required={false}
+                                                        defaultValue={applicationData.emergency_hometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1440,6 +1510,7 @@ export default function AddUser() {
                                                     />
                                                     <AddUserInput label="Occupation" name="emergencyContactOccupation" error={errors.emergencyContactOccupation}
                                                         required={false}
+                                                        defaultValue={applicationData.emegency_occupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1459,7 +1530,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" name="emergencyContactContact" placeholder="eg: +233 55 xxx xxxx" error={errors.emergencyContactContact}
-                                                        
+                                                        defaultValue={applicationData.emergency_contact}
                                                         required={false}
 
                                                         onChange={
@@ -1482,6 +1553,7 @@ export default function AddUser() {
                                                     />
 
 <AddUserInput label="   Relation With Applicant" name="applicantEmergencyContactRelation" error={errors.applicantEmergencyContactRelation}
+defaultValue={applicationData.emergency_relation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1525,6 +1597,7 @@ export default function AddUser() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="guarantorSurname" error={errors.guarantorSurname}
+                                                    defaultValue={applicationData.guarantor_surname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1544,6 +1617,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="guarantorOtherNames" error={errors.guarantorOtherNames}
+                                                     defaultValue={applicationData.guarantor_otherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1571,7 +1645,8 @@ export default function AddUser() {
                                                             id="guarantorNationality"
                                                             name="guarantorNationality"
                                                             autoComplete=""
-                                                            value={70}
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.guarantor_nationality)}                                                        
+
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1583,6 +1658,7 @@ export default function AddUser() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="guarantorHometown" error={errors.hasOwnProperty("guarantorHometown")}
+                                                      defaultValue={applicationData.guarantor_hometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1602,6 +1678,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" name="guarantorOccupation" error={errors.guarantorOccupation}
+                                                        defaultValue={applicationData.guarantor_occupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1621,6 +1698,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: 233 55 xxx xxxx" name="guarantorContact" error={errors.guarantorContact}
+                                                      defaultValue={applicationData.guarantor_contact}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1642,6 +1720,8 @@ export default function AddUser() {
 
 
                                                     <AddUserInput label="   Relation With Applicant" name="applicantguarantorRelation" error={errors.applicantguarantorRelation}
+                                                      
+                                                      defaultValue={applicationData.guarantor_relation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1661,6 +1741,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Place of Work" name="guarantorPlaceOfWork" error={errors.guarantorPlaceOfWork}
+                                                        defaultValue={applicationData.guarantor_placeofwork}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1680,6 +1761,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Name and Contact of Employer" name="guarantorEmployerDetails" error={errors.guarantorEmployerDetails}
+                                                       defaultValue={applicationData.guarantor_name_contact_of_employer}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1732,7 +1814,7 @@ export default function AddUser() {
                                                                         name="guarnaterIdType"
                                                                         value={idType}
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        defaultdefaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1743,6 +1825,7 @@ export default function AddUser() {
                                                         }
                                                     </div>
                                                     <AddUserInput label="ID Number" name="guarantorIdNumber" error={errors.guarantorIdNumber}
+                                                          defaultValue={applicationData.guarantor_ID}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1823,6 +1906,7 @@ export default function AddUser() {
                                                         </textarea> */}
                                                     {/* </div> */}
                                                     <AddUserInput label="Currrent Job" name="currentJob" error={errors.currentJob}
+                                                          defaultValue={applicationData.current_job}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1843,6 +1927,7 @@ export default function AddUser() {
                                                     />
 
                                                     <AddUserInput label="Skills" name="skills" placeholder="coding, writing, video editing" error={errors.skills}
+                                                     defaultValue={applicationData.skills}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1866,8 +1951,10 @@ export default function AddUser() {
 {countriesOfInterestList.map((country, index) => (
                                                         <>
                                                             <AddUserInput label={index == 0 && ""} placeholder="eg: USA, Canada, Denmark" error={errors.hasOwnProperty("countriesOfInterest")} name="countriesOfInterest"
+                                                               defaultValue={country}
                                                                 onChange={
                                                                     (e) => {
+                                                                        
                                                                         countriesOfInterestList[index] = e.target.value
                                                                         // const errorMessage = genericRequired(e.target.value)
                                                                         // console.log(errorMessage)
@@ -1959,7 +2046,8 @@ export default function AddUser() {
                                                                         name="jobType"
                                                                         type="radio"
                                                                         value={jobType}
-                                                                        defaultChecked={false}
+                                                                        defaultChecked={applicationData.job_type == jobType}
+                                                                        defaultdefaultChecked={false}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={jobType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1997,6 +2085,7 @@ export default function AddUser() {
                                                 <div className="grid grid-cols-6 gap-6">
 
                                                     <AddUserInput label="Agent Code" name="agentCode"
+                                                    defaultValue={applicationData.agent_code}
                                                         required={false}
                                                     // onChange={
                                                     //     (e) => {
@@ -2054,7 +2143,7 @@ export default function AddUser() {
 // <div className="flex items-center ">
 //     <span className="inline-block mr-5">Send Welcome Email?</span>
 //     <Switch
-//         checked={welcomeEmail}
+//         defaultChecked={welcomeEmail}
 //         onChange={setWelcomeEmail}
 //         className={classNames(
 //             welcomeEmail ? 'bg-indigo-600' : 'bg-gray-200',

@@ -23,6 +23,7 @@ function Expenditure() {
     const [fetching, setFetching] = useState(false)
     const [fetchError, setFetchError] = useState("")
     const [totalExpenditure, setTotalExpenditure] = useState(null)
+    const [totalIncome, setTotalIncome] = useState(null)
     const dispatch = useDispatch()
     const fetchData = async () => {
         setData([])
@@ -39,7 +40,9 @@ function Expenditure() {
             setData(response.data)
             dispatch(doSetExpenditure(response.data))
             const totalExpenditureResponse = await Axios.get("/api/expenditure/getTotalExpenditure")
+            const totalIncomeResponse = await Axios.get("/api/application/totalIncome")
             setTotalExpenditure(totalExpenditureResponse.data[0].total)
+            setTotalIncome(totalIncomeResponse.data)
             console.log(response.data)
         } catch (err) {
             console.log(err)
@@ -110,7 +113,7 @@ function Expenditure() {
                             </div>
                             <div class="pt-1 text-right">
                                 <p class="text-sm font-light capitalize">Total Income</p>
-                                {totalExpenditure != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalExpenditure}</h4> :
+                                {totalIncome != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalIncome}</h4> :
                                     (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
                                         <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

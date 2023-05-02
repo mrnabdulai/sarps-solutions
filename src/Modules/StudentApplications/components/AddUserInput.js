@@ -2,7 +2,7 @@ import React from 'react'
 import { useId } from 'react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
 
-function AddUserInput({ label, onChange, value, type, name, placeholder, error, trailing, required, disabled, className, hasAutoComplete, colsSpanDef, endAdorment, ...props }) {
+function AddUserInput({ label, onChange, value, type, name, placeholder, error, trailing, required, disabled, className, hasAutoComplete, colsSpanDef, endAdorment,defaultValue, ...props }) {
     const labelId = useId()
     function showStar(){
         if(label && required){
@@ -22,7 +22,7 @@ function AddUserInput({ label, onChange, value, type, name, placeholder, error, 
                 <input
                     type={type ??= "text"}
                     name={name}
-                    value={value}
+                   defaultValue={defaultValue}
                     onChange={onChange}
                     id={labelId.toString()}
                     autoComplete={hasAutoComplete ? "on" : "off"}

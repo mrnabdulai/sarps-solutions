@@ -260,7 +260,7 @@ export default function EditStudentApplicationForm() {
         try {
             setSubmitError("")
             setIsSubmitting(true)
-            const response = await Axios.put(`/api/application/updateApplication/${applicationData.id}`, formData, {
+            const response = await Axios.put(`/api/student/updateApplication/${applicationData.id}`, formData, {
                 
                     headers: {
                       'Content-Type': 'multipart/form-data',
@@ -346,8 +346,8 @@ export default function EditStudentApplicationForm() {
                                                                         name="title"
                                                                         value={idType}
                                                                         type="radio"
-                                                                        defaultChecked={false}
-                                                                        checked={applicationData.title === idType}
+                                                                        
+                                                                       defaultChecked={applicationData.title === idType}
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -358,13 +358,13 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     </div>
                                                 <div className="grid grid-cols-6 gap-6">
-                                                    <AddUserInput label="Family Name" placeholder="" name="familyName" value={applicationData.family_name}
+                                                    <AddUserInput label="Family Name" placeholder="" name="familyName" defaultValue={applicationData.family_name}
                                                       
                                                     />
-                                                    <AddUserInput label="Given Names" name="givenNames" value={applicationData.given_name}
+                                                    <AddUserInput label="Given Names" name="givenNames" defaultValue={applicationData.given_name}
                                                        
                                                     />
-                                                    <AddUserInput label="Preferred Names" name="preferredNames" error={errors.otherNames} value={applicationData.preferred_name}
+                                                    <AddUserInput label="Preferred Names" name="preferredNames" error={errors.otherNames} defaultValue={applicationData.preferred_name}
                                                        
                                                     />
                                                     <div className="col-span-6 sm:col-span-6 lg:col-span-3">
@@ -380,7 +380,7 @@ export default function EditStudentApplicationForm() {
                                                             id="dob"
                                                             autoComplete=""
                                                             required
-                                                            value={applicationData.dob}
+                                                            defaultValue={applicationData.dob}
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -393,7 +393,7 @@ export default function EditStudentApplicationForm() {
                                                             id="gender"
                                                             name="gender"
                                                             autoComplete=""
-                                                            value={applicationData.gender}
+                                                            defaultValue={applicationData.gender}
 
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             required
@@ -403,7 +403,7 @@ export default function EditStudentApplicationForm() {
                                                         </select>
                                                     </div>
                                                       <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
-                                                                                                                  value={applicationData.email}
+                                                                                                                  defaultValue={applicationData.email}
 
                                                         onChange={
                                                             (e) => {
@@ -500,10 +500,10 @@ export default function EditStudentApplicationForm() {
                                             
                                                 <div className="grid grid-cols-6 gap-6">
                                                 <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Address in home country (must be applicant’s address):" name="address" 
-                                                     value={applicationData.address}
+                                                     defaultValue={applicationData.address}
                                                     />
                                                 <AddUserInput label="Mobile Telephone" name="mobilePhone" placeholder="eg: +233 55 xxx xxxx" error={errors.mobilePhone}
-                                                     value={applicationData.phone}
+                                                     defaultValue={applicationData.phone}
 
                                                         onChange={
                                                             (e) => {
@@ -524,7 +524,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Home telephone:" placeholder="eg: +233 55 xxx xxxx" name="homePhone" required={false} error={errors.homePhone}
-                                                     value={applicationData.home_telephone}
+                                                     defaultValue={applicationData.home_telephone}
 
                                                         onChange={
                                                             (e) => {
@@ -593,7 +593,7 @@ export default function EditStudentApplicationForm() {
                                                             id="nationality"
                                                             name="nationality"
                                                             autoComplete=""
-                                                            value={nationalities.findIndex(item => item === applicationData.nationality)}                                                        
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.nationality)}                                                        
                                                             required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
@@ -605,11 +605,11 @@ export default function EditStudentApplicationForm() {
                                                         </select>
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-3"} label="Passport No." name="passportNumber" error={errors.passportNumber}
-                                                                                                            value={applicationData.passport_no}
+                                                                                                            defaultValue={applicationData.passport_no}
 
                                                     />
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-3"} label="Other Countries CitizenShip" required={false} name="otherCountriesCitizenShip" error={errors.passportNumber}
-                                                                                                            value={applicationData.address}
+                                                                                                            defaultValue={applicationData.address}
 
                                                     />
 
@@ -622,8 +622,8 @@ export default function EditStudentApplicationForm() {
                                                                         name="permanetResNewZeland"
                                                                         value={"yes"}
                                                                         type="radio"
-                                                                        checked={applicationData.permanent_resident_status =="yes"}
-                                                                        defaultChecked={false}
+                                                                       defaultChecked={applicationData.permanent_resident_status =="yes"}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"perm-res-nz-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -636,9 +636,9 @@ export default function EditStudentApplicationForm() {
                                                                         name="permanetResNewZeland"
                                                                         value={"no"}
                                                                         type="radio"
-                                                                        checked={applicationData.permanent_resident_status =="no"}
+                                                                       defaultChecked={applicationData.permanent_resident_status =="no"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"perm-res-nz-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -675,10 +675,10 @@ export default function EditStudentApplicationForm() {
                                             
                                                 <div className="grid grid-cols-6 gap-6">
                                                 <AddUserInput label="IELTS or TOEFL score:" placeholder="" name="ieTScore" 
-                                        value={applicationData.ielts_toefl_score}
+                                        defaultValue={applicationData.ielts_toefl_score}
                                                       />
                                                 <AddUserInput label="Other" placeholder="" name="otherScore" 
-                                                                                              value={applicationData.other_proficiency_score}
+                                                                                              defaultValue={applicationData.other_proficiency_score}
 
                                                       />
                                                     <div className="col-span-6 flex items-center mb-3  ">
@@ -690,8 +690,8 @@ export default function EditStudentApplicationForm() {
                                                                         name="toStudyInNewZeland"
                                                                         value={"yes"}
                                                                         type="radio"
-                                                                        checked={applicationData.studying_english =="yes"}
-                                                                        defaultChecked={false}
+                                                                       defaultChecked={applicationData.studying_english =="yes"}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -704,9 +704,9 @@ export default function EditStudentApplicationForm() {
                                                                         name="toStudyInNewZeland"
                                                                         value={"no"}
                                                                         type="radio"
-                                                                        checked={applicationData.studying_english =="no"}
+                                                                       defaultChecked={applicationData.studying_english =="no"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -719,11 +719,11 @@ export default function EditStudentApplicationForm() {
                                                   
                                                     <AddUserInput label="If “Yes”, name of school:" placeholder="" required={false} name="yesOtherStudySchool" error={errors.surname}
                                                     colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"}
-                                                      value={applicationData.school_name}
+                                                      defaultValue={applicationData.school_name}
                                                       />
                                                     <AddUserInput label="When? (Dates)" placeholder="" name="studyWhenDates" 
                                                       required={false}
-                                                      value={applicationData.start_date}
+                                                      defaultValue={applicationData.start_date}
 
                                                       />
                                                </div>
@@ -748,11 +748,11 @@ export default function EditStudentApplicationForm() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="School attended:" name="secondarySchoolAttented" 
-                                                      value={applicationData.school_attended}
+                                                      defaultValue={applicationData.school_attended}
                                                     />
                                                   
                                                     <AddUserInput label="Name of qualiﬁcation" placeholder="eg Year 12, HKDSE or ‘A’ Levels" name="secondarySchoolQualitification" error={errors.schoolLevel}
-                                                                                                              value={applicationData.name_of_qualification}
+                                                                                                              defaultValue={applicationData.name_of_qualification}
 
                                                     />
                                                      <div className="col-span-6 sm:col-span-3 lg:col-span-3">
@@ -775,7 +775,7 @@ export default function EditStudentApplicationForm() {
                                                         </select>
                                                     </div>
                                                     <AddUserInput  label="Language of institution:" name="secondarySchoolLanguage" 
-                                                                                                                                                                      value={applicationData.language_of_instruction}
+                                                                                                                                                                      defaultValue={applicationData.language_of_instruction}
 
                                                         />
                                                   
@@ -800,12 +800,12 @@ export default function EditStudentApplicationForm() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="Institution  attended:" name="postSchoolName" error={errors.nameOfLastSchoolAttended}
-                                                                                                                                                                                                                              value={applicationData.institution_attended}
+                                                                                                                                                                                                                              defaultValue={applicationData.institution_attended}
 
                                                     />
                                                     
                                                     <AddUserInput label="Name of qualiﬁcation" placeholder="eg Year 12, HKDSE or ‘A’ Levels" name="postSchoolQualification" error={errors.schoolLevel}
-                                                       value={applicationData.name_of_qualification}
+                                                       defaultValue={applicationData.name_of_qualification}
                                                     />
 
 <div className="col-span-6 flex items-center mb-3  ">
@@ -818,8 +818,8 @@ export default function EditStudentApplicationForm() {
                                                                         name="postSchoolCompleted"
                                                                         value={"yes"}
                                                                         type="radio"
-                                                                        checked={applicationData.completed == "yes"}
-                                                                        defaultChecked={false}
+                                                                       defaultChecked={applicationData.completed == "yes"}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -831,10 +831,10 @@ export default function EditStudentApplicationForm() {
                                                                         id={"no-radio"}
                                                                         name="postSchoolCompleted"
                                                                         value={"no"}
-                                                                        checked={applicationData.completed == "no"}
+                                                                       defaultChecked={applicationData.completed == "no"}
 
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -846,7 +846,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="If “No”, when do you expect to complete" name="postExpectedCompleteData" error={errors.nameOfLastSchoolAttended}
                                                         required={false}
-                                                        value={applicationData.expected_completion_date}
+                                                        defaultValue={applicationData.expected_completion_date}
                                                         />
 
 
@@ -860,9 +860,9 @@ export default function EditStudentApplicationForm() {
                                                                         id={"yes-radio"}
                                                                         name="underTakenStudyInNZ"
                                                                         value={"yes"}
-                                                                        checked={applicationData.taken_study_in_newzealand == "yes"}
+                                                                       defaultChecked={applicationData.taken_study_in_newzealand == "yes"}
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -875,9 +875,9 @@ export default function EditStudentApplicationForm() {
                                                                         name="underTakenStudyInNZ"
                                                                         value={"no"}
                                                                         type="radio"
-                                                                        checked={applicationData.taken_study_in_newzealand == "no"}
+                                                                       defaultChecked={applicationData.taken_study_in_newzealand == "no"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -889,7 +889,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
                                                     <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} label="If “Yes”, please attach details." name="previosStudyDetails"
                                                             required={false}
-                                                            value={applicationData.attach_details}
+                                                            defaultValue={applicationData.attach_details}
                                                         />
                                                    
                                                 </div>
@@ -1011,7 +1011,7 @@ export default function EditStudentApplicationForm() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="fatherSurname" error={errors.fatherSurname}
-                                                    value={applicationData.fSurname}
+                                                    defaultValue={applicationData.fSurname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1031,7 +1031,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                         f />
                                                     <AddUserInput label="Other Names" name="fatherOtherNames" error={errors.fatherOtherNames}
-                                                                                                        value={applicationData.fOtherName}
+                                                                                                        defaultValue={applicationData.fOtherName}
 
                                                         onChange={
                                                             (e) => {
@@ -1060,7 +1060,7 @@ export default function EditStudentApplicationForm() {
                                                             id="nationality"
                                                             name="fatherNationality"
                                                             autoComplete=""
-                                                            value={nationalities.findIndex(item => item === applicationData.fNationality)}                                                        
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.fNationality)}                                                        
                                                             required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
@@ -1073,7 +1073,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="fatherHometown" error={errors.fatherHometown}
-                                                    value={applicationData.fHometown}
+                                                    defaultValue={applicationData.fHometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1094,7 +1094,7 @@ export default function EditStudentApplicationForm() {
                                                     />
                                                     
                                                     <AddUserInput label="Occupation" error={errors.fatherOccupation} name="fatherOccupation"
-                                                    value={applicationData.fatherOccupation}
+                                                    defaultValue={applicationData.fatherOccupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1114,7 +1114,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: +233 55 xxx xxxx" name="fatherContact" error={errors.fatherContact}
-                                                                                                        value={applicationData.fatherContact}
+                                                                                                        defaultValue={applicationData.fatherContact}
 
                                                         onChange={
                                                             (e) => {
@@ -1177,7 +1177,7 @@ export default function EditStudentApplicationForm() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="motherSurname" error={errors.motherSurname}
-                                                                                                                                                            value={applicationData.mSurname}
+                                                                                                                                                            defaultValue={applicationData.mSurname}
 
                                                         onChange={
                                                             (e) => {
@@ -1198,7 +1198,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="motherOtherNames" error={errors.motherOtherNames}
-                                                    value={applicationData.mOtherName}
+                                                    defaultValue={applicationData.mOtherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1226,7 +1226,7 @@ export default function EditStudentApplicationForm() {
                                                             id="mother-nationality"
                                                             name="motherNationality"
                                                             autoComplete=""
-                                                            value={nationalities.findIndex(item => item === applicationData.mNationality)}                                                        
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.mNationality)}                                                        
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1238,7 +1238,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="motherHometown" error={errors.motherHometown}
-                                                    value={applicationData.mHometown}
+                                                    defaultValue={applicationData.mHometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1258,7 +1258,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" name="motherOccupation" error={errors.motherOccupation}
-                                                    value={applicationData.mOccupation}
+                                                    defaultValue={applicationData.mOccupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1278,7 +1278,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: +233 55 xxx xxxx" name="motherContact" error={errors.motherContact}
-                                                     value={applicationData.mContact}
+                                                     defaultValue={applicationData.mContact}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1341,7 +1341,7 @@ export default function EditStudentApplicationForm() {
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="emergencyContactSurname" error={errors.emmergencyContactSurname}
                                                         required={false}
-                                                        value={applicationData.emergency_surname}
+                                                        defaultValue={applicationData.emergency_surname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1362,7 +1362,7 @@ export default function EditStudentApplicationForm() {
                                                     />
                                                     <AddUserInput label="Other Names" name="emergencyContactOtherNames" error={errors.emergencyContactOtherNames}
                                                                                                                 required={false}
-                                                                                                                value={applicationData.emergency_otherName}
+                                                                                                                defaultValue={applicationData.emergency_otherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1390,7 +1390,7 @@ export default function EditStudentApplicationForm() {
                                                             id="emergencyContactNationality"
                                                             name="emergencyContactNationality"
                                                             autoComplete=""
-                                                            value={nationalities.findIndex(item => item === applicationData.emergency_nationality)}                                                        
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.emergency_nationality)}                                                        
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1402,7 +1402,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="emergencyContactHometown" error={errors.emergencyContactHomeTown}
-                                                    value={applicationData.emergency_hometown}
+                                                    defaultValue={applicationData.emergency_hometown}
                                                         required={false}
                                                         onChange={
                                                             (e) => {
@@ -1424,7 +1424,7 @@ export default function EditStudentApplicationForm() {
                                                     />
                                                     <AddUserInput label="Occupation" name="emergencyContactOccupation" error={errors.emergencyContactOccupation}
                                                         required={false}
-                                                        value={applicationData.emegency_occupation}
+                                                        defaultValue={applicationData.emegency_occupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1444,7 +1444,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" name="emergencyContactContact" placeholder="eg: +233 55 xxx xxxx" error={errors.emergencyContactContact}
-                                                             value={applicationData.emergency_contact}
+                                                             defaultValue={applicationData.emergency_contact}
                                                         required={false}
 
                                                         onChange={
@@ -1467,7 +1467,7 @@ export default function EditStudentApplicationForm() {
                                                     />
 
 <AddUserInput label="   Relation With Applicant" name="applicantEmergencyContactRelation" error={errors.applicantEmergencyContactRelation}
-  value={applicationData.emergency_relation}
+  defaultValue={applicationData.emergency_relation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1510,7 +1510,7 @@ export default function EditStudentApplicationForm() {
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="guarantorSurname" error={errors.guarantorSurname}
-                                                    value={applicationData.guarantor_surname}
+                                                    defaultValue={applicationData.guarantor_surname}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1530,7 +1530,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="guarantorOtherNames" error={errors.guarantorOtherNames}
-                                                    value={applicationData.guarantor_otherName}
+                                                    defaultValue={applicationData.guarantor_otherName}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getOtherNamesValidator(e.target.value)
@@ -1558,7 +1558,7 @@ export default function EditStudentApplicationForm() {
                                                             id="guarantorNationality"
                                                             name="guarantorNationality"
                                                             autoComplete=""
-                                                            value={nationalities.findIndex(item => item === applicationData.guarantor_nationality)}                                                        
+                                                            defaultValue={nationalities.findIndex(item => item === applicationData.guarantor_nationality)}                                                        
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1570,7 +1570,7 @@ export default function EditStudentApplicationForm() {
                                                     </div>
 
                                                     <AddUserInput label="Hometown/Residence" name="guarantorHometown" error={errors.hasOwnProperty("guarantorHometown")}
-                                                    value={applicationData.guarantor_hometown}
+                                                    defaultValue={applicationData.guarantor_hometown}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1590,7 +1590,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Occupation" name="guarantorOccupation" error={errors.guarantorOccupation}
-                                                    value={applicationData.guarantor_occupation}
+                                                    defaultValue={applicationData.guarantor_occupation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1610,7 +1610,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" placeholder="eg: 233 55 xxx xxxx" name="guarantorContact" error={errors.guarantorContact}
-                                                     value={applicationData.guarantor_contact}
+                                                     defaultValue={applicationData.guarantor_contact}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = phoneValidator(e.target.value)
@@ -1632,7 +1632,7 @@ export default function EditStudentApplicationForm() {
 
 
                                                     <AddUserInput label="   Relation With Applicant" name="applicantguarantorRelation" error={errors.applicantguarantorRelation}
-                                                    value={applicationData.guarantor_relation}
+                                                    defaultValue={applicationData.guarantor_relation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1652,7 +1652,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Place of Work" name="guarantorPlaceOfWork" error={errors.guarantorPlaceOfWork}
-                                                    value={applicationData.guarantor_placeofwork}
+                                                    defaultValue={applicationData.guarantor_placeofwork}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1672,7 +1672,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     />
                                                     <AddUserInput label="Name and Contact of Employer" name="guarantorEmployerDetails" error={errors.guarantorEmployerDetails}
-                                                    value={applicationData.guarantor_name_contact_of_employer}
+                                                    defaultValue={applicationData.guarantor_name_contact_of_employer}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1725,7 +1725,7 @@ export default function EditStudentApplicationForm() {
                                                                         name="guarnaterIdType"
                                                                         value={idType}
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={idType.trim()} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1736,7 +1736,7 @@ export default function EditStudentApplicationForm() {
                                                         }
                                                     </div>
                                                     <AddUserInput label="ID Number" name="guarantorIdNumber" error={errors.guarantorIdNumber}
-                                                    value={applicationData.guarantor_ID}
+                                                    defaultValue={applicationData.guarantor_ID}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = getSurnameValidator(e.target.value)
@@ -1814,7 +1814,7 @@ export default function EditStudentApplicationForm() {
                                                         Brieﬂy explain your future career intentions upon completion of your
 university qualiﬁcation:
                                                         </label>
-                                                        <textarea name="careerIntensions" placeholder="" rows={3} value={applicationData.career_intentions} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                        <textarea name="careerIntensions" placeholder="" rows={3} defaultValue={applicationData.career_intentions} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                                         </textarea> 
                                                     </div>
                                                  
@@ -1852,8 +1852,8 @@ university qualiﬁcation:
                                                                         name="accomodationRequired"
                                                                         value={"yes"}
                                                                         type="radio"
-                                                                        checked={applicationData.require_accommodation == "yes"}
-                                                                        defaultChecked={false}
+                                                                       defaultChecked={applicationData.require_accommodation == "yes"}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"acc-req-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1866,9 +1866,9 @@ university qualiﬁcation:
                                                                         name="accomodationRequired"
                                                                         value={"no"}
                                                                         type="radio"
-                                                                        checked={applicationData.require_accommodation == "no"}
+                                                                       defaultChecked={applicationData.require_accommodation == "no"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"acc-req-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1889,9 +1889,9 @@ university qualiﬁcation:
                                                                         name="accomodationType"
                                                                         value={"Campus"}
                                                                         type="radio"
-                                                                        checked={applicationData.type_of_accommodation == "Campus"}
+                                                                       defaultChecked={applicationData.type_of_accommodation == "Campus"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"acc-type-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1904,9 +1904,9 @@ university qualiﬁcation:
                                                                         name="accomodationType"
                                                                         value={"Own arrangements"}
                                                                         type="radio"
-                                                                        checked={applicationData.type_of_accommodation == "Own arrangements"}
+                                                                       defaultChecked={applicationData.type_of_accommodation == "Own arrangements"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"acc-type-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1957,9 +1957,9 @@ at least two weeks before you arrive in the campus
                                                                         name="airportPickupRequired"
                                                                         value={"yes"}
                                                                         type="radio"
-                                                                        checked={applicationData.airport_reception == "yes"}
+                                                                       defaultChecked={applicationData.airport_reception == "yes"}
 
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"airport-pickup-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -1972,8 +1972,8 @@ at least two weeks before you arrive in the campus
                                                                         name="airportPickupRequired"
                                                                         value={"no"}
                                                                         type="radio"
-                                                                        checked={applicationData.airport_reception == "no"}
-                                                                        defaultChecked={false}
+                                                                       defaultChecked={applicationData.airport_reception == "no"}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"airport-pickup-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -2021,10 +2021,10 @@ attach it to this application.
                                                                         id={"req-learn-support-yes-radio"}
                                                                         name="requestLearningSupport"
                                                                         value={"yes"}
-                                                                        checked={applicationData.request_for_learning_support == "yes"}
+                                                                       defaultChecked={applicationData.request_for_learning_support == "yes"}
 
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"req-learn-support-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -2036,10 +2036,10 @@ attach it to this application.
                                                                         id={"req-learn-support-no-radio"}
                                                                         name="requestLearningSupport"
                                                                         value={"no"}
-                                                                        checked={applicationData.request_for_learning_support == "no"}
+                                                                       defaultChecked={applicationData.request_for_learning_support == "no"}
 
                                                                         type="radio"
-                                                                        defaultChecked={false}
+                                                                        
                                                                         className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                                                     />
                                                                     <label htmlFor={"req-learn-support-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
@@ -2134,7 +2134,7 @@ attach it to this application.
 // <div className="flex items-center ">
 //     <span className="inline-block mr-5">Send Welcome Email?</span>
 //     <Switch
-//         checked={welcomeEmail}
+//        defaultChecked={welcomeEmail}
 //         onChange={setWelcomeEmail}
 //         className={classNames(
 //             welcomeEmail ? 'bg-indigo-600' : 'bg-gray-200',

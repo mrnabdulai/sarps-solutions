@@ -139,11 +139,13 @@ function ApplicationList() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((application, index) => {
-                            const mapPaymentStatusToStatus = () => {
+                            const mapPaymentPaymentStatusToStatus = () => {
+                                if (application.payment_status == null) return "rejected"
                                 if (application.payment_status === "not_paid") return "rejected"
                                 if (application.payment_status === "part_payment") return "pending"
                                 if (application.payment_status === "paid") return "success"
                             }
+
                             return (<tr key={application.id}>
                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                                     {application.id}
@@ -174,7 +176,7 @@ function ApplicationList() {
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
 
-                                    <AlBadge status={"rejected"} statusText={"Not paid"} />
+                                    <AlBadge status={mapPaymentPaymentStatusToStatus()} statusText={application.payment_status == null ? "Not paid" : sentenceCase(application.payment_status)} />
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(application.createdAt), 'MM/dd/yyyy')}</td>
@@ -183,7 +185,10 @@ function ApplicationList() {
                                         <AlIconButton Icon={EyeIcon} colorClass="text-primary" onClick={() => {
                                             navigate("/app/applications/" + application.id)
                                         }} />
-                                        <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" />
+                                        <AlIconButton Icon={PencilSquareIcon} colorClass="text-yellow-400" onClick={() => {
+                                            navigate("/app/applications/edit/" + application.id)
+
+                                        }} />
                                         <AlIconButton Icon={TrashIcon} colorClass="text-error" />
                                     </div>
 

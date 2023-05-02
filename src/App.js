@@ -51,6 +51,7 @@ import StudentForm from './Modules/User/AddUser/StudentForm';
 import StudentApplicationsList from './Modules/StudentApplications';
 import EditStudentApplicationForm from './Modules/StudentApplications/EditStudentForm';
 import StudentApplicationDetails from './Modules/StudentApplications/StudentApplicationDetails';
+import EditApplicationForm from './Modules/Applications/EditApplicationForm';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -97,6 +98,7 @@ function App() {
           <Route path='dashboard' element={<Dashboard />} />
           {/* Application routes */}
           <Route path='applications/list' element={<ApplicationList />} />
+          <Route path='applications/edit/:id' element={<EditApplicationForm />} />
           <Route path='applications-students/list' element={<StudentApplicationsList />} />
           <Route path='applications-students/edit/:id' element={<EditStudentApplicationForm />} />
           <Route path='applications-students/:id' element={<StudentApplicationDetails />} />
