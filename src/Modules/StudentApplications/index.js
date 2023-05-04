@@ -96,14 +96,14 @@ function StudentApplicationsList() {
                             >
                                 Phone
                             </th>
-                            <th
+                            {/* <th
                                 scope="col"
                                 align='center'
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
                                 Location
-                            </th>
+                            </th> */}
                             <th
                                 scope="col"
                                 align='center'
@@ -153,20 +153,20 @@ function StudentApplicationsList() {
                                     {application.id}
                                     <dl className="font-normal lg:hidden">
                                         <dt className="sr-only">name</dt>
-                                        <dd className="mt-1 truncate text-gray-700">{application.surname} {application.otherNames}</dd>
+                                        <dd className="mt-1 truncate text-gray-700">{application.preferred_name}</dd>
                                         <dt className="sr-only sm:hidden">email</dt>
                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">{application.phone}</dd>
                                     </dl>
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{application.surname} {application.otherNames}</td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{application.preferred_name}</td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {application.phone}
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                                {/* <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {application.residence}
 
-                                </td>
+                                </td> */}
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {application.email}
 
@@ -198,7 +198,7 @@ function StudentApplicationsList() {
                             )
                         }
                         )) : !fetching ? (<tr>
-                            <td colspan={9} className="text-center py-4">
+                            <td colspan={8} className="text-center py-4">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto h-12 w-12 text-gray-400">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -238,10 +238,10 @@ function StudentApplicationsList() {
                                     <div className='h-2 bg-gray-300 rounded'></div>
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
+                                {/* <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
                                     <div className='h-2 bg-gray-300 rounded'></div>
 
-                                </td>
+                                </td> */}
                                 <td className="hidden px-3 py-4 text-sm text-center h-2 bg-slate-700 rounded sm:table-cell">
                                     <div className='h-2 bg-gray-300 rounded'></div>
 

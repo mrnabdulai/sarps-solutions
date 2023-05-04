@@ -192,6 +192,8 @@ export default function StudentApplicationDetails() {
 
                     {Object.keys(data).length > 0 && <main className="py-10">
                         {/* Page header */}
+                        <img src={data.passport_file } alt="passport photo" className="     border-dashed w-48 object-cover h-60"/> 
+
                         <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                             <div className="flex items-center space-x-5">
 

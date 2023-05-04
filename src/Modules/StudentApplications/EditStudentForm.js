@@ -254,7 +254,7 @@ export default function EditStudentApplicationForm() {
         for (var key in data){
             formData.append(key, data[key])
         }
-        formData.append("passport_file", passportFile)
+        // formData.append("passport_file", passportFile)
         console.log([...formData])
         // return
         try {
@@ -444,9 +444,9 @@ export default function EditStudentApplicationForm() {
                                                     /> */}
 
                                                     <div className="col-span-6 sm:col-span-3">
-                                                        <label class="block text-sm font-medium text-gray-700">Upload Passport Photo</label>
+                                                        <label class="block text-sm font-medium text-gray-700"> Passport Photo</label>
                                                         <label for="passport-file-upload" class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300  pt-7 pb-8 	w-5/6 h-60">
-                                                        <input  onChange={(e)=>{
+                                                        <input disabled  onChange={(e)=>{
                                                                             const {files} = e.target
                                                                             console.log(files)
                              console.log(files)

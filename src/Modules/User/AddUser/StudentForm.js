@@ -27,6 +27,8 @@ import { PlusIcon, MinusIcon } from '@heroicons/react/20/solid'
 import { idTypes, maritalStatuses, applicantRelations, jobTypes, titles } from "./options";
 import { genericRequired, getOtherNamesValidator, getSurnameValidator, phoneValidator, genericMetricValidator, emailValidator, passwordValidator } from "../../../Shared/utils/validators";
 import Axios from "../../../Shared/utils/axios_instance";
+import { uploadFileToFirebase } from "../../../Shared/utils/files_utils";
+
 import ErrorNotification from '../../../Shared/Components/ErrorNotification'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -46,6 +48,7 @@ export default function StudentForm() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState("")
     // const [selectedP]
+
     const handleSubmit = async (e) => {
         // const formData = {
         //     surname:
@@ -156,6 +159,11 @@ export default function StudentForm() {
             e.target[Object.keys(errors)[0]].focus()
             return
         }
+        setIsSubmitting(true)
+        let passportFileUrl =""
+        if(passportFile){
+             passportFileUrl = await  uploadFileToFirebase(passportFile)
+        }
         const formData  = new FormData()
         const data = {
             title, 
@@ -171,8 +179,7 @@ export default function StudentForm() {
             home_telephone:homePhone, 
             country_of_birth:countryList[birthCountry], 
             nationality:nationalities[nationality], 
-            //TODO: passport file
-            // passport_file, 
+            passport_file:passportFileUrl,
             passport_no : passportNumber, 
             permanent_resident_status:permanetResNewZeland, 
             other_countries_citizenship:otherCountriesCitizenShip, 
@@ -237,8 +244,8 @@ export default function StudentForm() {
         for (var key in data){
             formData.append(key, data[key])
         }
-        formData.append("passport_file", passportFile)
-        console.log([...formData])
+        // formData.append("passport_file", passportFile)
+        // console.log([...formData])
         // return
         try {
             setSubmitError("")

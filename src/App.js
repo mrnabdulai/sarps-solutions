@@ -82,6 +82,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
+        <Route path="/welcome" element={<Welcome />} />
         {/* <Route path="/" element={isAuth ? <Navigate to='/app/applications/list' /> : <Login />} /> */}
         <Route path="/login" element={isAuth ? <Navigate to='/app/dashboard' /> : <Login />} />
         {/* user routes  */}
