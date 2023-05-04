@@ -249,7 +249,7 @@ const paramsList = useSelector(state => state.applicationsReducer.applications)
             console.log(response.data)
             setIsSubmitting(false)
 
-            navigate('/user/add-success', {
+            navigate('/app/applications/edit/success', {
                 replace: true
             })
         }
@@ -1828,7 +1828,7 @@ defaultValue={applicationData.emergency_relation}
                                                           defaultValue={applicationData.guarantor_ID}
                                                         onChange={
                                                             (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
+                                                                const errorMessage = genericRequired(e.target.value)
                                                                 console.log(errorMessage)
                                                                 if (!errorMessage) {
                                                                     let tempErrors = { ...errors }

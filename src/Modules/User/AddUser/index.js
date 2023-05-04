@@ -1745,7 +1745,7 @@ export default function AddUser() {
                                                     <AddUserInput label="ID Number" name="guarantorIdNumber" error={errors.guarantorIdNumber}
                                                         onChange={
                                                             (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
+                                                                const errorMessage = genericRequired(e.target.value)
                                                                 console.log(errorMessage)
                                                                 if (!errorMessage) {
                                                                     let tempErrors = { ...errors }

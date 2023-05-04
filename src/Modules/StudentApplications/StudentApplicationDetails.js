@@ -86,6 +86,8 @@ export default function StudentApplicationDetails() {
             setAddingNote(false)
             setAddNoteOpen(false)
             setAddNoteSuccess(true)
+            fetchNotes(data.applicationCode)
+
         }
        
         catch(e){

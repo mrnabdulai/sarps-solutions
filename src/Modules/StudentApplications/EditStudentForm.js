@@ -271,7 +271,7 @@ export default function EditStudentApplicationForm() {
             console.log(response.data)
             setIsSubmitting(false)
 
-            navigate('/user/add-success', {
+            navigate('/app/applications-students/edit/success', {
                 replace: true
             })
         }
@@ -1739,7 +1739,7 @@ export default function EditStudentApplicationForm() {
                                                     defaultValue={applicationData.guarantor_ID}
                                                         onChange={
                                                             (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
+                                                                const errorMessage = genericRequired(e.target.value)
                                                                 console.log(errorMessage)
                                                                 if (!errorMessage) {
                                                                     let tempErrors = { ...errors }
@@ -2009,47 +2009,19 @@ at least two weeks before you arrive in the campus
                                         <div className="overflow-hidden shadow sm:rounded-md">
                                             <div className="bg-white px-4 py-5 sm:p-6">
                                                 <div className="grid grid-cols-6 gap-6">
-                                                <div className="col-span-6 flex items-center   ">
-                                                        <legend className="block text-sm font-medium leading-6 text-gray-900 mr-5">
+                                                <div className="col-span-6    ">
+                                                <label htmlFor={"requestLearningSupport"} className="block text-sm font-medium leading-6 text-gray-900">
                                                         If there is anything that may aﬀect your learning (for example, impairments to
 your mobility, sight, hearing, reading or writing), please notify us so that we
 can support you. Please indicate your needs on a separate sheet of paper and
 attach it to this application.
-                                                        </legend>
-                                                                <div className="flex items-center gap-x-2 mr-5">
-                                                                    <input
-                                                                        id={"req-learn-support-yes-radio"}
-                                                                        name="requestLearningSupport"
-                                                                        value={"yes"}
-                                                                       defaultChecked={applicationData.request_for_learning_support == "yes"}
-
-                                                                        type="radio"
-                                                                        
-                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
-                                                                    />
-                                                                    <label htmlFor={"req-learn-support-yes-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
-                                                                     Yes
-                                                                    </label>
-                                                                </div>
-                                                                <div className="flex items-center gap-x-2 mr-5">
-                                                                    <input
-                                                                        id={"req-learn-support-no-radio"}
-                                                                        name="requestLearningSupport"
-                                                                        value={"no"}
-                                                                       defaultChecked={applicationData.request_for_learning_support == "no"}
-
-                                                                        type="radio"
-                                                                        
-                                                                        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
-                                                                    />
-                                                                    <label htmlFor={"req-learn-support-no-radio"} className=" block text-[13px] font-medium leading-6 text-gray-900">
-                                                                     No
-                                                                    </label>
-                                                                </div>
-                                              
+                                                        </label>
+                                                        <textarea defaultValue={applicationData.request_for_learning_support} name="requestLearningSupport" id="requestLearningSupport" placeholder="" rows={3} className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                        </textarea> 
+                                                              
+                                                            
 
                                                     </div>
-
                                                   
                                                 </div>
                                             </div>

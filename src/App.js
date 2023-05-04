@@ -52,6 +52,8 @@ import StudentApplicationsList from './Modules/StudentApplications';
 import EditStudentApplicationForm from './Modules/StudentApplications/EditStudentForm';
 import StudentApplicationDetails from './Modules/StudentApplications/StudentApplicationDetails';
 import EditApplicationForm from './Modules/Applications/EditApplicationForm';
+import EditStudentSuccess from './Modules/StudentApplications/EditStudentSuccess';
+import EditUserSuccess from './Modules/Applications/EditUserSucess';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -99,8 +101,10 @@ function App() {
           {/* Application routes */}
           <Route path='applications/list' element={<ApplicationList />} />
           <Route path='applications/edit/:id' element={<EditApplicationForm />} />
+          <Route path='applications/edit/success' element={<EditUserSuccess />} />
           <Route path='applications-students/list' element={<StudentApplicationsList />} />
           <Route path='applications-students/edit/:id' element={<EditStudentApplicationForm />} />
+          <Route path='applications-students/edit/success' element={<EditStudentSuccess />} />
           <Route path='applications-students/:id' element={<StudentApplicationDetails />} />
           <Route path='applications/:id' element={<ApplicationDetails />} />
           <Route path="clients/list" element={<ClientList />} />

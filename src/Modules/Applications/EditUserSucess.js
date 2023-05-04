@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function AddUserSucess({isAdmin}) {
+function EditUserSuccess({isAdmin}) {
     const navigate = useNavigate();
 
   return (
@@ -16,22 +16,16 @@ function AddUserSucess({isAdmin}) {
     </svg>
     <div className="text-center">
       <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
-        Account Created
+        Account Edited
       </h3>
       <p className="text-gray-600 my-2">
-        You have successfully created an account.
-      </p>
+        You have successfully edited application
+        </p>
       <p> Have a great day!</p>
       <div className="py-10 text-center">
         <button onClick={()=>{
-          if(isAdmin){
             navigate('/app/dashboard')
-            
-
-          }
-          else {
-            navigate('user/dashboard')
-          }
+         
         }} className="px-12 rounded-md bg-primary hover:bg-primary text-white font-semibold py-3">
           Go to dashboard
         </button>
@@ -43,4 +37,4 @@ function AddUserSucess({isAdmin}) {
   )
 }
 
-export default AddUserSucess
+export default EditUserSuccess
