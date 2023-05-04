@@ -35,6 +35,7 @@ import UpdateApplicationPopup from './UpdateApplicationPopup'
 import AlLoadingOverlay from '../../Shared/Components/AlLoadingOverlay'
 import ErrorNotification from '../../Shared/Components/ErrorNotification'
 import SuccessNotification from '../../Shared/Components/SuccessNotification'
+import AddNotePopup from './AddNotePopup'
 import DeclineApplicationPopup from './DeclineApplicationPopup'
 import { sentenceCase } from 'change-case'
 const timelineEventTypes = {
@@ -62,6 +63,39 @@ export default function StudentApplicationDetails() {
     const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("not_paid")
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
     const [selectedPaidAmount, setSelectedPaidAmount] = useState(0)
+    const [addNoteOpen, setAddNoteOpen] = useState(false)
+    const [note, setNote] = useState("")
+    const [addingNote, setAddingNote] = useState(false)
+    const [addNoteSuccess, setAddNoteSuccess] = useState(false)
+    const [addNoteError, setAddNoteError]= useState("")
+    const [notesForThisApplication, setNotesForThisApplication] = useState([])
+
+
+    const handleNoteAdd = async () => {
+        setAddingNote(true)
+        const currentAdmin = JSON.parse(localStorage.getItem("admin"));
+
+        const createdBy = currentAdmin.id
+        try{
+            const noteResponse = await Axios.post("/api/note/addNote", {
+                applicationCode: data.applicationCode,
+                note: note,
+                createdBy: createdBy
+            })
+
+            setAddingNote(false)
+            setAddNoteOpen(false)
+            setAddNoteSuccess(true)
+        }
+       
+        catch(e){
+            console.log(e)
+            setAddingNote(false)
+            setAddNoteOpen(false)
+            setAddNoteError("An error occured while adding note")
+        }
+      
+    }
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -105,7 +139,11 @@ export default function StudentApplicationDetails() {
 
         }
     }
-
+   const fetchNotes = async(applicationCode) => {
+       const notesResponse = await Axios.get("/api/note/getNotes/" + applicationCode)
+       console.log(notesResponse    )
+       setNotesForThisApplication(notesResponse.data)
+    }
     useEffect(() => {
 
         const indexOfThisApplication = paramsList.findIndex((application) => {
@@ -127,6 +165,8 @@ export default function StudentApplicationDetails() {
         setSelectedPaymentMethod(paramsList[indexOfThisApplication].payment_method)
         setSelectedPaidAmount(paramsList[indexOfThisApplication].total)
         if(paramsList[indexOfThisApplication].payment_status != null) setSelectedPaymentStatus(paramsList[indexOfThisApplication].payment_status)
+        fetchNotes(paramsList[indexOfThisApplication].applicationCode)
+
     }, [])
     const mapPaymentStatusToStatus = () => {
         if(data.payment_status == null) return "rejected"
@@ -142,7 +182,8 @@ export default function StudentApplicationDetails() {
     }
     return (
 
-        <>
+        <>            <AlLoadingOverlay text="Adding Note" show={addingNote} >
+
             <AlLoadingOverlay text="Updating application" show={isUpdating} >
                 <div className="min-h-full">
 
@@ -198,6 +239,16 @@ export default function StudentApplicationDetails() {
                                 
                                    Edit Application
                                 </button>
+
+                                <button
+                                        type="button"
+                                        onClick={() => {
+                                            setAddNoteOpen(true)
+                                        }}
+                                        className="inline-flex items-center justify-center rounded-md border  border-yellow-600 px-8 py-3  outline-yellow-500 font-medium text-yellow-600 shadow-sm hover:outline-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                                    >
+                                        Add Note
+                                    </button>
                             </div>
 
                         </div>
@@ -940,14 +991,73 @@ export default function StudentApplicationDetails() {
                                     </button>
                                 </div> */}
                                 </div>
+                                <div className="mt-3 bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                                        <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
+                                            Notes
+                                        </h2>
+
+                                        {/* Activity Feed */}
+                                        <div className="mt-6 flow-root">
+                                            <ul role="list" className="-mb-8">
+                                                {notesForThisApplication.map((item, itemIdx) => (
+                                                    <li key={item.id} className=' '>
+                                                        <div className="relative pb-8">
+                                                         
+                                                            <div className="relative flex space-x-3">
+                                                            
+                                                                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                                                    <div>
+                                                                        <p className="text-sm text-gray-700">
+                                                                            {item.note}{' '}
+                                                                        
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="whitespace-nowrap text-right text-[13px] text-gray-500 flex flex-col">
+                                                                        <time dateTime={item.createdAt}>{format(Date.parse(item.createdAt), "MMM dd") }</time>
+                                                                        {/* <span>By {item.createdBy}</span> */}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* {itemIdx !=  notesForThisApplication.length - 1 &&  <div     className='border-b mx-[-24px]'></div> } */}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        {/* <div className="justify-stretch mt-6 flex flex-col">
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    >
+                                        Advance to offer
+                                    </button>
+                                </div> */}
+                                    </div>
                             </section>
                         </div>
                     </main>}
                     <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} selectedPaymentMethod={selectedPaymentMethod} setSelectedPaymentMethod={setSelectedPaymentMethod} selectedPaidAmount={selectedPaidAmount} setSelectedPaidAmount={setSelectedPaidAmount} />
-                </div>
-                {updateError && <ErrorNotification errorMessage={updateError} />}
-                {updateSuccess && <SuccessNotification message={updateSuccess} />}
+                        <AddNotePopup setOpen={setAddNoteOpen} open={addNoteOpen} handleNoteAdd={handleNoteAdd} note={note} setNote={setNote} />
+                    </div>
+                    {updateError && <ErrorNotification errorMessage={updateError} show={!!updateError} setShow={()=>{
+                        setUpdateError("")
+                       
+                    }}/>}
+                    {updateSuccess && <SuccessNotification message={updateSuccess} show={!!updateSuccess} setShow={()=>{
+                        setUpdateSuccess("")
+                       
+                    }}/>}
+                    {addNoteError && <ErrorNotification errorMessage={addNoteError} show={!!addNoteError} setShow={()=>{
+                        setAddNoteError("")
+                       
+                    }}/>}
+                    {addNoteSuccess && <SuccessNotification message={"Note has been added"} show={addNoteSuccess} setShow={()=>{
+                        setAddNoteSuccess(false)
+                       
+                    }}/>}
             </AlLoadingOverlay>
+            </AlLoadingOverlay>
+
         </>
     )
 }

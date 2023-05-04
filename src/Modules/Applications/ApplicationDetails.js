@@ -87,6 +87,7 @@ export default function Example() {
             setAddingNote(false)
             setAddNoteOpen(false)
             setAddNoteSuccess(true)
+            fetchNotes(data.applicationCode)
         }
        
         catch(e){
