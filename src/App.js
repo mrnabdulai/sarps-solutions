@@ -54,6 +54,7 @@ import StudentApplicationDetails from './Modules/StudentApplications/StudentAppl
 import EditApplicationForm from './Modules/Applications/EditApplicationForm';
 import EditStudentSuccess from './Modules/StudentApplications/EditStudentSuccess';
 import EditUserSuccess from './Modules/Applications/EditUserSucess';
+import AdminProfile from './Modules/Manage';
 
 function App() {
   const isAuth = !!useSelector(state => state.login.token)
@@ -94,11 +95,16 @@ function App() {
         </Route>
         <Route path="/user/add" element={<AddUser />} />
         <Route path="/user/add-student" element={<StudentForm />} />
-        
+
         <Route path="/user/login" element={userAuth ? <Navigate to="/user/dashboard" /> : agentAuth ? <Navigate to="/agent/dashboard" /> : <UserAuth />} />
         <Route path="/user/add-success" element={<AddUserSucess isAdmin={isAuth} />} />
         <Route path='/app/*' element={isAuth ? <AppLayouts /> : <Navigate to="/login" replace />}>
           <Route path='dashboard' element={<Dashboard />} />
+          {/* Admin manage */}
+          <Route path='admin/manage' element={<AdminProfile />} />
+
+
+
           {/* Application routes */}
           <Route path='applications/list' element={<ApplicationList />} />
           <Route path='applications/edit/:id' element={<EditApplicationForm />} />
@@ -140,16 +146,16 @@ function App() {
           {/* Accounts routes */}
           <Route path="accounts/income-and-expenditure" element={<Expenditure />} />
           <Route path="accounts/income-and-expenditure/add" element={<AddExpenditure />} />
-          <Route path="accounts/income-and-expenditure/:id" element={<ExpenditureDetails   />} />
-          
+          <Route path="accounts/income-and-expenditure/:id" element={<ExpenditureDetails />} />
+
           <Route path="accounts/account-payable" element={<AccountPayable />} />
           <Route path="accounts/account-payable/add" element={<AddAccountPayable />} />
-          <Route path="accounts/account-payable/:id" element={<AccountPayableDetails   />} />
-          
+          <Route path="accounts/account-payable/:id" element={<AccountPayableDetails />} />
+
           <Route path="accounts/account-receivable" element={<AccountReceivable />} />
           <Route path="accounts/account-receivable/add" element={<AddAccountReceivable />} />
-          <Route path="accounts/account-receivable/:id" element={<AccountReceivableDetails   />} />
-          
+          <Route path="accounts/account-receivable/:id" element={<AccountReceivableDetails />} />
+
           {/* Agents */}
           <Route path='agents' element={<Agents />} />
           <Route path='agents/add' element={<AddAgent />} />

@@ -5,9 +5,11 @@ import SSIconButton from '../../AlIconButton'
 import { AVATAR_IMG_URL } from '../../../Constants/mock'
 import { useDispatch } from 'react-redux'
 import { doLogout } from '../../../../Modules/Auth/Login/duck/action'
+import { useNavigate } from 'react-router-dom'
 
 function Sidebar() {
   const [adminDetails, setAdminDetails] = useState({})
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
     const tempAdminDetails = JSON.parse(localStorage.getItem('admin'))
@@ -76,7 +78,6 @@ function Sidebar() {
             { title: 'Income and Expenditure', to: '/app/accounts/income-and-expenditure' },
             { title: 'Account Payable', to: '/app/accounts/account-payable' },
             { title: 'Account Receivables', to: '/app/accounts/account-receivable' },
-            { title: 'Petty Cash', to: '/app/account/petty-cash' },
 
           ]}
         />
@@ -125,10 +126,12 @@ function Sidebar() {
       {/* This expands an empty div */}
       <div className='flex-1'></div>
       {/* Bottom section */}
-      <div className='flex flex-col'>
+      <div className='flex flex-col '>
 
         <hr className='mt-3' />
-        <div className='px-2.5 py-3 flex    justify-between items-center'>
+        <div className='px-2.5 py-3 flex    justify-between items-center hover:bg-gray-100 cursor-pointer' onClick={() => {
+          navigate("/app/admin/manage")
+        }}>
           <div className='flex items-center gap-2 mr-3'>
             <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
               <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
