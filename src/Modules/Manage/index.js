@@ -16,19 +16,33 @@ function AdminProfile() {
     }, [
 
     ])
+
+    React.useEffect(() => {
+        if (submitSuccess == true) {
+            setTimeout(() => {
+                window.location.reload()
+            }, [2000])
+        }
+
+    }, [submitSuccess])
     const handleSubmit = async (e) => {
 
         e.preventDefault()
         const email = e.target.email.value
-        // const username = e.target.username.value
+        const firstName = e.target.firstName.value
+        const lastName = e.target.lastName.value
         const password = e.target.password.value
         var data = {
             email,
-            password
+            password,
+            firstName,
+            lastName
         }
         if (password == 'default') {
             data = {
                 email,
+                firstName,
+                lastName
             }
         }
 
@@ -37,6 +51,14 @@ function AdminProfile() {
         setSubmitError("")
         try {
             const res = await Axios.put("/api/admin/updateAdmin/" + currentAdminDetails.id, data)
+            const newAdminDetails = {
+                ...currentAdminDetails,
+                firstName,
+                lastName,
+                email
+            }
+            console.log(newAdminDetails)
+            localStorage.setItem("admin", JSON.stringify(newAdminDetails))
             setSubmitSuccess(true)
             setIsEditing(false)
             // setCurrentAdminDetails(res.data)
@@ -91,6 +113,32 @@ function AdminProfile() {
                                     />
                                 </div>
                             </div> */}
+                            <div className="sm:col-span-6">
+                                <label htmlFor="firstName" className="block text-sm font-medium text-blue-gray-900">
+                                    First Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    id="firstName"
+                                    disabled={isEditing == false}
+                                    defaultValue={currentAdminDetails.firstName}
+                                    className="mt-1 block w-full rounded-md disabled:opacity-70 disabled:border-gray-300 border-blue-gray-300 text-blue-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                />
+                            </div>
+                            <div className="sm:col-span-6">
+                                <label htmlFor="lastName" className="block text-sm font-medium text-blue-gray-900">
+                                    Last Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    id="lastName"
+                                    disabled={isEditing == false}
+                                    defaultValue={currentAdminDetails.lastName}
+                                    className="mt-1 block w-full rounded-md disabled:opacity-70 disabled:border-gray-300 border-blue-gray-300 text-blue-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                />
+                            </div>
                             <div className="sm:col-span-6">
                                 <label htmlFor="url" className="block text-sm font-medium text-blue-gray-900">
                                     Email Address
