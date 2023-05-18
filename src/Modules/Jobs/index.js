@@ -29,7 +29,7 @@ function Jobs() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/vendor/getVendors")
-            if(response.status == 403){
+            if (response.status == 403) {
                 localStorage.clear()
                 dispatch(doLogout())
                 window.location.replace('/login')
@@ -84,7 +84,7 @@ function Jobs() {
                                 scope="col"
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
                             >
-                                Name of Vendor 
+                                Name of Vendor
                             </th>
                             <th
                                 scope="col"
@@ -92,7 +92,7 @@ function Jobs() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Country  
+                                Country
                             </th>
                             <th
                                 scope="col"
@@ -124,12 +124,12 @@ function Jobs() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Job Name 
+                                Job Name
                             </th>
-                            <th align='center' scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                            <th align='center' scope="col" className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6">
                                 No. of Workers
                             </th>
-                         
+
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Created At
                             </th>
@@ -175,11 +175,11 @@ function Jobs() {
                                     {vendor.job_name}
 
                                 </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {vendor.number_of_workers   }
+                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">
+                                    {vendor.number_of_workers}
 
                                 </td>
-                               
+
 
                                 {/* <td className="hidden px-3 ppy-4 text-sm text-gray-500 sm:table-cell">
                                     <AlBadge status={vendor.status} statusText={vendor.status} />

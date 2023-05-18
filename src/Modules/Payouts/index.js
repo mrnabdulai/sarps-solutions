@@ -30,7 +30,7 @@ function Payouts() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/payout/getPayouts")
-            if(response.status == 403){
+            if (response.status == 403) {
                 localStorage.clear()
                 // dispatch(doLogout())
                 // window.location.replace('/login')
@@ -93,7 +93,7 @@ function Payouts() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Amount 
+                                Amount
                             </th>
                             <th
                                 scope="col"
@@ -101,7 +101,7 @@ function Payouts() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Description 
+                                Description
 
                             </th>
                             <th
@@ -110,7 +110,7 @@ function Payouts() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Payment Method 
+                                Payment Method
 
                             </th>
                             <th
@@ -145,7 +145,7 @@ function Payouts() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((payout, index) => {
-                            const  mapStatusToStatus = () => {
+                            const mapStatusToStatus = () => {
                                 switch (payout.status) {
                                     case "paid":
                                         return "success"
@@ -177,7 +177,7 @@ function Payouts() {
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                                    {payout.payment_method}
+                                    {sentenceCase(payout.payment_method)}
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">

@@ -131,7 +131,7 @@ export default function PayoutDetails() {
 
     const getPaymentMethodIcon = (paymentMethod) => {
         if (paymentMethod === "cash") return "cash.png"
-        if (paymentMethod === "bank") return "icons8-bank-building-50.png"
+        if (paymentMethod === "bank transfer" || paymentMethod === "bank") return "icons8-bank-building-50.png"
         if (paymentMethod === "mobile_money") return "momoghana.jpg"
         return "momoghana.jpg"
     }
@@ -212,9 +212,9 @@ export default function PayoutDetails() {
                                             <dt className="text-sm font-medium text-gray-500">Payment Method</dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                 <div className="mt-2 flex gap-x-2 items-center">
-                                                <span className="inline-block  text-sm  text-gray-700">{data.payment_method}</span>
+                                                    <span className="inline-block  text-sm  text-gray-700">{sentenceCase(data.payment_method)}</span>
 
-                                                    <img src={`/images/payment-icons/${getPaymentMethodIcon()}`} className="h-8 object-contain" />
+                                                    <img src={`/images/payment-icons/${getPaymentMethodIcon(data.payment_method)}`} className="h-8 object-contain" />
                                                 </div>
                                             </dd>
                                         </div>
