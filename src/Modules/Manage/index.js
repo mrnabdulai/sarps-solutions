@@ -42,7 +42,8 @@ function AdminProfile() {
             data = {
                 email,
                 firstName,
-                lastName
+                lastName,
+                password: currentAdminDetails.password
             }
         }
 
