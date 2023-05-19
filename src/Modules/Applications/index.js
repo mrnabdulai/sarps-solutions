@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doLogout } from '../Auth/Login/duck/action'
-import { exportToPdf } from '../../Shared/utils/export_utils'
+import { exportToCSV, exportToExcel, exportToPdf } from '../../Shared/utils/export_utils'
 
 function ApplicationList() {
     const navigate = useNavigate()
@@ -67,12 +67,16 @@ function ApplicationList() {
             <div className='rounded-xl w-full px-2 py-3 bg-gray-100 border '>
                 <div className='flex items-center justify-between mb-5'>
                     <div className='flex gap-x-2'>
-                        <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
-                        <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
+                        <ExportBtn onClick={() => {
+                            exportToCSV(data, "Worker Applications")
+                        }} Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
+                        <ExportBtn onClick={() => {
+                            exportToExcel(data, "Worker Applications")
+                        }} Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
                         <ExportBtn onClick={() => {
                             exportToPdf(data, "Worker Applications")
                         }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                    </div>
-                    <AlSearchInput placeholder="Search " />
+                    <AlSearchInput placeholder="Search" />
                 </div>
                 <table className="min-w-full divide-y divide-gray-300">
                     <thead className="bg-gray-50">

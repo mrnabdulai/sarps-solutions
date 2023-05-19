@@ -13,8 +13,8 @@ import Axios from '../../Shared/utils/axios_instance'
 import { useDispatch } from 'react-redux'
 // import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
-import {  doSetStaff } from './duck/action'
-import { exportToPdf } from '../../Shared/utils/export_utils'
+import { doSetStaff } from './duck/action'
+import { exportToCSV, exportToExcel, exportToPdf } from '../../Shared/utils/export_utils'
 // import { doSetPayouts } from './duck/action'
 // import { doSetComplaints } from './duck/action'
 // import { doLogout } from '../Auth/Login/duck/action'
@@ -31,7 +31,7 @@ function Staff() {
             setFetching(true)
             setFetchError("")
             const response = await Axios.get("/api/user/getStaff")
-            if(response.status == 403){
+            if (response.status == 403) {
                 localStorage.clear()
                 // dispatch(doLogout())
                 // window.location.replace('/login')
@@ -69,8 +69,12 @@ function Staff() {
             <div className='rounded-xl w-full px-2 py-3 bg-gray-100 border '>
                 <div className='flex items-center justify-between mb-5'>
                     <div className='flex gap-x-2'>
-                        <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
-                        <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
+                        <ExportBtn onClick={() => {
+                            exportToCSV(data, "Payouts")
+                        }} Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
+                        <ExportBtn onClick={() => {
+                            exportToExcel(data, "Payouts")
+                        }} Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
                         <ExportBtn onClick={() => {
                             exportToPdf(data, "Staff")
                         }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                      </div>
@@ -94,7 +98,7 @@ function Staff() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Email 
+                                Email
                             </th>
                             <th
                                 scope="col"
@@ -102,7 +106,7 @@ function Staff() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                                Phone 
+                                Phone
 
                             </th>
                             <th
@@ -111,7 +115,7 @@ function Staff() {
 
                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                             >
-                               Sex
+                                Sex
 
                             </th>
                             <th
@@ -291,7 +295,7 @@ function Staff() {
                             </tr>
                         ))}
                     </tbody>
-                    
+
 
                 </table>
                 {data.length > 0 && <TablePagination total={data.length} onPageChange={(currentPage) => {

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import { doSetApplications } from './duck/action'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doLogout } from '../Auth/Login/duck/action'
-import { exportToPdf } from '../../Shared/utils/export_utils'
+import { exportToCSV, exportToExcel, exportToPdf } from '../../Shared/utils/export_utils'
 function StudentApplicationsList() {
     const navigate = useNavigate()
     const [data, setData] = useState([])
@@ -54,7 +54,7 @@ function StudentApplicationsList() {
         return !fetching && data.length > 0
     }
 
-   
+
     return (
         <section className='pr-5'>
             <div className="items-center flex justify-between mb-5">
@@ -68,9 +68,12 @@ function StudentApplicationsList() {
             <div className='rounded-xl w-full px-2 py-3 bg-gray-100 border '>
                 <div className='flex items-center justify-between mb-5'>
                     <div className='flex gap-x-2'>
-                        <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
-                        <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
                         <ExportBtn onClick={() => {
+                            exportToCSV(data, "Student Applications")
+                        }} Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
+                        <ExportBtn onClick={() => {
+                            exportToExcel(data, "Student Applications")
+                        }} Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />                    <ExportBtn onClick={() => {
                             exportToPdf(data, "Student Applications")
                         }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />
                     </div>
@@ -140,9 +143,9 @@ function StudentApplicationsList() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                    {doneFetchingAndHasData() ? (data.map((application, index) => {
+                        {doneFetchingAndHasData() ? (data.map((application, index) => {
                             const mapPaymentPaymentStatusToStatus = () => {
-                                if(application.payment_status == null) return "rejected"
+                                if (application.payment_status == null) return "rejected"
                                 if (application.payment_status === "not_paid") return "rejected"
                                 if (application.payment_status === "part_payment") return "pending"
                                 if (application.payment_status === "paid") return "success"
@@ -178,7 +181,7 @@ function StudentApplicationsList() {
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
 
-                                <AlBadge status={mapPaymentPaymentStatusToStatus()} statusText={application.payment_status == null ? "Not paid" : sentenceCase(application.payment_status)} />
+                                    <AlBadge status={mapPaymentPaymentStatusToStatus()} statusText={application.payment_status == null ? "Not paid" : sentenceCase(application.payment_status)} />
 
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(application.createdAt), 'MM/dd/yyyy')}</td>

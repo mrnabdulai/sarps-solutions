@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doSetExpenditure, doSetTickets } from './duck/action'
 import { doLogout } from '../Auth/Login/duck/action'
-import { exportToPdf } from '../../Shared/utils/export_utils'
+import { exportToCSV, exportToExcel, exportToPdf } from '../../Shared/utils/export_utils'
 
 function Expenditure() {
     const navigate = useNavigate()
@@ -76,60 +76,60 @@ function Expenditure() {
                     </p>
                 </div> */}
                 <div className='flex-1 flex gap-x-10'>
-                <div class="flex w-72  mt-7">
-                    <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg">
-                        <div class="p-3">
-                            <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr bg-green-700 from-emerald-700 to-emerald-500 text-center text-white shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="pt-1 text-right">
-                                <p class="text-sm font-light capitalize">Total Expenditure</p>
-                                {totalExpenditure != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalExpenditure}</h4> :
-                                    (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
-                                        <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </h4>)
+                    <div class="flex w-72  mt-7">
+                        <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg">
+                            <div class="p-3">
+                                <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr bg-green-700 from-emerald-700 to-emerald-500 text-center text-white shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="pt-1 text-right">
+                                    <p class="text-sm font-light capitalize">Total Expenditure</p>
+                                    {totalExpenditure != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalExpenditure}</h4> :
+                                        (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
+                                            <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </h4>)
 
-                                }
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        {/* <hr class="opacity-50" />
+                            {/* <hr class="opacity-50" />
       <div class="p-4">
         <p class="font-light"><span class="text-sm font-bold text-red-600">-3% </span>vs last month</p>
       </div> */}
-                    </div>
-                </div>
-                <div class="flex w-72  mt-7">
-                    <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg">
-                        <div class="p-3">
-                            <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr bg-indigo-700 from-emerald-700 to-emerald-500 text-center text-white shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="pt-1 text-right">
-                                <p class="text-sm font-light capitalize">Total Income</p>
-                                {totalIncome != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalIncome}</h4> :
-                                    (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
-                                        <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </h4>)
-
-                                }
-                            </div>
                         </div>
-                        {/* <hr class="opacity-50" />
+                    </div>
+                    <div class="flex w-72  mt-7">
+                        <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg">
+                            <div class="p-3">
+                                <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr bg-indigo-700 from-emerald-700 to-emerald-500 text-center text-white shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="pt-1 text-right">
+                                    <p class="text-sm font-light capitalize">Total Income</p>
+                                    {totalIncome != null ? <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">GHC {totalIncome}</h4> :
+                                        (<h4 className='text-2xl font-semibold tracking-tighter xl:text-2xl flex justify-end mt-2'>
+                                            <svg class=" animate-spin -ml-1 mr-3 h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </h4>)
+
+                                    }
+                                </div>
+                            </div>
+                            {/* <hr class="opacity-50" />
       <div class="p-4">
         <p class="font-light"><span class="text-sm font-bold text-red-600">-3% </span>vs last month</p>
       </div> */}
+                        </div>
                     </div>
-                </div>
                 </div>
                 <AlButton text="Add Expenditure" onClick={() => {
                     navigate('/app/accounts/income-and-expenditure/add')
@@ -140,8 +140,12 @@ function Expenditure() {
             <div className='rounded-xl w-full px-2 py-3 bg-gray-100 border '>
                 <div className='flex items-center justify-between mb-5'>
                     <div className='flex gap-x-2'>
-                        <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
-                        <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
+                        <ExportBtn onClick={() => {
+                            exportToCSV(data, "Income and Expenditure")
+                        }} Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
+                        <ExportBtn onClick={() => {
+                            exportToExcel(data, "Income and Expenditure")
+                        }} Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
                         <ExportBtn onClick={() => {
                             exportToPdf(data, "Income And Expenditure")
                         }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                      </div>

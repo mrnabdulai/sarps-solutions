@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux'
 import AlBadge from '../../Shared/Components/AlBadge'
 import { doSetTickets } from './duck/action'
 import { doLogout } from '../Auth/Login/duck/action'
-import { exportToPdf } from '../../Shared/utils/export_utils'
+import { exportToCSV, exportToExcel, exportToPdf } from '../../Shared/utils/export_utils'
 
 function Tickets() {
     const navigate = useNavigate()
@@ -67,8 +67,12 @@ function Tickets() {
             <div className='rounded-xl w-full px-2 py-3 bg-gray-100 border '>
                 <div className='flex items-center justify-between mb-5'>
                     <div className='flex gap-x-2'>
-                        <ExportBtn Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
-                        <ExportBtn Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
+                        <ExportBtn onClick={() => {
+                            exportToCSV(data, "Tickets")
+                        }} Icon={<img src='/images/export-icons/csv.png' className=' h-5 object-contain' />} text="CSV" />
+                        <ExportBtn onClick={() => {
+                            exportToExcel(data, "Tickets")
+                        }} Icon={<img src='/images/export-icons/excel-app.png' className=' h-5 object-contain' />} text="Excel" />
                         <ExportBtn onClick={() => {
                             exportToPdf(data, "Tickets")
                         }} Icon={<img src='/images/export-icons/pdf-file.png' className=' h-5 object-contain' />} text="PDF" />                      </div>
@@ -156,23 +160,23 @@ function Tickets() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {doneFetchingAndHasData() ? (data.map((vendor, index) => {
-                            function mapStatusToStatus(){
-                                switch(vendor.status){
+                            function mapStatusToStatus() {
+                                switch (vendor.status) {
                                     case 'open':
                                         return 'approved'
                                     case 'closed':
-                                    return 'rejected'
+                                        return 'rejected'
                                 }
                             }
 
-                            function mapPriorityToStatus(){
-                                switch(vendor.priority){
+                            function mapPriorityToStatus() {
+                                switch (vendor.priority) {
                                     case 'low':
                                         return 'rejected'
                                     case 'medium':
-                                    return 'pending'
+                                        return 'pending'
                                     case 'high':
-                                    return 'approved'
+                                        return 'approved'
                                 }
                             }
                             return (<tr key={vendor.id}>
@@ -217,7 +221,7 @@ function Tickets() {
                                 </td>
 
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{format(Date.parse(vendor.createdAt), 'MM/dd/yyyy')}</td>
-                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{vendor.updatedAt != null ?  format(Date.parse(vendor.updatedAt), 'MM/dd/yyyy') : "N/A"}</td>
+                                <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{vendor.updatedAt != null ? format(Date.parse(vendor.updatedAt), 'MM/dd/yyyy') : "N/A"}</td>
                                 <td className="hidden px-3 py-4 text-sm text-center text-gray-500 sm:table-cell">{vendor.closed_at != null ? format(Date.parse(vendor.closed_at), 'MM/dd/yyyy') : "N/A"}</td>
                                 <td className="py-4 text-right text-sm font-medium ">
                                     <div className='h-full w-full flex items-center justify-center gap-x-4' >

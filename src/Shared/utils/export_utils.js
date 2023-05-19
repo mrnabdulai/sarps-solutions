@@ -1,8 +1,6 @@
 import jsPDF from 'jspdf'
+import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
 
-export const toCSV = () => {
-
-}
 
 
 export const exportToPdf = async (data, fileName) => {
@@ -80,4 +78,63 @@ export const exportToPdf = async (data, fileName) => {
 
   doc.table(1, 1, generateData(), headers, { autoSize: true, tableWidth: tableWidth });
   doc.save(fileName);
+};
+
+
+export const exportToExcel = (data, fileName) => {
+  // Create a new workbook
+  const workbook = XLSXUtils.book_new();
+
+  // Convert data to a worksheet
+  const worksheet = XLSXUtils.json_to_sheet(data);
+
+  // Add the worksheet to the workbook
+  XLSXUtils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  // Generate a XLSX file
+  const excelBuffer = XLSXWrite(workbook, { bookType: 'xlsx', type: 'array' });
+
+  // Create a Blob object for the XLSX file
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+  // Create a temporary download link
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `${fileName}.xlsx`);
+
+  // Trigger the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+
+
+export const exportToCSV = (data, fileName) => {
+  // Convert data to worksheet
+  const worksheet = XLSXUtils.json_to_sheet(data);
+
+  // Convert worksheet to CSV format
+  const csvContent = XLSXUtils.sheet_to_csv(worksheet);
+
+  // Create a Blob object for the CSV file
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+
+  // Create a temporary download link
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `${fileName}.csv`);
+
+  // Trigger the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 };
