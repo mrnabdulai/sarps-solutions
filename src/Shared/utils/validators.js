@@ -3,7 +3,7 @@ export const getSurnameValidator = (value) => {
     if (!value) {
         return null;
     }
-    else if (value.length > 1 && value.length < 3) {
+    else if (value.length > 0 && value.length < 3) {
         error = "Surname must be at least 3 characters long";
     }
     return error;
@@ -11,9 +11,9 @@ export const getSurnameValidator = (value) => {
 export const getOtherNamesValidator = (value) => {
     let error;
     if (!value) {
-        error = null;
+        return null;
     }
-    if (value.length > 1 && value.length < 3) {
+    if (value.length > 0 && value.length < 3) {
         error = "Other name must be at least 3 characters long";
     }
     return error;
@@ -24,7 +24,7 @@ export const genericRequired = (value) => {
     if (!value) {
         return null
     }
-    if (value.length > 1 && value.length < 3) {
+    if (value.length > 0 && value.length < 2) {
         error = "must be at least 2 characters long";
     }
     return error;
