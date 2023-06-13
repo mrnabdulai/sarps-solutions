@@ -16,7 +16,7 @@
 
 import { Switch } from "@headlessui/react";
 import LoadingOverlay from 'react-loading-overlay';
-
+import {message} from 'antd'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { nationalities, countryList } from "../../../Shared/utils/countries";
@@ -112,10 +112,10 @@ export default function StudentForm() {
 
 
         //MOther Info
-        const motherSurname = e.target.motherSurname.value
+        const motherSurname = e.target.motherSuerNationality.value
+        const motherHometown = e.target.motherHrname.value
         const motherOtherNames = e.target.motherOtherNames.value
-        const motherNationality = e.target.motherNationality.value
-        const motherHometown = e.target.motherHometown.value
+        const motherNationality = e.target.mothometown.value
         const motherOccupation = e.target.motherOccupation.value
         const motherContact = e.target.motherContact.value
         // const applicantMotherRelation = e.target.applicantMotherRelation.value
@@ -266,9 +266,15 @@ export default function StudentForm() {
             })
         }
         catch (err) {
+            setIsSubmitting(false)
+            let errorMessage = "An error occured while submitting form"
+
+
+ 
 
             console.log(err)
             if (err.response) {
+                errorMessage = err.response.data
 
                 console.log(err.response.data);
                 console.log(err.response.status);
@@ -284,7 +290,9 @@ export default function StudentForm() {
             }
             else setSubmitError("Something went wrong")
             setIsSubmitting(false)
-
+            message.error({
+                content:errorMessage
+            })
         }
 
     }
@@ -368,7 +376,6 @@ export default function StudentForm() {
                                                             name="dob"
                                                             id="dob"
                                                             autoComplete=""
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -382,13 +389,12 @@ export default function StudentForm() {
                                                             name="gender"
                                                             autoComplete=""
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                            required
                                                         >
                                                             <option value={"male"}>Male</option>
                                                             <option value={"female"}>Female</option>
                                                         </select>
                                                     </div>
-                                                      <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
+                                                      <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={false} error={errors.email}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = emailValidator(e.target.value)
@@ -407,7 +413,7 @@ export default function StudentForm() {
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Passowrd" type="password" name="password" required={true} error={errors.password}
+                                                    <AddUserInput label="Passowrd" type="password" name="password" required={false} error={errors.password}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = passwordValidator(e.target.value)
@@ -555,7 +561,6 @@ export default function StudentForm() {
                                                             name="birthCountry"
                                                             autoComplete=""
                                                             value={83}
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -575,7 +580,6 @@ export default function StudentForm() {
                                                             name="nationality"
                                                             autoComplete=""
                                                             value={70}
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -733,7 +737,6 @@ export default function StudentForm() {
                                                             name="secondarySchoolCountry"
                                                             autoComplete=""
                                                             value={83}
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1017,7 +1020,6 @@ export default function StudentForm() {
                                                             name="fatherNationality"
                                                             autoComplete=""
                                                             value={70}
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {

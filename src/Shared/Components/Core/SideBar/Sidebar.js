@@ -46,7 +46,6 @@ function Sidebar() {
         <SideBarAction Icon={UserIcon} isAlert={false} to="/app/applications" text="Applications"
           children={[
             { title: 'New application', to: '/user/add' },
-            { title: 'All applications', to: '/app/applications/list' },
             { title: 'Worker Applications', to: '/app/applications/list' },
             { title: 'Student Applications', to: 'applications-students/list' },
             // {title: 'Companies', to: '/app/screen'},

@@ -15,7 +15,7 @@
 
 import { Switch } from "@headlessui/react";
 import LoadingOverlay from 'react-loading-overlay';
-
+import { message } from 'antd'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { nationalities } from "../../../Shared/utils/countries";
@@ -65,7 +65,7 @@ export default function AddUser() {
         const phone = e.target.phone.value
         const otherPhone = e.target.otherPhone.value
         const email = e.target.email.value
-        const password = e.target.password.value 
+        const password = e.target.password.value
         const religion = e.target.religion.value
         const postalAddress = e.target.postalAddress.value
         const idType = e.target.idType.value
@@ -152,9 +152,9 @@ export default function AddUser() {
         }
         setIsSubmitting(true)
 
-        let passportFileUrl =""
-        if(passportFile){
-             passportFileUrl = await  uploadFileToFirebase(passportFile)
+        let passportFileUrl = ""
+        if (passportFile) {
+            passportFileUrl = await uploadFileToFirebase(passportFile)
         }
         const data = {
             surname,
@@ -173,7 +173,7 @@ export default function AddUser() {
             postalAddress,
             typeofId: idType,
             passportNo: passportNumber,
-            passport_file:passportFileUrl,
+            passport_file: passportFileUrl,
             dateofissue: doIssue,
             placeofissue: doExpiry,
             dateofexpiry: placeOfIssue,
@@ -241,11 +241,13 @@ export default function AddUser() {
             })
         }
         catch (err) {
+            setIsSubmitting(false)
+            let errorMessage = "An error occured while submitting form"
+          
 
-            console.log(err)
             if (err.response) {
-
                 console.log(err.response.data);
+                errorMessage = err.response.data
                 console.log(err.response.status);
                 console.log(err.response.headers);
                 setSubmitError(err.response.data.error)
@@ -255,10 +257,14 @@ export default function AddUser() {
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
                 setSubmitError("Something went wrong")
+
                 console.log(err.request);
             }
             else setSubmitError("Something went wrong")
-            setIsSubmitting(false)
+            message.error({
+                content:errorMessage
+            })
+
 
         }
 
@@ -349,7 +355,6 @@ export default function AddUser() {
                                                             name="dob"
                                                             id="dob"
                                                             autoComplete=""
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -363,7 +368,6 @@ export default function AddUser() {
                                                             autoComplete=""
                                                             value={70}
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                            required
                                                         >
                                                             {
                                                                 nationalities.map((nationality, index) => (
@@ -381,7 +385,6 @@ export default function AddUser() {
                                                             name="gender"
                                                             autoComplete=""
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                            required
                                                         >
                                                             <option value={"male"}>Male</option>
                                                             <option value={"female"}>Female</option>
@@ -501,7 +504,7 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={true} error={errors.email}
+                                                    <AddUserInput label="Email" placeholder="user@gmail.com" name="email" required={false} error={errors.email}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = emailValidator(e.target.value)
@@ -520,7 +523,7 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
-                                                    <AddUserInput label="Passowrd" type="password" name="password" required={true} error={errors.password}
+                                                    <AddUserInput label="Password" type="password" name="password" required={false} error={errors.password}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = passwordValidator(e.target.value)
@@ -627,7 +630,6 @@ export default function AddUser() {
                                                             name="doIssue"
                                                             id="do-issue"
                                                             autoComplete=""
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -659,7 +661,6 @@ export default function AddUser() {
                                                             name="doExpiry"
                                                             id="do-expriry"
                                                             autoComplete=""
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -672,7 +673,6 @@ export default function AddUser() {
                                                             type="text"
                                                             name="languagesSpoken"
                                                             id="languages-spoken"
-                                                            required
                                                             placeholder="eg: English, French, Arabic"
                                                             className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
@@ -762,39 +762,39 @@ export default function AddUser() {
                                                                 }
                                                             }
                                                         />
-                                                         <div className="col-span-6 sm:col-span-3">
-                                                        <label class="block text-sm font-medium text-gray-700">Upload Passport Photo</label>
-                                                        <label for="passport-file-upload" class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300  pt-7 pb-8 	w-5/6 h-60">
-                                                        <input  onChange={(e)=>{
-                                                                            const {files} = e.target
-                                                                            console.log(files)
-                             console.log(files)
+                                                        <div className="col-span-6 sm:col-span-3">
+                                                            <label class="block text-sm font-medium text-gray-700">Upload Passport Photo</label>
+                                                            <label for="passport-file-upload" class="mt-1 flex justify-center items-center rounded-md border-2 border-dashed border-gray-300  pt-7 pb-8 	w-5/6 h-60">
+                                                                <input onChange={(e) => {
+                                                                    const { files } = e.target
+                                                                    console.log(files)
+                                                                    console.log(files)
 
-                                                                            if(files && files.length > 0){
-                                                                                setPassportFile(files[0])
-                                                                            }
+                                                                    if (files && files.length > 0) {
+                                                                        setPassportFile(files[0])
+                                                                    }
 
-                                                                        }}  id="passport-file-upload" name="passportFileUpload" type="file" accept="image/*" class="sr-only" />
-                                                          { passportFile ? <img src={URL.createObjectURL(passportFile)} alt="passport photo" className="object-cover h-60"/>
-                                                            :
-                                                            <> <div class="space-y-1 text-center">
-                                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                </svg>
-                                                                <div class="flex text-center justify-center text-sm text-gray-600">
-                                                                    <div  class="text-center relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
-                                                                        <span>Upload a file</span>
-                                                                       
+                                                                }} id="passport-file-upload" name="passportFileUpload" type="file" accept="image/*" class="sr-only" />
+                                                                {passportFile ? <img src={URL.createObjectURL(passportFile)} alt="passport photo" className="object-cover h-60" />
+                                                                    :
+                                                                    <> <div class="space-y-1 text-center">
+                                                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        </svg>
+                                                                        <div class="flex text-center justify-center text-sm text-gray-600">
+                                                                            <div class="text-center relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                                                <span>Upload a file</span>
+
+                                                                            </div>
+                                                                            {/* <p class="pl-1">or drag and drop</p> */}
+                                                                        </div>
+                                                                        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                                                                     </div>
-                                                                    {/* <p class="pl-1">or drag and drop</p> */}
-                                                                </div>
-                                                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                                            </div>
-                                                            </>
-                                                            }
+                                                                    </>
+                                                                }
 
-                                                        </label>
-                                                    </div>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -958,24 +958,24 @@ export default function AddUser() {
                                                             ))
                                                         }
                                                     </div>
-                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} required={false} label="If Married ? Name of Spouse" name="nameOfSpouse" 
-                                                        // onChange={
-                                                        //     (e) => {
-                                                        //         const errorMessage = genericRequired(e.target.value)
-                                                        //         console.log(errorMessage)
-                                                        //         if (!errorMessage) {
-                                                        //             let tempErrors = { ...errors }
-                                                        //             delete tempErrors.nameOfSpouse
-                                                        //             setErrors(tempErrors)
-                                                        //             console.log(errors)
-                                                        //         }
-                                                        //         else {
-                                                        //             setErrors(
-                                                        //                 { ...errors, nameOfSpouse: errorMessage }
-                                                        //             )
-                                                        //         }
-                                                        //     }
-                                                        // }
+                                                    <AddUserInput colsSpanDef={"col-span-6 sm:col-span-6 lg:col-span-4"} required={false} label="If Married ? Name of Spouse" name="nameOfSpouse"
+                                                    // onChange={
+                                                    //     (e) => {
+                                                    //         const errorMessage = genericRequired(e.target.value)
+                                                    //         console.log(errorMessage)
+                                                    //         if (!errorMessage) {
+                                                    //             let tempErrors = { ...errors }
+                                                    //             delete tempErrors.nameOfSpouse
+                                                    //             setErrors(tempErrors)
+                                                    //             console.log(errors)
+                                                    //         }
+                                                    //         else {
+                                                    //             setErrors(
+                                                    //                 { ...errors, nameOfSpouse: errorMessage }
+                                                    //             )
+                                                    //         }
+                                                    //     }
+                                                    // }
                                                     />
                                                     {/* TODO: handle names of children */}
 
@@ -1113,7 +1113,6 @@ export default function AddUser() {
                                                             name="fatherNationality"
                                                             autoComplete=""
                                                             value={70}
-                                                            required
                                                             className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         >
                                                             {
@@ -1401,7 +1400,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Other Names" name="emergencyContactOtherNames" error={errors.emergencyContactOtherNames}
-                                                                                                                required={false}
+                                                        required={false}
 
                                                         onChange={
                                                             (e) => {
@@ -1482,7 +1481,7 @@ export default function AddUser() {
                                                         }
                                                     />
                                                     <AddUserInput label="Contact" name="emergencyContactContact" placeholder="eg: +233 55 xxx xxxx" error={errors.emergencyContactContact}
-                                                        
+
                                                         required={false}
 
                                                         onChange={
@@ -1504,7 +1503,7 @@ export default function AddUser() {
                                                         }
                                                     />
 
-<AddUserInput label="   Relation With Applicant" name="applicantEmergencyContactRelation" error={errors.applicantEmergencyContactRelation}
+                                                    <AddUserInput label="   Relation With Applicant" name="applicantEmergencyContactRelation" error={errors.applicantEmergencyContactRelation}
                                                         onChange={
                                                             (e) => {
                                                                 const errorMessage = genericRequired(e.target.value)
@@ -1523,7 +1522,7 @@ export default function AddUser() {
                                                             }
                                                         }
                                                     />
-                                            
+
 
                                                 </div>
                                             </div>
@@ -1886,7 +1885,7 @@ export default function AddUser() {
                                                     />
 
 
-{countriesOfInterestList.map((country, index) => (
+                                                    {countriesOfInterestList.map((country, index) => (
                                                         <>
                                                             <AddUserInput label={index == 0 && ""} placeholder="eg: USA, Canada, Denmark" error={errors.hasOwnProperty("countriesOfInterest")} name="countriesOfInterest"
                                                                 onChange={
