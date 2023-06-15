@@ -59,7 +59,7 @@ export default function Example() {
     const [isUpdating, setIsUpdating] = useState(false)
     const [updateError, setUpdateError] = useState("")
     const [updateSuccess, setUpdateSuccess] = useState("")
-    
+
     const [selectedStatus, setSelectedStatus] = useState("accepted")
     const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("not_paid")
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
@@ -68,7 +68,7 @@ export default function Example() {
     const [note, setNote] = useState("")
     const [addingNote, setAddingNote] = useState(false)
     const [addNoteSuccess, setAddNoteSuccess] = useState(false)
-    const [addNoteError, setAddNoteError]= useState("")
+    const [addNoteError, setAddNoteError] = useState("")
     const [notesForThisApplication, setNotesForThisApplication] = useState([])
 
 
@@ -77,7 +77,7 @@ export default function Example() {
         const currentAdmin = JSON.parse(localStorage.getItem("admin"));
 
         const createdBy = currentAdmin.id
-        try{
+        try {
             const noteResponse = await Axios.post("/api/note/addNote", {
                 applicationCode: data.applicationCode,
                 note: note,
@@ -89,14 +89,14 @@ export default function Example() {
             setAddNoteSuccess(true)
             fetchNotes(data.applicationCode)
         }
-       
-        catch(e){
+
+        catch (e) {
             console.log(e)
             setAddingNote(false)
             setAddNoteOpen(false)
             setAddNoteError("An error occured while adding note")
         }
-      
+
     }
 
     const { id } = useParams()
@@ -122,7 +122,7 @@ export default function Example() {
                 reg_status: selectedStatus,
                 payment_status: selectedPaymentStatus,
                 payment_method: selectedPaymentMethod,
-                paid_amount: selectedPaidAmount,
+                total: selectedPaidAmount,
             })
             console.log("this is the response data")
             console.log(response)
@@ -141,10 +141,10 @@ export default function Example() {
 
         }
     }
-    const fetchNotes = async(applicationCode) => {
-       const notesResponse = await Axios.get("/api/note/getNotes/" + applicationCode)
-       console.log(notesResponse    )
-       setNotesForThisApplication(notesResponse.data)
+    const fetchNotes = async (applicationCode) => {
+        const notesResponse = await Axios.get("/api/note/getNotes/" + applicationCode)
+        console.log(notesResponse)
+        setNotesForThisApplication(notesResponse.data)
     }
     useEffect(() => {
 
@@ -191,7 +191,7 @@ export default function Example() {
 
                         {Object.keys(data).length > 0 && <main className="py-10">
                             {/* Page header */}
-                            <img src={data.passport_file } alt="passport photo" className="     border-dashed w-48 object-cover h-60"/> 
+                            <img src={data.passport_file} alt="passport photo" className="     border-dashed w-48 object-cover h-60" />
 
                             <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                                 <div className="flex items-center space-x-5">
@@ -765,18 +765,18 @@ export default function Example() {
                                                 {notesForThisApplication.map((item, itemIdx) => (
                                                     <li key={item.id} className=' '>
                                                         <div className="relative pb-8">
-                                                         
+
                                                             <div className="relative flex space-x-3">
-                                                            
+
                                                                 <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                                                                     <div>
                                                                         <p className="text-sm text-gray-700">
                                                                             {item.note}{' '}
-                                                                        
+
                                                                         </p>
                                                                     </div>
                                                                     <div className="whitespace-nowrap text-right text-[13px] text-gray-500 flex flex-col">
-                                                                        <time dateTime={item.createdAt}>{format(Date.parse(item.createdAt), "MMM dd") }</time>
+                                                                        <time dateTime={item.createdAt}>{format(Date.parse(item.createdAt), "MMM dd")}</time>
                                                                         {/* <span>By {item.createdBy}</span> */}
                                                                     </div>
                                                                 </div>
@@ -802,22 +802,22 @@ export default function Example() {
                         <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} selectedPaymentMethod={selectedPaymentMethod} setSelectedPaymentMethod={setSelectedPaymentMethod} selectedPaidAmount={selectedPaidAmount} setSelectedPaidAmount={setSelectedPaidAmount} />
                         <AddNotePopup setOpen={setAddNoteOpen} open={addNoteOpen} handleNoteAdd={handleNoteAdd} note={note} setNote={setNote} />
                     </div>
-                    {updateError && <ErrorNotification errorMessage={updateError} show={!!updateError} setShow={()=>{
+                    {updateError && <ErrorNotification errorMessage={updateError} show={!!updateError} setShow={() => {
                         setUpdateError("")
-                       
-                    }}/>}
-                    {updateSuccess && <SuccessNotification message={updateSuccess} show={!!updateSuccess} setShow={()=>{
+
+                    }} />}
+                    {updateSuccess && <SuccessNotification message={updateSuccess} show={!!updateSuccess} setShow={() => {
                         setUpdateSuccess("")
-                       
-                    }}/>}
-                    {addNoteError && <ErrorNotification errorMessage={addNoteError} show={!!addNoteError} setShow={()=>{
+
+                    }} />}
+                    {addNoteError && <ErrorNotification errorMessage={addNoteError} show={!!addNoteError} setShow={() => {
                         setAddNoteError("")
-                       
-                    }}/>}
-                    {addNoteSuccess && <SuccessNotification message={"Note has been added"} show={addNoteSuccess} setShow={()=>{
+
+                    }} />}
+                    {addNoteSuccess && <SuccessNotification message={"Note has been added"} show={addNoteSuccess} setShow={() => {
                         setAddNoteSuccess(false)
-                       
-                    }}/>}
+
+                    }} />}
                 </AlLoadingOverlay>
             </AlLoadingOverlay>
         </>

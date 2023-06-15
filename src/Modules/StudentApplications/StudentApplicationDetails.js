@@ -67,7 +67,7 @@ export default function StudentApplicationDetails() {
     const [note, setNote] = useState("")
     const [addingNote, setAddingNote] = useState(false)
     const [addNoteSuccess, setAddNoteSuccess] = useState(false)
-    const [addNoteError, setAddNoteError]= useState("")
+    const [addNoteError, setAddNoteError] = useState("")
     const [notesForThisApplication, setNotesForThisApplication] = useState([])
 
 
@@ -76,7 +76,7 @@ export default function StudentApplicationDetails() {
         const currentAdmin = JSON.parse(localStorage.getItem("admin"));
 
         const createdBy = currentAdmin.id
-        try{
+        try {
             const noteResponse = await Axios.post("/api/note/addNote", {
                 applicationCode: data.applicationCode,
                 note: note,
@@ -89,14 +89,14 @@ export default function StudentApplicationDetails() {
             fetchNotes(data.applicationCode)
 
         }
-       
-        catch(e){
+
+        catch (e) {
             console.log(e)
             setAddingNote(false)
             setAddNoteOpen(false)
             setAddNoteError("An error occured while adding note")
         }
-      
+
     }
 
     const { id } = useParams()
@@ -122,7 +122,7 @@ export default function StudentApplicationDetails() {
                 reg_status: selectedStatus,
                 payment_status: selectedPaymentStatus,
                 payment_method: selectedPaymentMethod,
-                paid_amount: selectedPaidAmount,
+                total: selectedPaidAmount,
             })
             console.log("this is the response data")
             console.log(response)
@@ -141,10 +141,10 @@ export default function StudentApplicationDetails() {
 
         }
     }
-   const fetchNotes = async(applicationCode) => {
-       const notesResponse = await Axios.get("/api/note/getNotes/" + applicationCode)
-       console.log(notesResponse    )
-       setNotesForThisApplication(notesResponse.data)
+    const fetchNotes = async (applicationCode) => {
+        const notesResponse = await Axios.get("/api/note/getNotes/" + applicationCode)
+        console.log(notesResponse)
+        setNotesForThisApplication(notesResponse.data)
     }
     useEffect(() => {
 
@@ -166,12 +166,12 @@ export default function StudentApplicationDetails() {
         setSelectedStatus(paramsList[indexOfThisApplication].reg_status)
         setSelectedPaymentMethod(paramsList[indexOfThisApplication].payment_method)
         setSelectedPaidAmount(paramsList[indexOfThisApplication].total)
-        if(paramsList[indexOfThisApplication].payment_status != null) setSelectedPaymentStatus(paramsList[indexOfThisApplication].payment_status)
+        if (paramsList[indexOfThisApplication].payment_status != null) setSelectedPaymentStatus(paramsList[indexOfThisApplication].payment_status)
         fetchNotes(paramsList[indexOfThisApplication].applicationCode)
 
     }, [])
     const mapPaymentStatusToStatus = () => {
-        if(data.payment_status == null) return "rejected"
+        if (data.payment_status == null) return "rejected"
         if (data.payment_status === "not_paid") return "rejected"
         if (data.payment_status === "part_payment") return "pending"
         if (data.payment_status === "paid") return "success"
@@ -192,7 +192,7 @@ export default function StudentApplicationDetails() {
 
                     {Object.keys(data).length > 0 && <main className="py-10">
                         {/* Page header */}
-                        <img src={data.passport_file } alt="passport photo" className="     border-dashed w-48 object-cover h-60"/> 
+                        <img src={data.passport_file} alt="passport photo" className="     border-dashed w-48 object-cover h-60" />
 
                         <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                             <div className="flex items-center space-x-5">
@@ -234,25 +234,25 @@ export default function StudentApplicationDetails() {
                                 <button
                                     type="button"
                                     autoFocus={true}
-                                    onClick={()=>{
+                                    onClick={() => {
                                         navigate("/app/applications-students/edit/" + data.id)
 
                                     }}
                                     className="inline-flex items-center justify-center rounded-md border border-transparent border-blue-600 px-8 py-3  outline-blue-500 font-medium text-blue-600 shadow-sm hover:outline-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                                 >
-                                
-                                   Edit Application
+
+                                    Edit Application
                                 </button>
 
                                 <button
-                                        type="button"
-                                        onClick={() => {
-                                            setAddNoteOpen(true)
-                                        }}
-                                        className="inline-flex items-center justify-center rounded-md border  border-yellow-600 px-8 py-3  outline-yellow-500 font-medium text-yellow-600 shadow-sm hover:outline-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-                                    >
-                                        Add Note
-                                    </button>
+                                    type="button"
+                                    onClick={() => {
+                                        setAddNoteOpen(true)
+                                    }}
+                                    className="inline-flex items-center justify-center rounded-md border  border-yellow-600 px-8 py-3  outline-yellow-500 font-medium text-yellow-600 shadow-sm hover:outline-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                                >
+                                    Add Note
+                                </button>
                             </div>
 
                         </div>
@@ -516,7 +516,7 @@ export default function StudentApplicationDetails() {
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                            Post-secondary and further education
+                                                Post-secondary and further education
 
 
 
@@ -815,7 +815,7 @@ export default function StudentApplicationDetails() {
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                            FUTURE CAREER INTENTIONS
+                                                FUTURE CAREER INTENTIONS
 
 
 
@@ -834,14 +834,14 @@ export default function StudentApplicationDetails() {
                                                     {/* <dt className="text-sm font-medium text-gray-500">Institution attended</dt> */}
                                                     <dd className="mt-1 text-sm text-gray-900">{data.career_intentions}</dd>
                                                 </div>
-                                         
+
 
 
                                             </dl>
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                            ACCOMODATION
+                                                ACCOMODATION
 
 
 
@@ -866,14 +866,14 @@ export default function StudentApplicationDetails() {
                                                     <dt className="text-sm font-medium text-gray-500">Type of  Accomodation</dt>
                                                     <dd className="mt-1 text-sm text-gray-900">{data.type_of_accommodation}</dd>
                                                 </div>
-                                         
+
 
 
                                             </dl>
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                            AIRPORT RECEPTION
+                                                AIRPORT RECEPTION
 
 
 
@@ -894,15 +894,15 @@ export default function StudentApplicationDetails() {
                                                     <dt className="text-sm font-medium text-gray-500">Airport Pickup Required</dt>
                                                     <dd className="mt-1 text-sm text-gray-900">{data.airport_reception}</dd>
                                                 </div>
-                                              
-                                         
+
+
 
 
                                             </dl>
                                         </div>
                                         <div className="px-4 py-5 sm:px-6">
                                             <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                                            REQUEST FOR LEARNING SUPPORT
+                                                REQUEST FOR LEARNING SUPPORT
 
 
 
@@ -924,8 +924,8 @@ export default function StudentApplicationDetails() {
                                                     <dt className="text-sm font-medium text-gray-500">Learning Support Request Details</dt>
                                                     <dd className="mt-1 text-sm text-gray-900">{data.request_for_learning_support}</dd>
                                                 </div>
-                                              
-                                         
+
+
 
 
                                             </dl>
@@ -996,39 +996,39 @@ export default function StudentApplicationDetails() {
                                 </div> */}
                                 </div>
                                 <div className="mt-3 bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                                        <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
-                                            Notes
-                                        </h2>
+                                    <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
+                                        Notes
+                                    </h2>
 
-                                        {/* Activity Feed */}
-                                        <div className="mt-6 flow-root">
-                                            <ul role="list" className="-mb-8">
-                                                {notesForThisApplication.map((item, itemIdx) => (
-                                                    <li key={item.id} className=' '>
-                                                        <div className="relative pb-8">
-                                                         
-                                                            <div className="relative flex space-x-3">
-                                                            
-                                                                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                                                    <div>
-                                                                        <p className="text-sm text-gray-700">
-                                                                            {item.note}{' '}
-                                                                        
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="whitespace-nowrap text-right text-[13px] text-gray-500 flex flex-col">
-                                                                        <time dateTime={item.createdAt}>{format(Date.parse(item.createdAt), "MMM dd") }</time>
-                                                                        {/* <span>By {item.createdBy}</span> */}
-                                                                    </div>
+                                    {/* Activity Feed */}
+                                    <div className="mt-6 flow-root">
+                                        <ul role="list" className="-mb-8">
+                                            {notesForThisApplication.map((item, itemIdx) => (
+                                                <li key={item.id} className=' '>
+                                                    <div className="relative pb-8">
+
+                                                        <div className="relative flex space-x-3">
+
+                                                            <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                                                <div>
+                                                                    <p className="text-sm text-gray-700">
+                                                                        {item.note}{' '}
+
+                                                                    </p>
+                                                                </div>
+                                                                <div className="whitespace-nowrap text-right text-[13px] text-gray-500 flex flex-col">
+                                                                    <time dateTime={item.createdAt}>{format(Date.parse(item.createdAt), "MMM dd")}</time>
+                                                                    {/* <span>By {item.createdBy}</span> */}
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {/* {itemIdx !=  notesForThisApplication.length - 1 &&  <div     className='border-b mx-[-24px]'></div> } */}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        {/* <div className="justify-stretch mt-6 flex flex-col">
+                                                    </div>
+                                                    {/* {itemIdx !=  notesForThisApplication.length - 1 &&  <div     className='border-b mx-[-24px]'></div> } */}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    {/* <div className="justify-stretch mt-6 flex flex-col">
                                     <button
                                         type="button"
                                         className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -1036,31 +1036,31 @@ export default function StudentApplicationDetails() {
                                         Advance to offer
                                     </button>
                                 </div> */}
-                                    </div>
+                                </div>
                             </section>
                         </div>
                     </main>}
                     <UpdateApplicationPopup setOpen={setUpdateOpen} open={updateOpen} onUpdateConfirm={onUpdateConfirm} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} selectedPaymentStatus={selectedPaymentStatus} setSelectedPaymentStatus={setSelectedPaymentStatus} selectedPaymentMethod={selectedPaymentMethod} setSelectedPaymentMethod={setSelectedPaymentMethod} selectedPaidAmount={selectedPaidAmount} setSelectedPaidAmount={setSelectedPaidAmount} />
-                        <AddNotePopup setOpen={setAddNoteOpen} open={addNoteOpen} handleNoteAdd={handleNoteAdd} note={note} setNote={setNote} />
-                    </div>
-                    {updateError && <ErrorNotification errorMessage={updateError} show={!!updateError} setShow={()=>{
-                        setUpdateError("")
-                       
-                    }}/>}
-                    {updateSuccess && <SuccessNotification message={updateSuccess} show={!!updateSuccess} setShow={()=>{
-                        setUpdateSuccess("")
-                       
-                    }}/>}
-                    {addNoteError && <ErrorNotification errorMessage={addNoteError} show={!!addNoteError} setShow={()=>{
-                        setAddNoteError("")
-                       
-                    }}/>}
-                    {addNoteSuccess && <SuccessNotification message={"Note has been added"} show={addNoteSuccess} setShow={()=>{
-                        setAddNoteSuccess(false)
-                       
-                    }}/>}
+                    <AddNotePopup setOpen={setAddNoteOpen} open={addNoteOpen} handleNoteAdd={handleNoteAdd} note={note} setNote={setNote} />
+                </div>
+                {updateError && <ErrorNotification errorMessage={updateError} show={!!updateError} setShow={() => {
+                    setUpdateError("")
+
+                }} />}
+                {updateSuccess && <SuccessNotification message={updateSuccess} show={!!updateSuccess} setShow={() => {
+                    setUpdateSuccess("")
+
+                }} />}
+                {addNoteError && <ErrorNotification errorMessage={addNoteError} show={!!addNoteError} setShow={() => {
+                    setAddNoteError("")
+
+                }} />}
+                {addNoteSuccess && <SuccessNotification message={"Note has been added"} show={addNoteSuccess} setShow={() => {
+                    setAddNoteSuccess(false)
+
+                }} />}
             </AlLoadingOverlay>
-            </AlLoadingOverlay>
+        </AlLoadingOverlay>
 
         </>
     )
