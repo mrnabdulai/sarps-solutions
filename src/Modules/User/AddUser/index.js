@@ -1381,23 +1381,23 @@ export default function AddUser() {
                                                 <div className="grid grid-cols-6 gap-6">
                                                     <AddUserInput label="Surname" name="emergencyContactSurname" error={errors.emmergencyContactSurname}
                                                         required={false}
-                                                        onChange={
-                                                            (e) => {
-                                                                const errorMessage = getSurnameValidator(e.target.value)
-                                                                console.log(errorMessage)
-                                                                if (!errorMessage) {
-                                                                    let tempErrors = { ...errors }
-                                                                    delete tempErrors.emmergencyContactSurname
-                                                                    setErrors(tempErrors)
-                                                                    console.log(errors)
-                                                                }
-                                                                else {
-                                                                    setErrors(
-                                                                        { ...errors, emergencyContactSurname: errorMessage }
-                                                                    )
-                                                                }
-                                                            }
-                                                        }
+                                                        // onChange={
+                                                        //     (e) => {
+                                                        //         const errorMessage = getSurnameValidator(e.target.value)
+                                                        //         console.log(errorMessage)
+                                                        //         if (!errorMessage) {
+                                                        //             let tempErrors = { ...errors }
+                                                        //             delete tempErrors.emmergencyContactSurname
+                                                        //             setErrors(tempErrors)
+                                                        //             console.log(errors)
+                                                        //         }
+                                                        //         else {
+                                                        //             setErrors(
+                                                        //                 { ...errors, emergencyContactSurname: errorMessage }
+                                                        //             )
+                                                        //         }
+                                                        //     }
+                                                        // }
                                                     />
                                                     <AddUserInput label="Other Names" name="emergencyContactOtherNames" error={errors.emergencyContactOtherNames}
                                                         required={false}
