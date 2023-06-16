@@ -643,11 +643,11 @@ export default function Example() {
                                                     </div>
                                                     <div className="sm:col-span-1">
                                                         <dt className="text-sm font-medium text-gray-500">Name of Employer</dt>
-                                                        <dd className="mt-1 text-sm text-gray-900">{data.guarantor_ID}</dd>
+                                                        <dd className="mt-1 text-sm text-gray-900">{data.guarantor_name_contact_of_employer}</dd>
                                                     </div>
                                                     <div className="sm:col-span-1">
-                                                        <dt className="text-sm font-medium text-gray-500">Guarantor ID No.</dt>
-                                                        <dd className="mt-1 text-sm text-gray-900">{data.guarantor_ID}</dd>
+                                                        <dt className="text-sm font-medium text-gray-500">Guarantor ID</dt>
+                                                        <dd className="mt-1 text-sm text-gray-900"><a href={data.guarantor_ID} target='_blank'>  {data.guarantor_ID}</a></dd>
                                                     </div>
 
                                                 </dl>
